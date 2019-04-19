@@ -1,5 +1,11 @@
 ## 部署运行环境
 
+### 拉取远程代码
+
+```
+git clone https://github.com/ndlteam/bookStore.git
+```
+
 ### 创建venv环境
 
 ```
@@ -17,5 +23,11 @@ source ./venv/bin/activate
 ### 安装依赖包
 
 ```
-pip install django=1.11.20
+pip install django==1.11.20
+```
+
+### 初始化项目
+
+```
+django-admin startproject bookStore src
 ```
