@@ -26,8 +26,8 @@ source ./venv/bin/activate
 pip install django==1.11.20
 ```
 
-### 初始化项目
+### 运行项目
 
 ```
-django-admin startproject bookStore src
+manage.py runserver
 ```
