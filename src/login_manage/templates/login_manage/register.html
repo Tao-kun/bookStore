@@ -1,0 +1,55 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../../../static/css/style.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="../../../static/css/grid.css" media="screen" rel="stylesheet" type="text/css">
+    <script src="../../../static/js/jquery-1.7.2.min.js"></script>
+    <script src="../../../static/js/html5.js"></script>
+    <script src="../../../static/js/jflow.plus.js"></script>
+    <script src="../../../static/js/jquery.carouFredSel-5.2.2-packed.js"></script>
+    <script src="../../../static/js/checkbox.js"></script>
+    <script src="../../../static/js/radio.js"></script>
+    <script src="../../../static/js/selectBox.js"></script>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="grid_6">
+    <form class="registed" style="margin-left: 55%;width: 100%;margin-top: 20%" method="post">
+        {% csrf_token %}
+        <div>
+            <strong>学号:</strong><br/>
+            {{ register_form.studentID }}
+        </div>
+
+         <div>
+            <strong>姓名:</strong><br/>
+            {{ register_form.name }}
+        </div><!-- .password -->
+
+        <div class="form-group" style="width: 87%">
+            <strong>密码:</strong><br/>
+            {{ register_form.password1 }}
+        </div><!-- .password -->
+
+          <div class="form-group" style="width: 87%">
+            <strong>确认密码:</strong><br/>
+            {{ register_form.password2 }}
+        </div><!-- .password -->
+
+         <div class="Email">
+            <strong>Email:</strong><br/>
+            {{ register_form.email }}
+        </div><!-- .password -->
+
+
+        <div class="submit" style="padding-top: 1%">
+            <input type="submit" value="注册"/>
+
+        </div><!-- .submit -->
+    </form><!-- .registed -->
+</div><!-- .grid_6 -->
+</body>
+</html>
