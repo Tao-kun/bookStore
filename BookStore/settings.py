@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import pymysql         # 一定要添加这两行！           
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -79,8 +81,12 @@ WSGI_APPLICATION = 'BookStore.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'BookStore', 
+        'USER': 'ruangong',  
+        'PASSWORD': 'Ruangong2019!',  
+        'HOST': '39.96.166.183',  # mysql服务所在的主机ip
+        'PORT': '3306',         # mysql服务端口
     }
 }
 
