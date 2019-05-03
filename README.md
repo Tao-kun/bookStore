@@ -65,13 +65,13 @@ git clone https://github.com/ndlteam/bookStore.git
 请确保位于已激活虚拟环境的shell环境，并位于项目的根目录。
 
 ```bash
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 如果你添加了安装了新的python包，请使用以下命令更新requirements文件：
 
 ```bash
-pip freeze > requirements
+pip freeze > requirements.txt
 ```
 
 ### 运行项目
