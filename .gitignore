@@ -126,4 +126,4 @@ dmypy.json
 .idea
 .idea/
 
-src/db.sqlite3
+.vscode/
