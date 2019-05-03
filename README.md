@@ -10,7 +10,7 @@
 py -3.6
 ```
 
-当然，你可能需要把pip切换到国内源
+当然，你可能需要把pip[切换到国内源](https://blog.csdn.net/lambert310/article/details/52412059)。
 
 ### 创建venv环境
 
@@ -54,20 +54,30 @@ your_venv_path\your_venv_name\Scripts\Activate.ps1
 source your_venv_path/your_venv_name/bin/activate
 ```
 
-### 安装依赖包
-
-```bash
-pip install django==1.11.20
-```
-
 ### 拉取远程代码
 
 ```bash
 git clone https://github.com/ndlteam/bookStore.git
 ```
 
-### 运行项目
+### 安装依赖包
+
+请确保位于已激活虚拟环境的shell环境，并位于项目的根目录。
 
 ```bash
-manage.py runserver
+pip install -r requirements
+```
+
+如果你添加了安装了新的python包，请使用以下命令更新requirements文件：
+
+```bash
+pip freeze > requirements
+```
+
+### 运行项目
+
+请确保位于已激活虚拟环境的shell环境，并位于项目的根目录。
+
+```powershell
+py -3.6 manage.py runserver
 ```
