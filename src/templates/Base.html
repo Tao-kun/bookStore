@@ -11,12 +11,63 @@
     <title>Home</title>
     <link href="{% static 'css/style.css' %}" media="screen" rel="stylesheet" type="text/css">
     <link href="{% static 'css/grid.css' %}" media="screen" rel="stylesheet" type="text/css">
-
+    <script src="{% static 'js/layer/layer.js' %}"></script>
     <script src="{% static 'js/jquery-1.7.2.min.js' %} "></script>
     <script src="{% static 'js/html5.js' %}"></script>
     <script src="{% static 'js/jflow.plus.js' %}"></script>
     <script src="{% static 'js/jquery.carouFredSel-5.2.2-packed.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="../static/revolution/css/settings.css">
 
+    <!-- RS5.0 Layers and Navigation Styles -->
+    <link rel="stylesheet" type="text/css" href="../static/revolution/css/layers.css">
+    <link rel="stylesheet" type="text/css" href="../static/revolution/css/navigation.css">
+
+    <!-- Library - Bootstrap v3.3.5 -->
+    <link rel="stylesheet" type="text/css" href="../static/libraries/lib.css">
+
+    <!-- Custom - Common CSS -->
+    <link rel="stylesheet" type="text/css" href="../static/css/plugins.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/navigation-menu.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/shortcode.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/style1.css">
+    <script>
+        function add_to_cart(){
+            var good_name = document.getElementById("good_name").innerHTML;
+            var good_price = document.getElementById("price").innerHTML;
+            var good_pic = document.getElementById("Good").getAttribute("src");
+            $.ajax({
+                    url: "/add_to_cart/?good_name="+good_name+"&good_price="+good_price+"&good_pic="+good_pic,
+                    type: 'GET',
+                    success: function (arg) {
+                    }
+                }
+            )
+        }
+    </script>
+    <script>
+        function checkout() {
+            var good_name = document.getElementById("good_name").innerHTML;
+            var good_price = document.getElementById("price").innerHTML;
+            //alert(good_name);
+            //alert(good_price);
+            window.location.href="/checkout/?good_name=" + good_name + "&good_price=" + good_price;
+        }
+    </script>
+    <script>
+        function logout() {
+            layer.msg('已退出');
+            $.ajax({
+                    url: "/logout/",
+                    type: 'GET',
+                    success: function (arg) {
+                        var textarea = document.getElementById("welcome1");
+                        textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
+                            "                href=\"/login/\">注册</a>.";
+                    }
+                }
+            )
+        }
+    </script>
     <script>
         $(document).ready(function () {
             $("#myController").jFlow({
@@ -62,15 +113,14 @@
     <div id="top">
         <div class="grid_3">
             <div class="phone_top">
-                Call Us +777 (100) 1234
+                Call CN +86 18210714886
             </div><!-- .phone_top -->
         </div><!-- .grid_3 -->
 
         <div class="grid_6">
-            <div class="welcome">
-                Welcome visitor you can <a href="/login_manage/templates/login_manage/login.html">login</a> or <a
-                    href="login.html">create an account</a>.
-            </div><!-- .welcome -->
+            {% block islogin %}
+
+            {% endblock %}
         </div><!-- .grid_6 -->
 
         <div class="grid_3">
@@ -83,15 +133,15 @@
     <header id="branding">
         <div class="grid_3">
             <hgroup>
-                <h1 id="site_logo"><a href="/login_manage/templates/login_manage/index.html" title=""><img
+                <h1 id="site_logo"><a href="/index/" title=""><img
                         src="/static/images/logo.png" alt="Online Store Theme Logo"/></a></h1>
-                <h2 id="site_description">Online Store Theme</h2>
+                <h2 id="site_description">Online Book Store</h2>
             </hgroup>
         </div><!-- .grid_3 -->
 
         <div class="grid_3">
             <form class="search">
-                <input type="text" name="search" class="entry_form" value="" placeholder="Search entire store here..."/>
+                <input type="text" name="search" class="entry_form" value="" placeholder="在商店内搜索"/>
             </form>
         </div><!-- .grid_3 -->
 
@@ -102,7 +152,7 @@
                     <ul class="cart_cont">
                         <li class="no_border"><p>Recently added item(s)</p></li>
                         <li>
-                            <a href="/watch_buy/templates/product_page.html" class="prev_cart">
+                            <a href="/watch_buy/templates/watch_buy/product_page.html" class="prev_cart">
                                 <div class="cart_vert"><img src="/static/images/cart_img.png" alt="" title=""/></div>
                             </a>
                             <div class="cont_cart">
@@ -114,7 +164,7 @@
                         </li>
 
                         <li>
-                            <a href="/watch_buy/templates/product_page.html" class="prev_cart">
+                            <a href="/watch_buy/templates/watch_buy/product_page.html" class="prev_cart">
                                 <div class="cart_vert"><img src="/static/images/produkt_slid1.png" alt="" title=""/>
                                 </div>
                             </a>
@@ -126,8 +176,10 @@
                             <div class="clear"></div>
                         </li>
                         <li class="no_border">
-                            <a href="/watch_buy/templates/shopping_cart.html" class="view_cart">View shopping cart</a>
-                            <a href="/watch_buy/templates/checkout.html" class="checkout">Procced to Checkout</a>
+                            <a href="/watch_buy/templates/watch_buy/shopping_cart.html" class="view_cart">View shopping
+                                cart</a>
+                            <a href="/watch_buy/templates/watch_buy/checkout.html" class="checkout">Procced to
+                                Checkout</a>
                         </li>
                     </ul>
                 </li>
@@ -145,22 +197,23 @@
             <nav class="primary">
                 <ul>
                     <li class="curent"><a href="/login_manage/templates/login_manage/index.html">Home</a></li>
-                    <li><a href="/watch_buy/templates/catalog_grid.html">小说</a></li>
-                    <li><a href="/watch_buy/templates/catalog_grid.html">散文集</a></li>
+                    <li><a href="/watch_buy/templates/watch_buy/catalog_grid.html">小说</a></li>
+                    <li><a href="/watch_buy/templates/watch_buy/catalog_grid.html">散文集</a></li>
                     <li>
-                        <a href="/watch_buy/templates/catalog_grid.html">黄书</a>
+                        <a href="/watch_buy/templates/watch_buy/catalog_grid.html">黄书</a>
                     </li>
-                    <li><a href="/watch_buy/templates/catalog_grid.html">专业著作</a></li>
-                    <li><a href="/watch_buy/templates/catalog_grid.html">楠弟语录</a></li>
+                    <li><a href="/watch_buy/templates/watch_buy/catalog_grid.html">专业著作</a></li>
+                    <li><a href="/watch_buy/templates/watch_buy/catalog_grid.html">楠弟语录</a></li>
                     <li>
                         <a href="#">更多</a>
                         <ul class="sub">
                             <li><a href="/login_manage/templates/login_manage/index.html">Home</a></li>
-                            <li><a href="/watch_buy/templates/catalog_grid.html">Catalog (grid view)</a></li>
-                            <li><a href="/watch_buy/templates/catalog_list.html">Catalog (list type view)</a></li>
-                            <li><a href="/watch_buy/templates/product_page.html">Product view</a></li>
-                            <li><a href="/watch_buy/templates/shopping_cart.html">Shoping cart</a></li>
-                            <li><a href="/watch_buy/templates/checkout.html">Proceed to checkout</a></li>
+                            <li><a href="/watch_buy/templates/watch_buy/catalog_grid.html">Catalog (grid view)</a></li>
+                            <li><a href="/watch_buy/templates/watch_buy/catalog_list.html">Catalog (list type view)</a>
+                            </li>
+                            <li><a href="/watch_buy/templates/watch_buy/product_page.html">Product view</a></li>
+                            <li><a href="/watch_buy/templates/watch_buy/shopping_cart.html">Shoping cart</a></li>
+                            <li><a href="/watch_buy/templates/watch_buy/checkout.html">Proceed to checkout</a></li>
                             <li><a href="/login_manage/templates/login_manage/index.html">Login</a></li>
                             <li><a href="/after_sold/templates/after_sold/contact_us.html">Contact us</a></li>
                             <li><a href="/after_sold/templates/after_sold/404.html">404</a></li>

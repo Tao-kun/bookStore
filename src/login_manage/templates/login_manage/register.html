@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% csrf_token %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,42 +15,152 @@
     <script src="../../../static/js/radio.js"></script>
     <script src="../../../static/js/selectBox.js"></script>
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <script src="../../../static/js/layer/layer.js"></script>
+
+    <script>
+        /*
+            跳转到相关页面，将已经过验证的信息添加到数据库中
+        */
+        function add_to_db() {
+            var studentid = document.getElementById("studentid").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password1").value;
+            var name = document.getElementById("name").value;
+            $.ajax({
+                    url: "/add_to_db/?studentid=" + studentid + "&email=" + email + "&password=" + password + "&name=" + name,
+                    type: 'GET',
+                    success: function (arg) {
+                        alert("注册成功");
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }
+                }
+            )
+        }
+
+        //设置鼠标悬停在输入框时候的提示信息
+        /*
+            提示的情况如下：
+            1.学号已经被注册过
+            2.姓名已经被注册过
+            3.邮箱已经被注册过
+            4.学号不是八位的
+            5.邮箱不符合正则表达式
+            6.两次输入密码不一致
+            7.输入为空
+            只有避免上述情况，才能点击注册按钮进行注册
+         */
+        function focs() {
+            var studentid = document.getElementById("studentid").value;
+            var email = document.getElementById("email").value;
+            var password1 = document.getElementById("password1").value;
+            var password2 = document.getElementById("password2").value;
+            var name = document.getElementById("name").value;
+            var index = 0;
+            $.ajax({
+                    url: "/is_valid/?studentid=" + studentid + "&email=" + email + "&password1=" + password1 + "&password2=" + password2 + "&name=" + name,
+                    type: 'GET',
+                    success: function (arg) {
+                        if (arg['same_pwd'] === "false") {
+                            index = layer.tips('两次密码不相同', '#password2', {
+                                    tipsMore: true,
+                                    time: 2000,
+                                    shift: -1
+                                }
+                            );
+                        }
+                        if (arg['null_name'] === "true") {
+                            index = layer.tips('姓名不能为空', '#name', {
+                                    tipsMore: true,
+                                    time: 2000,
+                                    shift: -1
+                                }
+                            );
+                        }
+                        if (arg['same_stu'] === "true") {
+                            index = layer.tips('已经存在此学号', '#studentid', {
+                                    tipsMore: true,
+                                    time: 0,
+                                    shift: -1
+                                }
+                            );
+                        }
+                        if (arg['same_email'] === "true") {
+                            index = layer.tips('此email已被注册过', '#email', {
+                                    tipsMore: true,
+                                    time: 2000,
+                                    shift: -1
+                                }
+                            );
+                        }
+                        if (arg['same_name'] === "true") {
+                            index = layer.tips('此姓名已有', '#name', {
+                                    tipsMore: true,
+                                    time: 2000,
+                                    shift: -1
+                                }
+                            );
+                        }
+                        if (arg['ok_email'] === "false") {
+                            index = layer.tips('email格式不合法', '#email', {
+                                tipsMore: true,
+                                time: 2000,
+                                shift: -1
+                            });
+                        }
+                        if (arg['ok_stuid'] === "false") {
+                            index = layer.tips('学生id必须是八位数字', '#studentid', {
+                                tipsMore: true,
+                                time: 2000,
+                                shift: -1
+                            });
+                        }
+                        var ok_return = arg['ok_return'];
+                        if (ok_return === "true") {
+                            var reg_btn = document.getElementById("register");
+                            reg_btn.disabled = false;
+                        }
+
+                    }
+                }
+            )
+        }
+
+    </script>
 </head>
 <body>
 <div class="grid_6">
-    <form class="registed" style="margin-left: 55%;width: 100%;margin-top: 20%" method="post">
-        {% csrf_token %}
-        <div>
+    <form class="registed" style="margin-left: 65%;width: 100%;margin-top: 20%" method="GET">
+        <div class="form-group">
             <strong>学号:</strong><br/>
-            {{ register_form.studentID }}
+            <input type="text" id="studentid" class="form-control" onblur="focs()">
         </div>
 
-         <div>
+        <div class="form-group">
             <strong>姓名:</strong><br/>
-            {{ register_form.name }}
+            <input type="text" class="form-control" id="name" onblur="focs()">
         </div><!-- .password -->
 
-        <div class="form-group" style="width: 87%">
+        <div id="id1" class="form-group" style="width: 100%">
             <strong>密码:</strong><br/>
-            {{ register_form.password1 }}
+            <input class="form-control" type="password" id="password1" style="margin-top: 2%">
         </div><!-- .password -->
 
-          <div class="form-group" style="width: 87%">
+        <div class="form-group" style="width: 100%">
             <strong>确认密码:</strong><br/>
-            {{ register_form.password2 }}
+            <input class="form-control" type="password" id="password2" style="margin-top: 2%" onblur="focs()">
         </div><!-- .password -->
 
-         <div class="Email">
+        <div class="form-group">
             <strong>Email:</strong><br/>
-            {{ register_form.email }}
+            <input class="form-control" type="email" id="email" onblur="focs()">
         </div><!-- .password -->
 
-
-        <div class="submit" style="padding-top: 1%">
-            <input type="submit" value="注册"/>
-
+        <div class="submit" style="margin-left: 18%">
+            <input disabled="disabled" class="btn btn-primary" id="register" value="注册" onclick="add_to_db()"/>
         </div><!-- .submit -->
     </form><!-- .registed -->
 </div><!-- .grid_6 -->
 </body>
+
 </html>

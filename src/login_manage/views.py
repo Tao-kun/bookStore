@@ -1,11 +1,20 @@
+from random import choice
+import string
+import re
+import json
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
-from login_manage.forms import RegisterForm, LoginForm
+from django.core.mail import send_mail
+from login_manage import models
+from login_manage.forms import LoginForm
 from login_manage.models import User
 
 
 def index(request):
-    return render(request, "login_manage/index.html")
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
+    return render(request, "login_manage/index.html", locals())
 
 
 def login(request):
@@ -18,12 +27,12 @@ def login(request):
             studentID = login_form.cleaned_data['studentID']
             password = login_form.cleaned_data['password']
             try:
-                student = User.objects.get(studentID=studentID)
-                print(password)
-                print(student.password)
-                if password == student.password:
-                    request.session['studentID'] = student.studentID
-                    request.session['name'] = student.name
+                user = User.objects.get(studentID=studentID)
+                # print(password)
+                # print(user.password)
+                if password == user.password:
+                    request.session['studentID'] = user.studentID
+                    request.session['name'] = user.name
                     request.session['is_login'] = True
                     return redirect('/index/')
                 else:
@@ -34,43 +43,103 @@ def login(request):
     return render(request, "login_manage/login.html", locals())
 
 
-
 def register(request):
     request.session.flush()
-    if request.method == 'POST':
-        register_form = RegisterForm(request.POST, request.FILES)
-        message = "请再次检查要填写的内容"
-        if register_form.is_valid():
-            studentID = register_form.cleaned_data['studentID']
-            name = register_form.cleaned_data['name']
-            pwd1 = register_form.cleaned_data['password1']
-            pwd2 = register_form.cleaned_data['password2']
-            email = register_form.cleaned_data['email']
+    return render(request, 'login_manage/register.html', locals())
 
-            # 如果这个ID已经注册过账号，那么不允许再注册
-            IsSame = User.objects.filter(studentID=studentID)
-            if IsSame:
-                jump_to_login = True
-                request.session.flush()
-                return render(request, 'login_manage/login.html', locals())
-            # 两次的密码输入要一致
 
-            if pwd1 != pwd2:
-                diffpwd = True
-                return render(request, 'login_manage/login.html', locals())
-            else:
-                diffpwd = False
+#  注销，清除session
+def logout(request):
+    request.session.flush()
+    return render(request, 'login_manage/logout.html')
 
-            # 正常情况，创建用户加入数据库
-            new_usr = User()
-            new_usr.studentID = int(studentID)
-            new_usr.name = name
-            new_usr.password = pwd1
-            new_usr.email = email
-            new_usr.save()
-    register_form = RegisterForm()
-    return render(request, "login_manage/register.html", locals())
+
+#  检验表单输入信息合法性，返回一个json
+def is_valid(request):
+    studentid = request.GET.get('studentid')
+    password1 = request.GET.get('password1')
+    password2 = request.GET.get('password2')
+    email = request.GET.get('email')
+    name = request.GET.get('name')
+    exists_stu = models.User.objects.filter(studentID=studentid)
+    exists_email = models.User.objects.filter(email=email)
+    exists_name = models.User.objects.filter(name=name)
+    if name:
+        null_name = "false"
+    else:
+        null_name = "true"
+    if exists_name:
+        same_name = "true"
+    else:
+        same_name = "false"
+    if exists_email:
+        same_email = "true"
+    else:
+        same_email = "false"
+    if exists_stu:
+        same_stu = "true"
+    else:
+        same_stu = "false"
+    if password1 == password2:
+        same_pwd = "true"
+    else:
+        same_pwd = "false"
+    str = r'^([\w]+\.*)([\w]+)\@[\w]+\.\w{3}(\.\w{2}|)$'
+    if re.match(str, email) and not str.isspace():
+         ok_email = "true"
+         print(email)
+    else:
+        ok_email = "false"
+    if len(studentid) == 8 and studentid:
+        ok_stuid = "true"
+    else:
+        ok_stuid = "false"
+    ok_return = "false"
+    if ok_email == "true" and ok_stuid == "true" and null_name == "false" and same_name == "false" and same_email == "false" and same_stu == "false" and same_pwd == "true":
+        ok_return = "true"
+    ret = {'same_pwd': same_pwd, 'ok_email': ok_email, 'ok_stuid': ok_stuid, 'ok_return': ok_return, 'same_stu': same_stu, 'same_email': same_email, 'same_name': same_name, 'null_name': null_name}
+    return HttpResponse(json.dumps(ret), content_type='application/json')
 
 
 def test(request):
     return render(request, "login_manage/test.html")
+
+
+#  添加学生至数据库
+def add_to_db(request):
+    studentid = request.GET.get('studentid')
+    password = request.GET.get('password')
+    email = request.GET.get('email')
+    name = request.GET.get('name')
+    new_usr = User()
+    new_usr.studentID = studentid
+    new_usr.name = name
+    new_usr.password = password
+    new_usr.email = email
+    new_usr.save()
+    return render(request, "login_manage/add_to_db.html")
+
+
+# python3中为string.ascii_letters,而python2下则可以使用string.letters和string.ascii_letters
+def GenPassword(length=8, chars=string.ascii_letters + string.digits):
+    return ''.join([choice(chars) for i in range(length)])
+
+
+#  忘记密码发送邮件
+def sendemail(request):
+    studentID_target = request.GET.get("studentID")
+    email_target = request.GET.get("email")
+    find = models.User.objects.filter(studentID=studentID_target, email=email_target)
+    if not find:
+        message = "notequal"
+        return HttpResponse(json.dumps({"message": message}))
+    pawdtemp = GenPassword(8)
+    send_mail(
+        subject=u"这是新的密码,请使用新的密码登录", message=pawdtemp,
+        from_email='18210714886@163.com', recipient_list=[email_target], fail_silently=False,
+    )
+    new_pwd_usr = models.User.objects.get(email=email_target)
+    new_pwd_usr.password = pawdtemp
+    new_pwd_usr.save()
+    message = "equal"
+    return HttpResponse(json.dumps({"message": message}))
