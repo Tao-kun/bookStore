@@ -22,7 +22,7 @@
                     <h2>创建新账户</h2>
                     <p>通过在我们的商店中创建帐户，您可以更快地完成结帐流程，存储多个送货地址，查看和跟踪您帐户中的订单。</p>
                     <div class="clear"></div>
-                    <button class="account" id="create_account">创建账户</button>
+                    <button class="account" id="create_account"><font style="color: whitesmoke">创建账户</font></button>
                 </div><!-- .grid_6 -->
 
                 <div class="grid_6">
@@ -33,14 +33,16 @@
                         <p>若您已有账户，请登录</p>
 
                         <div>
-                            <strong>学号:</strong><br/>
-                            {{ login_form.studentID }}
+                            <div style="float: left"><strong>学号:</strong><br/>
+                                {{ login_form.studentID }}</div>
+                            <div style="padding-top: 5%;"><font color="red" style="padding-left: 5%"
+                                                                id="account_info"></font></div>
                         </div><!-- .email -->
 
                         <div class="form-group" style="width: 58%;">
                             <strong style="padding-bottom: 2px">密码:</strong><br/>
                             <div style="padding-top: 3px">{{ login_form.password }}</div>
-                            <a class="forgot" href="#">忘记密码?</a>
+                            <a class="forgot" id="forget_password">忘记密码?</a>
                         </div><!-- .password -->
 
                         <div class="remember">
@@ -61,6 +63,34 @@
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script>
         $(function () {
+            $('#forget_password').on('click', function () {
+                layer.prompt({title: '请说明您的账号', formType: 0}, function (studentID, index) {
+                    layer.close(index);
+                    layer.prompt({title: '请输入该账号绑定的邮箱', formType: 0}, function (email, index) {
+                        layer.close(index);
+                        $.ajax({
+                                url: "/forget_password/?email=" + email + "&studentID=" + studentID,
+                                type: 'GET',
+                                dataType: 'JSON',
+                                success: function (arg) {
+                                    if (arg['message'] === "equal") {
+                                        layer.msg('已发到您的邮箱');
+                                    }
+                                    else{
+                                        layer.msg('邮箱信息不匹配');
+                                    }
+
+                                }
+                            }
+                        );
+
+                    })
+                });
+            });
+        });
+    </script>
+    <script>
+        $(function () {
             $('#create_account').on('click', function () {
                 layer.open({
                     type: 2,
@@ -75,6 +105,7 @@
         });
 
     </script>
+
     <script>
         $(document).ready(function () {
             $("select").selectBox();
@@ -88,5 +119,5 @@
             });
         })
     </script>
-<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
 {% endblock %}

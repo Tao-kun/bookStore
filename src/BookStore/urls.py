@@ -15,13 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from login_manage import views
+from login_manage import views as login_manage_views
+from watch_buy import views as watch_buy_views
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^index/', views.index),
-    url(r'^login/', views.login),
-    url(r'^register/', views.register),
-    url(r'^test/', views.test)
+    url(r'^index/', login_manage_views.index),
+    url(r'^login/', login_manage_views.login),
+    url(r'^register/', login_manage_views.register),
+    url(r'^logout/', login_manage_views.logout),
+    url(r'^test/', login_manage_views.test),
+    url(r'^is_valid/', login_manage_views.is_valid),
+    url(r'^add_to_db/', login_manage_views.add_to_db),
+    url(r'^forget_password/', login_manage_views.sendemail),
+    url(r'^catalog_grid/', watch_buy_views.catalog_grid),
+    url(r'^checkout/', watch_buy_views.checkout),
+    url(r'^shopping_cart', watch_buy_views.shopping_cart),
+    url(r'^add_to_cart', watch_buy_views.add_to_cart)
 ]

@@ -10,7 +10,7 @@ from django.db import models
 
 
 class User(models.Model):
-    studentID = models.IntegerField(primary_key=True, unique=True)
+    studentID = models.CharField(max_length=255, primary_key=True, unique=True)
     name = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
@@ -21,4 +21,5 @@ class User(models.Model):
     class Meta:
         verbose_name = "普通用户"
         verbose_name_plural = verbose_name
+
 
