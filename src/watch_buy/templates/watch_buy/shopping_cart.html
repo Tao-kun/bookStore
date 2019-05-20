@@ -17,17 +17,17 @@
                         <th class="bg subtotal">总价</th>
                         <th class="close"></th>
                     </tr>
-                    {% for x,y in dic.items %}
+                    {% for rtn in rtn_list %}
                         <tr>
-                            <td class="images"><a href="product_page.html"><img src="/static/media/{{ x.GoodPic }}"
+                            <td class="images"><a href="product_page.html"><img src="/static/media/{{ rtn.pic.GoodPic }}"
                                                                             alt="Product 6"></a></td>
-                        <td class="bg name">{{ y.GoodName }}<br/>
+                        <td class="bg name">{{ rtn.info.GoodName }}<br/>
                         </td>
                         <td class="edit"><a title="Edit" href="#">Edit</a></td>
-                        <td class="bg price">{{ y.GoodPrice }}</td>
-                        <td class="qty"><input type="text" name="" value="" placeholder="1"/></td>
+                        <td class="bg price">{{ rtn.info.GoodPrice }}</td>
+                        <td class="qty"><input type="text" name="qty" value="" placeholder="{{ rtn.qty }}"/></td>
                         <td class="bg subtotal">$750.00</td>
-                        <td class="close"><a title="close" class="close" href="#"></a></td>
+                        <td class="close"><a title="close" class="close" href="#" style="padding-left: 0%"></a></td>
                         </tr>
                     {% endfor %}
                     <tr>

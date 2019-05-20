@@ -18,8 +18,6 @@ def index(request):
 
 
 def login(request):
-    if request.session.get('is_login', None):
-        return redirect('/index/')
     if request.method == 'POST':
         login_form = LoginForm(request.POST, request.FILES)
         message = ""
@@ -143,3 +141,37 @@ def sendemail(request):
     new_pwd_usr.save()
     message = "equal"
     return HttpResponse(json.dumps({"message": message}))
+
+
+# 显示用户信息
+
+def user_info(request):
+    if not request.session.get('studentID'):
+        request.session.flush()
+        return redirect('/login/')
+    print("sdfsdfsa")
+    studentid = request.session.get('studentID')
+    stu = models.User.objects.get(studentID=studentid)
+    return render(request, "login_manage/user_info.html", locals())
+
+
+# 更新用户信息
+def update_user(request):
+    studentid = request.GET.get("studentid")
+    citynum = request.GET.get("citynum")
+    city = request.GET.get("city")
+    address = request.GET.get("address")
+    zipcode = request.GET.get("zipcode")
+    telephone = request.GET.get("telephone")
+    qq = request.GET.get("qq")
+    print(citynum)
+    print(city)
+    stu = models.User.objects.get(studentID=studentid)
+    stu.city = city
+    stu.detail_address = address
+    stu.zip_code = zipcode
+    stu.telephone = telephone
+    stu.qq = qq
+    stu.city_num = citynum
+    stu.save()
+    return render(request, "login_manage/update_user.html")

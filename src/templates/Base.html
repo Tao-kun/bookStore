@@ -16,12 +16,21 @@
     <script src="{% static 'js/html5.js' %}"></script>
     <script src="{% static 'js/jflow.plus.js' %}"></script>
     <script src="{% static 'js/jquery.carouFredSel-5.2.2-packed.js' %}"></script>
+    <script src="{% static "js/jquery-1.7.2.min.js"%}" ></script>
+  <script src="{% static "js/jflow.plus.js"%}" ></script>
+  <script src="{% static "js/jquery.carouFredSel-5.2.2-packed.js"%}"></script>
+  <script src="{% static "js/checkbox.js"%}"></script>
+  <script src="{% static "js/radio.js"%}"></script>
+  <script src="{% static "js/selectBox.js"%}"></script>
+  <script src="{% static "js/jquery.jqzoom-core.js"%}" ></script>
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/settings.css">
 
     <!-- RS5.0 Layers and Navigation Styles -->
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/layers.css">
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/navigation.css">
-
+  <link href="../static/css/style.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="../static/css/grid.css" media="screen" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="../static/css/jquery.jqzoom.css" type="text/css">
     <!-- Library - Bootstrap v3.3.5 -->
     <link rel="stylesheet" type="text/css" href="../static/libraries/lib.css">
 
@@ -30,27 +39,19 @@
     <link rel="stylesheet" type="text/css" href="../static/css/navigation-menu.css">
     <link rel="stylesheet" type="text/css" href="../static/css/shortcode.css">
     <link rel="stylesheet" type="text/css" href="../static/css/style1.css">
+
     <script>
-        function add_to_cart(){
+        function add_to_cart() {
             var good_name = document.getElementById("good_name").innerHTML;
             var good_price = document.getElementById("price").innerHTML;
             var good_pic = document.getElementById("Good").getAttribute("src");
             $.ajax({
-                    url: "/add_to_cart/?good_name="+good_name+"&good_price="+good_price+"&good_pic="+good_pic,
+                    url: "/add_to_cart/?good_name=" + good_name + "&good_price=" + good_price + "&good_pic=" + good_pic,
                     type: 'GET',
                     success: function (arg) {
                     }
                 }
             )
-        }
-    </script>
-    <script>
-        function checkout() {
-            var good_name = document.getElementById("good_name").innerHTML;
-            var good_price = document.getElementById("price").innerHTML;
-            //alert(good_name);
-            //alert(good_price);
-            window.location.href="/checkout/?good_name=" + good_name + "&good_price=" + good_price;
         }
     </script>
     <script>
@@ -144,9 +145,18 @@
                 <input type="text" name="search" class="entry_form" value="" placeholder="在商店内搜索"/>
             </form>
         </div><!-- .grid_3 -->
+        <div style="padding-left: 73%">
+        <div style="float: left;margin-left: 4%">
+            <ul id="cart_nav" style="padding-left: 89%;">
+                <li>
+                    <a class="cart_ac" href="/user_info/">Account</a>
+                </li>
+            </ul>
 
-        <div class="grid_6">
-            <ul id="cart_nav">
+          </ul>
+        </div>
+            <div style="float: left">
+                <ul id="cart_nav">
                 <li>
                     <a class="cart_li" href="#">Cart</a>
                     <ul class="cart_cont">
@@ -184,12 +194,12 @@
                     </ul>
                 </li>
             </ul>
-
+            </div>
         </div><!-- .grid_6 -->
     </header><!-- #branding -->
 </div><!-- .container_12 -->
 
-<div class="clear"></div>
+
 
 <div id="block_nav_primary">
     <div class="container_12">
@@ -203,7 +213,7 @@
                         <a href="/watch_buy/templates/watch_buy/catalog_grid.html">黄书</a>
                     </li>
                     <li><a href="/watch_buy/templates/watch_buy/catalog_grid.html">专业著作</a></li>
-                    <li><a href="/watch_buy/templates/watch_buy/catalog_grid.html">楠弟语录</a></li>
+                    <li><a href="/catalog_grid/">全部书籍</a></li>
                     <li>
                         <a href="#">更多</a>
                         <ul class="sub">

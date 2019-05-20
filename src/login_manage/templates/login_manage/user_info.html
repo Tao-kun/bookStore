@@ -1,0 +1,91 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+    <div class="clear"></div>
+    <!-- Billing -->
+    <!-- Checkout -->
+    <div class="container-fluid no-left-padding no-right-padding woocommerce-checkout">
+        <!-- Container -->
+        <div class="container">
+            <!-- Login -->
+            <!-- Billing -->
+            <div class="checkout-form col-lg-40 col-lg-40 col-lg-40 login-block"
+                 style="padding-top: 4%;padding-left: 22%">
+                <form>
+                    <div class="col-md-6 col-lg-8 col-lg-8">
+                        <h3>个人信息</h3>
+                        <div class="billing-field">
+                            <div class="col-md-12 form-group">
+                                <label>学号</label>
+                                <input class="form-control" type="text" disabled="disabled"
+                                       placeholder="{{ stu.studentID }}" id="studentid">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>姓名</label>
+                                <input class="form-control" type="text" disabled="disabled"
+                                       placeholder="{{ stu.name }}" id="name">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>邮箱</label>
+                                <input class="form-control" type="text" disabled="disabled"
+                                       placeholder="{{ stu.email }}" id="email">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>所在城市 *</label>
+                                <div class="select">
+                                    <select class="form-control" id="city">
+                                        {% if stu.city_num == 1 %}
+                                            <option selected="selected">北京</option>
+                                        {% else %}
+                                            <option>北京</option>
+                                        {% endif %}
+                                        {% if stu.city_num == 2 %}
+                                            <option selected="selected">上海</option>
+                                        {% else %}
+                                            <option>上海</option>
+                                        {% endif %}
+                                        {% if stu.city_num == 3 %}
+                                            <option selected="selected">广州</option>
+                                        {% else %}
+                                            <option>广州</option>
+                                        {% endif %}
+                                        {% if stu.city_num == 4 %}
+                                            <option selected="selected">深圳</option>
+                                        {% else %}
+                                            <option>深圳</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>详细地址</label>
+                                <input class="form-control" type="text" value="{{ stu.detail_address }}" id="address">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>邮编</label>
+                                <input class="form-control" type="text" value="{{ stu.zip_code }}" id="zipcode">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>电话</label>
+                                <input class="form-control" type="text" value="{{ stu.telephone }}" id="telephone">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>QQ</label>
+                                <input class="form-control" type="text" value="{{ stu.qq }}" id="qq">
+                            </div>
+                            <div style="padding-left: 33%;padding-bottom: 3%; padding-top: 2%">
+                                <input class="btn btn-primary" style="color: white;" value="保存" onclick="save()"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- Billing /- -->
+        </div><!-- Container /- -->
+    </div><!-- Checkout /- -->
+    <script src="{% static "js/jump.js" %}"></script>
+    <script src="{% static "js/jquery-1.7.2.min.js" %}"></script>
+    <script src="{% static "js/layer/layer.js" %}"></script>
+
+
+{% endblock %}

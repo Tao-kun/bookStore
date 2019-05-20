@@ -1,395 +1,185 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
-
 {% block content %}
-<div class="container_12">
-    <div class="grid_12">
-        <div class="breadcrumbs">
-            <a href="../../../login_manage/templates/login_manage/index.html">Home</a><span>&#8250;</span><a href="#">Category</a><span>&#8250;</span><span
-                class="current">This page</span>
-        </div><!-- .breadcrumbs -->
-    </div><!-- .grid_12 -->
-</div><!-- .container_12 -->
-
-<div class="clear"></div>
-
-<section id="main">
     <div class="container_12">
-        <div id="sidebar" class="grid_3">
-            <aside id="categories_nav">
-                <h3>Categories</h3>
+        <div class="grid_12">
+            <div class="breadcrumbs">
+                <a href="../../../login_manage/templates/login_manage/index.html">Home</a><span>&#8250;</span><a
+                    href="#">Category</a><span>&#8250;</span><span
+                    class="current">This page</span>
+            </div><!-- .breadcrumbs -->
+        </div><!-- .grid_12 -->
+    </div><!-- .container_12 -->
 
-                <nav class="left_menu">
+    <div class="clear"></div>
+
+    <section id="main">
+        <div class="container_12">
+            <div id="sidebar" class="grid_3">
+                <aside id="categories_nav">
+                    <h3>Categories</h3>
+
+                    <nav class="left_menu">
+                        <ul>
+                            <li><a href="#">Solids <span>(21)</span></a></li>
+                            <li><a href="#">Liquids <span> (27)</span></a></li>
+                            <li><a href="#">Spray <span>(33)</span></a></li>
+                            <li><a href="#">Electric <span>(17)</span></a></li>
+                            <li><a href="#">For Cars <span>(23)</span></a></li>
+                            <li><a href="#">For Room <span>(7)</span></a></li>
+                            <li class="last"><a href="#">Other <span>(135)</span></a></li>
+                        </ul>
+                    </nav><!-- .left_menu -->
+                </aside><!-- #categories_nav -->
+
+                <aside id="shop_by">
+                    <h3>Shop By</h3>
+
+                    <div class="currently_shopping">
+                        <p>Currently Shopping by:</p>
+                        <ul>
+                            <li><a title="close" class="close" href="#"></a>Price: <span>$0.00 - $999.99</span></li>
+                            <li><a title="close" class="close" href="#"></a>Manufacturer: <span>Apple</span></li>
+                        </ul>
+
+                        <a class="clear_all" href="#">Clear All</a>
+
+                        <div class="clear"></div>
+                    </div><!-- .currently_shopping -->
+
+                    <h4>Category</h4>
+
+                    <form action="#" class="check_opt">
+                        <p><input class="niceCheck" type="checkbox">For Home (23)</p>
+                        <p><input class="niceCheck" type="checkbox" name="" value="">For Car (27)</p>
+                        <p><input class="niceCheck" type="checkbox" name="" value="">For Office (9)</p>
+                    </form>
+
+                    <h4>Price</h4>
+
+                    <form action="#" class="check_opt">
+                        <p><input class="niceCheck" type="checkbox" name="" value="">0.00 - $49.99 (21)</p>
+                        <p><input class="niceCheck" type="checkbox" name="" value="">$50.00 - $99.99 (7)</p>
+                        <p><input class="niceCheck" type="checkbox" name="" value="">0$100.00 and above (15)</p>
+                    </form>
+                </aside><!-- #shop_by -->
+
+                <aside id="specials" class="specials">
+                    <h3>Specials</h3>
+
                     <ul>
-                        <li><a href="#">Solids <span>(21)</span></a></li>
-                        <li><a href="#">Liquids <span> (27)</span></a></li>
-                        <li><a href="#">Spray <span>(33)</span></a></li>
-                        <li><a href="#">Electric <span>(17)</span></a></li>
-                        <li><a href="#">For Cars <span>(23)</span></a></li>
-                        <li><a href="#">For Room <span>(7)</span></a></li>
-                        <li class="last"><a href="#">Other <span>(135)</span></a></li>
+                        <li>
+                            <div class="prev">
+                                <a href="product_page.html"><img src="../../../static/images/special1.png" alt=""
+                                                                 title=""/></a>
+                            </div>
+
+                            <div class="cont">
+                                <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
+                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="prev">
+                                <a href="product_page.html"><img src="../../../static/images/special2.png" alt=""
+                                                                 title=""/></a>
+                            </div>
+
+                            <div class="cont">
+                                <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
+                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
+                            </div>
+                        </li>
                     </ul>
-                </nav><!-- .left_menu -->
-            </aside><!-- #categories_nav -->
+                </aside><!-- #specials -->
 
-            <aside id="shop_by">
-                <h3>Shop By</h3>
+                <aside id="newsletter_signup">
+                    <h3>Newsletter Signup</h3>
+                    <p>Phasellus vel ultricies felis. Duis
+                        rhoncus risus eu urna pretium.</p>
 
-                <div class="currently_shopping">
-                    <p>Currently Shopping by:</p>
-                    <ul>
-                        <li><a title="close" class="close" href="#"></a>Price: <span>$0.00 - $999.99</span></li>
-                        <li><a title="close" class="close" href="#"></a>Manufacturer: <span>Apple</span></li>
-                    </ul>
+                    <form class="newsletter">
+                        <input type="email" name="newsletter" class="your_email" value=""
+                               placeholder="Enter your email address..."/>
+                        <input type="submit" id="submit" value="Subscribe"/>
+                    </form>
+                </aside><!-- #newsletter_signup -->
+            </div><!-- .sidebar -->
 
-                    <a class="clear_all" href="#">Clear All</a>
+            <div id="content" class="grid_9">
+                <h1 class="page_title">Product List</h1>
 
-                    <div class="clear"></div>
-                </div><!-- .currently_shopping -->
+                <div class="options">
+                    <div class="grid-list">
+                        <a class="grid curent"
+                           href="../../../login_manage/templates/login_manage/index.html"><span>img</span></a>
+                        <a class="list" href="catalog_list.html"><span>img</span></a>
+                    </div><!-- .grid-list -->
 
-                <h4>Category</h4>
+                    <div class="show">
+                        Show
+                        <select>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
 
-                <form action="#" class="check_opt">
-                    <p><input class="niceCheck" type="checkbox">For Home (23)</p>
-                    <p><input class="niceCheck" type="checkbox" name="" value="">For Car (27)</p>
-                    <p><input class="niceCheck" type="checkbox" name="" value="">For Office (9)</p>
-                </form>
+                        per page
+                    </div><!-- .show -->
 
-                <h4>Price</h4>
+                    <div class="sort">
+                        Sort By
+                        <select>
+                            <option>Position</option>
+                            <option>Price</option>
+                            <option>Rating</option>
+                            <option>Name</option>
+                        </select>
 
-                <form action="#" class="check_opt">
-                    <p><input class="niceCheck" type="checkbox" name="" value="">0.00 - $49.99 (21)</p>
-                    <p><input class="niceCheck" type="checkbox" name="" value="">$50.00 - $99.99 (7)</p>
-                    <p><input class="niceCheck" type="checkbox" name="" value="">0$100.00 and above (15)</p>
-                </form>
-            </aside><!-- #shop_by -->
+                        <a class="sort_up" href="#">&#8593;</a>
+                    </div><!-- .sort -->
+                </div><!-- .options -->
+                <div class="grid_product">
+                    {% for x,y in rtn_dic.items %}
+                        <div class="grid_3 product" id="product">
+                            <div class="prev">
+                                <a href="/product_page/?ISBN={{ y.GoodISBN }}"><img id="Good" src="/static/media/{{ x.GoodPic }}" alt=""
+                                                                 title=""/></a>
+                            </div><!-- .prev -->
+                            <h3 class="title" id="good_name">{{ y.GoodName }}</h3>
+                            <div class="cart">
+                                <div class="price">
+                                    <div class="vert">
+                                        <div class="price_new" id="price">{{ y.GoodPrice }}</div>
+                                        {% if y.GoodDiscount < 1.0 %}
+                                            <div class="price_old">{{ y.GoodPrice }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <a class="obn"></a>
+                                <a class="like" id="checkout" name="checkout"></a>
+                                <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                            </div><!-- .cart -->
+                        </div><!-- .grid_3 -->
 
-            <aside id="specials" class="specials">
-                <h3>Specials</h3>
-
-                <ul>
-                    <li>
-                        <div class="prev">
-                            <a href="product_page.html"><img src="../../../static/images/special1.png" alt="" title=""/></a>
-                        </div>
-
-                        <div class="cont">
-                            <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
-                            <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="prev">
-                            <a href="product_page.html"><img src="../../../static/images/special2.png" alt="" title=""/></a>
-                        </div>
-
-                        <div class="cont">
-                            <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
-                            <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                        </div>
-                    </li>
-                </ul>
-            </aside><!-- #specials -->
-
-            <aside id="newsletter_signup">
-                <h3>Newsletter Signup</h3>
-                <p>Phasellus vel ultricies felis. Duis
-                    rhoncus risus eu urna pretium.</p>
-
-                <form class="newsletter">
-                    <input type="email" name="newsletter" class="your_email" value=""
-                           placeholder="Enter your email address..."/>
-                    <input type="submit" id="submit" value="Subscribe"/>
-                </form>
-            </aside><!-- #newsletter_signup -->
-        </div><!-- .sidebar -->
-
-        <div id="content" class="grid_9">
-            <h1 class="page_title">Product List</h1>
-
-            <div class="options">
-                <div class="grid-list">
-                    <a class="grid curent"
-                       href="../../../login_manage/templates/login_manage/index.html"><span>img</span></a>
-                    <a class="list" href="catalog_list.html"><span>img</span></a>
-                </div><!-- .grid-list -->
-
-                <div class="show">
-                    Show
-                    <select>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                    </select>
-
-                    per page
-                </div><!-- .show -->
-
-                <div class="sort">
-                    Sort By
-                    <select>
-                        <option>Position</option>
-                        <option>Price</option>
-                        <option>Rating</option>
-                        <option>Name</option>
-                    </select>
-
-                    <a class="sort_up" href="#">&#8593;</a>
-                </div><!-- .sort -->
-            </div><!-- .options -->
-
-            <div class="grid_product">
-                <div class="grid_3 product">
-                    <div class="prev">
-                        <a href="product_page.html"><img id="Good" src="/static/images/product_1.png" alt="" title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title" id="good_name">大丢</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new" id="price">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn" disabled="true"></a>
-                        <a onclick="checkout()" class="like"></a>
-                        <a class="bay" onclick="add_to_cart()"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_2.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <img class="sale" src="../../../static/images/new.png" alt="New"/>
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_3.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <img class="sale" src="../../../static/images/top.png" alt="Top"/>
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_4.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_5.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_6.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_7.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <img class="sale" src="../../../static/images/top.png" alt="Top"/>
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/produkt_slid1.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <img class="sale" src="../../../static/images/new.png" alt="New"/>
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_2.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_8.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_9.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
-
-                <div class="grid_3 product">
-                    <img class="sale" src="../../../static/images/new.png" alt="New"/>
-                    <div class="prev">
-                        <a href="product_page.html"><img src="../../../static/images/product_10.png" alt=""
-                                                         title=""/></a>
-                    </div><!-- .prev -->
-                    <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                    <div class="cart">
-                        <div class="price">
-                            <div class="vert">
-                                <div class="price_new">$550.00</div>
-                                <div class="price_old">$725.00</div>
-                            </div>
-                        </div>
-                        <a href="#" class="obn"></a>
-                        <a href="#" class="like"></a>
-                        <a href="#" class="bay"></a>
-                    </div><!-- .cart -->
-                </div><!-- .grid_3 -->
+                    {% endfor %}
+                </div>
 
                 <div class="clear"></div>
             </div><!-- .grid_product -->
 
-            <div class="clear"></div>
 
-            <div class="pagination">
+            <div class="pagination" style="margin-left: 18%">
                 <ul>
                     <li class="prev"><span>&#8592;</span></li>
                     <li class="curent"><a href="#">1</a></li>
@@ -407,9 +197,11 @@
 
         <div class="clear"></div>
 
-    </div><!-- .container_12 -->
-</section><!-- #main -->
+        </div><!-- .container_12 -->
+    </section><!-- #main -->
 
-<div class="clear"></div>
-
+    <div class="clear"></div>
+    <script src="{% static "js/jump.js" %}"></script>
+    <script src="{% static "js/jquery-1.7.2.min.js" %}"></script>
+    <script src="{% static "js/layer/layer.js" %}"></script>
 {% endblock %}

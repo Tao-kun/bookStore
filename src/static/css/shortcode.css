@@ -2262,7 +2262,7 @@
 }
 .woocommerce-checkout .checkout-form {
     display: inline-block;
-    margin-bottom: 100px;
+    margin-bottom: 40px;
     width: 100%;
 }
 .woocommerce-checkout .checkout-form h3, 

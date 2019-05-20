@@ -427,6 +427,23 @@ form.search input.entry_form:focus{
 	float: right;
 }
 #cart_nav li{position: relative}
+#cart_nav a.cart_ac{
+	float: right;
+	display: block;
+	padding: 0 2px 0 27px;
+	margin: 16px 0 0 2px;
+	width: 92px;
+	height: 35px;
+	color: #444;
+	text-align: center;
+	text-decoration: none;
+	font:normal 11px/35px Segoeui, Arial, Verdana, serif;
+	background: url(../images/bg_user_nav.png) no-repeat 10px 50% #f1f3f5;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-khtml-border-radius: 2px;
+	behavior: url(PIE.htc);
+}
 #cart_nav a.cart_li{
 	float: right;
 	display: block;
@@ -1942,7 +1959,6 @@ table.cart_product .qty{width: 90px;}
 table.cart_product .subtotal{width: 110px;}
 table.cart_product .close{width: 50px;}
 table.cart_product a.close {
-	margin: 0 auto;
 	width: 11px;
 	height: 11px;
 	display: block;
