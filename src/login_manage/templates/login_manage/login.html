@@ -62,6 +62,13 @@
     </section><!-- #main -->
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script>
+        {% if message == "密码错误！" %}
+            layer.msg("密码错误，请重新输入");
+        {% elif message == "学号错误！" %}
+            layer.msg("学号错误，请重新输入");
+        {% endif %}
+    </script>
+    <script>
         $(function () {
             $('#forget_password').on('click', function () {
                 layer.prompt({title: '请说明您的账号', formType: 0}, function (studentID, index) {
@@ -75,8 +82,7 @@
                                 success: function (arg) {
                                     if (arg['message'] === "equal") {
                                         layer.msg('已发到您的邮箱');
-                                    }
-                                    else{
+                                    } else {
                                         layer.msg('邮箱信息不匹配');
                                     }
 

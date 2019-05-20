@@ -31,6 +31,9 @@ urlpatterns = [
     url(r'^forget_password/', login_manage_views.sendemail),
     url(r'^catalog_grid/', watch_buy_views.catalog_grid),
     url(r'^checkout/', watch_buy_views.checkout),
-    url(r'^shopping_cart', watch_buy_views.shopping_cart),
-    url(r'^add_to_cart', watch_buy_views.add_to_cart)
+    url(r'^shopping_cart/', watch_buy_views.shopping_cart),
+    url(r'^add_to_cart/', watch_buy_views.add_to_cart),
+    url(r'^user_info/', login_manage_views.user_info),
+    url(r'^update_user/', login_manage_views.update_user),
+    url(r'^product_page/', watch_buy_views.good_detail)
 ]

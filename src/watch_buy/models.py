@@ -14,6 +14,7 @@ class Goods(models.Model):
     GoodDiscount = models.FloatField(default=1.0)
     IsForSale = models.IntegerField(default=0)
     IsNew = models.IntegerField(default=0)
+    Intro_pic = models.ImageField(null=True)
 
     class Meta:
         verbose_name = "商品信息"
