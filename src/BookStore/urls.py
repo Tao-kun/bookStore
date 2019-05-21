@@ -35,5 +35,6 @@ urlpatterns = [
     url(r'^add_to_cart/', watch_buy_views.add_to_cart),
     url(r'^user_info/', login_manage_views.user_info),
     url(r'^update_user/', login_manage_views.update_user),
-    url(r'^product_page/', watch_buy_views.good_detail)
+    url(r'^product_page/', watch_buy_views.good_detail),
+    url(r'^add_order/', watch_buy_views.add_order)
 ]

@@ -18,22 +18,22 @@
                         <th class="close"></th>
                     </tr>
                     {% for rtn in rtn_list %}
-                        <tr>
-                            <td class="images"><a href="product_page.html"><img src="/static/media/{{ rtn.pic.GoodPic }}"
-                                                                            alt="Product 6"></a></td>
-                        <td class="bg name">{{ rtn.info.GoodName }}<br/>
-                        </td>
-                        <td class="edit"><a title="Edit" href="#">Edit</a></td>
-                        <td class="bg price">{{ rtn.info.GoodPrice }}</td>
-                        <td class="qty"><input type="text" name="qty" value="" placeholder="{{ rtn.qty }}"/></td>
-                        <td class="bg subtotal">$750.00</td>
-                        <td class="close"><a title="close" class="close" href="#" style="padding-left: 0%"></a></td>
+                        <tr id="good_list">
+                            <td class="images"><a href="product_page.html"><img
+                                    src="/static/media/{{ rtn.pic.GoodPic }}"
+                                    alt="Product 6"></a></td>
+                            <td class="bg name">{{ rtn.info.GoodName }}</td>
+                            <td class="edit"><a title="Edit" href="#">Edit</a></td>
+                            <td class="bg price">{{ rtn.info.GoodPrice }}</td>
+                            <td class="qty"><input type="text" name="qty" value="" placeholder="{{ rtn.qty }}"/></td>
+                            <td class="bg subtotal">$750.00</td>
+                            <td class="close"><a title="close" class="close" href="#"></a></td>
                         </tr>
                     {% endfor %}
                     <tr>
                         <td colspan="7" class="cart_but">
                             <button class="continue"><span>icon</span>Continue Shopping</button>
-                            <button class="update"><span>icon</span>Update Shopping Cart</button>
+                            <button class="update" onclick="check_out()"><span>icon</span>Update Shopping Cart</button>
                         </td>
                     </tr>
                 </table>
@@ -231,4 +231,22 @@
             </div><!-- .carousel -->
         </div><!-- .container_12 -->
     </section><!-- #main -->
+    <script>
+        var jsonObj = {};
+        var count = 0;
+
+        function check_out() {
+            $("tr[id='good_list']").each(function () {
+                var currentEle = $(this);
+                var book_name = currentEle.children().next().html();
+                var book_price = currentEle.children().next().next().next().html();
+                var book_qty = currentEle.children().next().next().next().next().children().attr("placeholder");
+                jsonObj["book_name" + count] = book_name;
+                jsonObj["book_price" + count] = book_price;
+                jsonObj["book_qty" + count] = book_qty;
+                count++;
+            });
+            window.location.href = "/checkout/?jsonData="+escape(JSON.stringify(jsonObj));
+        }
+    </script>
 {% endblock %}

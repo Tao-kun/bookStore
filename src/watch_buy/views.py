@@ -1,4 +1,8 @@
+import json
+
 from django.shortcuts import render, redirect
+from django.utils import timezone
+
 import watch_buy.models as watch_buy_models
 import login_manage.models as login_manage_models
 # Create your views here.
@@ -26,6 +30,24 @@ def checkout(request):
         return redirect('/login/')
     good_name = request.GET.get("good_name")
     good_price = request.GET.get("good_price")
+    good_json = request.GET.get("jsonData")
+    class Good:
+        def __init__(self, good_name, good_price, good_qty):
+            self.good_name = good_name
+            self.good_price = good_price
+            self.good_qty = good_qty
+    good_list = []
+    count = 0
+    print(good_json)
+    if good_json is not None:
+        good_dic = json.loads(good_json)
+        while count < (len(good_dic)/3):
+            good_list.append(Good(good_dic[("book_name" + str(count))].replace("%", "\\").encode('utf-8').decode('unicode_escape'), good_dic["book_price" + str(count)], good_dic["book_qty" + str(count)]))
+            count += 1
+            # print(good_list[count-1].good_name)
+    else:
+        good_list.append(Good(good_name, good_price, 1))
+    # print(good_json)
     return render(request, "watch_buy/checkout.html", locals())
 
 
@@ -81,3 +103,39 @@ def good_detail(request):
     Good = watch_buy_models.Goods.objects.get(GoodISBN=Good_ISBN)
     Good_pic_list = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=Good_ISBN)
     return render(request, "watch_buy/product_page.html", locals())
+
+
+# 添加订单
+# name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq);
+def add_order(request):
+    stu_id = request.session.get('studentID')
+    name = request.GET.get('name')
+    address = request.GET.get('address')
+    zipcode = request.GET.get('zipcode')
+    telephone = request.GET.get('telephone')
+    qq = request.GET.get('qq')
+
+    order = watch_buy_models.Order()
+    order.orderdate = timezone.now()
+    order.user = login_manage_models.User.objects.get(studentID=stu_id)
+    order.username = name
+    order.address = address
+    order.zipcode = zipcode
+    order.telephone = telephone
+    order.qq = qq
+    order.save()
+    jsonObj = request.GET.get('goods')
+    if jsonObj is not None:
+        good_dic = json.loads(jsonObj)
+        count = 0
+        while count < (len(good_dic) / 3):
+            new_ordgood = watch_buy_models.OrderGood()
+            new_ordgood.order = order
+            new_ordgood.good = watch_buy_models.Goods.objects.get(GoodName=good_dic[("book_name" + str(count))])
+            new_ordgood.save()
+            count += 1
+    else:
+        ordergood = watch_buy_models.OrderGood()
+        ordergood.order = order
+        ordergood.save()
+    return render(request, "watch_buy/add_order.html")

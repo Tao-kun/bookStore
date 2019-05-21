@@ -2,7 +2,7 @@ $("a[name='checkout']").each(function () {
         var currentEle = $(this);
         currentEle.on('click', function () {
             var good_price = currentEle.prev().prev().children().children().text();
-            var good_name = currentEle.prev().prev().prev().text();
+            var good_name = currentEle.prev().parent().parent().children().next().html();
             window.location.href = "/checkout/?good_name=" + good_name + "&good_price=" + good_price;
         })
     });

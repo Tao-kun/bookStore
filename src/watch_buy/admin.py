@@ -5,3 +5,4 @@ from watch_buy import models
 
 
 admin.site.register(models.GoodsPic)
+admin.site.register(models.Order)
