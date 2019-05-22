@@ -9,6 +9,7 @@ import login_manage.models as login_manage_models
 
 
 # 显示商品列表
+# 返回此商品的一张图以及商品的相关信息
 def catalog_grid(request):
     if not request.session.get('studentID'):
         request.session.flush()
@@ -30,7 +31,8 @@ def checkout(request):
         return redirect('/login/')
     good_name = request.GET.get("good_name")
     good_price = request.GET.get("good_price")
-    good_json = request.GET.get("jsonData")
+    good_json = request.GET.get("jsonData")     # 如果说是从购物车里边选择了多个商品,返回一个json对象
+
     class Good:
         def __init__(self, good_name, good_price, good_qty):
             self.good_name = good_name
@@ -38,16 +40,14 @@ def checkout(request):
             self.good_qty = good_qty
     good_list = []
     count = 0
-    print(good_json)
     if good_json is not None:
         good_dic = json.loads(good_json)
+        # 把所有的图书的信息存在list里，之后返回到checkout页面的列表中
         while count < (len(good_dic)/3):
             good_list.append(Good(good_dic[("book_name" + str(count))].replace("%", "\\").encode('utf-8').decode('unicode_escape'), good_dic["book_price" + str(count)], good_dic["book_qty" + str(count)]))
             count += 1
-            # print(good_list[count-1].good_name)
     else:
         good_list.append(Good(good_name, good_price, 1))
-    # print(good_json)
     return render(request, "watch_buy/checkout.html", locals())
 
 
@@ -57,6 +57,7 @@ def shopping_cart(request):
         request.session.flush()
         return redirect('/login/')
     good_num_list = watch_buy_models.Cart.objects.all()
+
     class rtn:
         def __init__(self, pic, info, qty):
             self.pic = pic
@@ -71,11 +72,12 @@ def shopping_cart(request):
         Qty_tmp = watch_buy_models.Cart.objects.get(GoodID_id=GoodID, studentID_id=studentID)
         re = rtn(pic_tmp[0], info_tmp, Qty_tmp.Qty)
         rtn_list.append(re)
-        #print(Qty_tmp)
     return render(request, "watch_buy/shopping_cart.html", locals())
 
 
 # 加入购物车
+# 如果购物车里有这个商品,那么添加数量
+# 否则新增记录
 def add_to_cart(request):
     good_name = request.GET.get("good_name")
     good_price = request.GET.get("good_price")
@@ -107,6 +109,7 @@ def good_detail(request):
 
 # 添加订单
 # name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq);
+# 如果说订单订了多本书,那么将get到的这个json类型解析后得到订的所有书的相关信息之后插入数据库
 def add_order(request):
     stu_id = request.session.get('studentID')
     name = request.GET.get('name')

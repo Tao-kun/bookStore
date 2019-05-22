@@ -234,7 +234,10 @@
     <script>
         var jsonObj = {};
         var count = 0;
-
+        /*
+            获取购物车页面的所有信息，比如书名，价格，输入的数量
+            之后将它们打包成一个json类型，传参跳转到checkout页面结算
+         */
         function check_out() {
             $("tr[id='good_list']").each(function () {
                 var currentEle = $(this);

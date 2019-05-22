@@ -14,8 +14,8 @@ class User(models.Model):
     name = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    city = models.CharField(max_length=20, null=True)
-    city_num = models.IntegerField(null=True)
+    city = models.CharField(max_length=20, null=True)   # 在select下拉菜单中的值，也就是城市的value
+    city_num = models.IntegerField(null=True)   # 在select下拉菜单中的编号
     detail_address = models.CharField(max_length=255, null=True)
     zip_code = models.CharField(max_length=20, null=True)
     telephone = models.CharField(max_length=20, null=True)

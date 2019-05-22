@@ -10,6 +10,7 @@ from login_manage.forms import LoginForm
 from login_manage.models import User
 
 
+# 主页，返回登录信息到主页以判断是登录注册还是注销
 def index(request):
     is_login = request.session.get('is_login', None)
     if is_login:
@@ -17,6 +18,7 @@ def index(request):
     return render(request, "login_manage/index.html", locals())
 
 
+# 登录系统，验证账号密码，返回相应错误信息
 def login(request):
     if request.method == 'POST':
         login_form = LoginForm(request.POST, request.FILES)
@@ -63,29 +65,29 @@ def is_valid(request):
     exists_email = models.User.objects.filter(email=email)
     exists_name = models.User.objects.filter(name=name)
     if name:
-        null_name = "false"
+        null_name = "false"     # 名字为空
     else:
         null_name = "true"
     if exists_name:
-        same_name = "true"
+        same_name = "true"      # 已被注册
     else:
         same_name = "false"
     if exists_email:
-        same_email = "true"
+        same_email = "true"     # email已有
     else:
         same_email = "false"
     if exists_stu:
         same_stu = "true"
     else:
-        same_stu = "false"
+        same_stu = "false"      # id已有
     if password1 == password2:
         same_pwd = "true"
     else:
-        same_pwd = "false"
-    str = r'^([\w]+\.*)([\w]+)\@[\w]+\.\w{3}(\.\w{2}|)$'
+        same_pwd = "false"      # 两次输入密码是否一致
+    str = r'^([\w]+\.*)([\w]+)\@[\w]+\.\w{3}(\.\w{2}|)$'   # email正则
     if re.match(str, email) and not str.isspace():
          ok_email = "true"
-         print(email)
+         # print(email)
     else:
         ok_email = "false"
     if len(studentid) == 8 and studentid:
@@ -144,7 +146,6 @@ def sendemail(request):
 
 
 # 显示用户信息
-
 def user_info(request):
     if not request.session.get('studentID'):
         request.session.flush()
@@ -164,8 +165,6 @@ def update_user(request):
     zipcode = request.GET.get("zipcode")
     telephone = request.GET.get("telephone")
     qq = request.GET.get("qq")
-    print(citynum)
-    print(city)
     stu = models.User.objects.get(studentID=studentid)
     stu.city = city
     stu.detail_address = address

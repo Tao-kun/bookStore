@@ -16,21 +16,21 @@
     <script src="{% static 'js/html5.js' %}"></script>
     <script src="{% static 'js/jflow.plus.js' %}"></script>
     <script src="{% static 'js/jquery.carouFredSel-5.2.2-packed.js' %}"></script>
-    <script src="{% static "js/jquery-1.7.2.min.js"%}" ></script>
-  <script src="{% static "js/jflow.plus.js"%}" ></script>
-  <script src="{% static "js/jquery.carouFredSel-5.2.2-packed.js"%}"></script>
-  <script src="{% static "js/checkbox.js"%}"></script>
-  <script src="{% static "js/radio.js"%}"></script>
-  <script src="{% static "js/selectBox.js"%}"></script>
-  <script src="{% static "js/jquery.jqzoom-core.js"%}" ></script>
+    <script src="{% static "js/jquery-1.7.2.min.js" %}"></script>
+    <script src="{% static "js/jflow.plus.js" %}"></script>
+    <script src="{% static "js/jquery.carouFredSel-5.2.2-packed.js" %}"></script>
+    <script src="{% static "js/checkbox.js" %}"></script>
+    <script src="{% static "js/radio.js" %}"></script>
+    <script src="{% static "js/selectBox.js" %}"></script>
+    <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/settings.css">
 
     <!-- RS5.0 Layers and Navigation Styles -->
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/layers.css">
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/navigation.css">
-  <link href="../static/css/style.css" media="screen" rel="stylesheet" type="text/css">
-  <link href="../static/css/grid.css" media="screen" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" href="../static/css/jquery.jqzoom.css" type="text/css">
+    <link href="../static/css/style.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="../static/css/grid.css" media="screen" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../static/css/jquery.jqzoom.css" type="text/css">
     <!-- Library - Bootstrap v3.3.5 -->
     <link rel="stylesheet" type="text/css" href="../static/libraries/lib.css">
 
@@ -39,36 +39,6 @@
     <link rel="stylesheet" type="text/css" href="../static/css/navigation-menu.css">
     <link rel="stylesheet" type="text/css" href="../static/css/shortcode.css">
     <link rel="stylesheet" type="text/css" href="../static/css/style1.css">
-
-    <script>
-        function add_to_cart() {
-            var good_name = document.getElementById("good_name").innerHTML;
-            var good_price = document.getElementById("price").innerHTML;
-            var good_pic = document.getElementById("Good").getAttribute("src");
-            $.ajax({
-                    url: "/add_to_cart/?good_name=" + good_name + "&good_price=" + good_price + "&good_pic=" + good_pic,
-                    type: 'GET',
-                    success: function (arg) {
-                    }
-                }
-            )
-        }
-    </script>
-    <script>
-        function logout() {
-            layer.msg('已退出');
-            $.ajax({
-                    url: "/logout/",
-                    type: 'GET',
-                    success: function (arg) {
-                        var textarea = document.getElementById("welcome1");
-                        textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
-                            "                href=\"/login/\">注册</a>.";
-                    }
-                }
-            )
-        }
-    </script>
     <script>
         $(document).ready(function () {
             $("#myController").jFlow({
@@ -146,59 +116,60 @@
             </form>
         </div><!-- .grid_3 -->
         <div style="padding-left: 73%">
-        <div style="float: left;margin-left: 4%">
-            <ul id="cart_nav" style="padding-left: 89%;">
-                <li>
-                    <a class="cart_ac" href="/user_info/">Account</a>
-                </li>
-            </ul>
+            <div style="float: left;margin-left: 4%">
+                <ul id="cart_nav" style="padding-left: 89%;">
+                    <li>
+                        <a class="cart_ac" href="/user_info/">Account</a>
+                    </li>
+                </ul>
 
-          </ul>
-        </div>
+                </ul>
+            </div>
             <div style="float: left">
                 <ul id="cart_nav">
-                <li>
-                    <a class="cart_li" href="#">Cart</a>
-                    <ul class="cart_cont">
-                        <li class="no_border"><p>Recently added item(s)</p></li>
-                        <li>
-                            <a href="/watch_buy/templates/watch_buy/product_page.html" class="prev_cart">
-                                <div class="cart_vert"><img src="/static/images/cart_img.png" alt="" title=""/></div>
-                            </a>
-                            <div class="cont_cart">
-                                <h4>Caldrea Linen and Room Spray</h4>
-                                <div class="price">1 x $399.00</div>
-                            </div>
-                            <a title="close" class="close" href="#"></a>
-                            <div class="clear"></div>
-                        </li>
-
-                        <li>
-                            <a href="/watch_buy/templates/watch_buy/product_page.html" class="prev_cart">
-                                <div class="cart_vert"><img src="/static/images/produkt_slid1.png" alt="" title=""/>
+                    <li>
+                        <a class="cart_li" href="#">Cart</a>
+                        <ul class="cart_cont">
+                            <li class="no_border"><p>Recently added item(s)</p></li>
+                            <li>
+                                <a href="/watch_buy/templates/watch_buy/product_page.html" class="prev_cart">
+                                    <div class="cart_vert"><img src="/static/images/cart_img.png" alt="" title=""/>
+                                    </div>
+                                </a>
+                                <div class="cont_cart">
+                                    <h4>Caldrea Linen and Room Spray</h4>
+                                    <div class="price">1 x $399.00</div>
                                 </div>
-                            </a>
-                            <div class="cont_cart">
-                                <h4>Caldrea Linen and Room Spray</h4>
-                                <div class="price">1 x $399.00</div>
-                            </div>
-                            <a title="close" class="close" href="#"></a>
-                            <div class="clear"></div>
-                        </li>
-                        <li class="no_border">
-                            <a href="/watch_buy/templates/watch_buy/shopping_cart.html" class="view_cart">View shopping
-                                cart</a>
-                            <a href="/watch_buy/templates/watch_buy/checkout.html" class="checkout">Procced to
-                                Checkout</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                                <a title="close" class="close" href="#"></a>
+                                <div class="clear"></div>
+                            </li>
+
+                            <li>
+                                <a href="/watch_buy/templates/watch_buy/product_page.html" class="prev_cart">
+                                    <div class="cart_vert"><img src="/static/images/produkt_slid1.png" alt="" title=""/>
+                                    </div>
+                                </a>
+                                <div class="cont_cart">
+                                    <h4>Caldrea Linen and Room Spray</h4>
+                                    <div class="price">1 x $399.00</div>
+                                </div>
+                                <a title="close" class="close" href="#"></a>
+                                <div class="clear"></div>
+                            </li>
+                            <li class="no_border">
+                                <a href="/watch_buy/templates/watch_buy/shopping_cart.html" class="view_cart">View
+                                    shopping
+                                    cart</a>
+                                <a href="/watch_buy/templates/watch_buy/checkout.html" class="checkout">Procced to
+                                    Checkout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div><!-- .grid_6 -->
     </header><!-- #branding -->
 </div><!-- .container_12 -->
-
 
 
 <div id="block_nav_primary">

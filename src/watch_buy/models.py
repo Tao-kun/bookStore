@@ -4,6 +4,7 @@ from login_manage.models import User
 
 
 # 商品信息
+# 期中Intro_pic为这个商品详细页面的那个长的解释图
 class Goods(models.Model):
     GoodISBN = models.CharField(max_length=50, primary_key=True)
     GoodName = models.CharField(max_length=255, unique=True)
@@ -20,7 +21,8 @@ class Goods(models.Model):
         verbose_name = "商品信息"
         verbose_name_plural = verbose_name
 
-# 商品的图片
+
+# 商品所有的描述图片
 class GoodsPic(models.Model):
     PicId = models.AutoField(primary_key=True)
     GoodISBN = models.ForeignKey(Goods, to_field='GoodISBN')
@@ -31,7 +33,7 @@ class GoodsPic(models.Model):
         verbose_name_plural = verbose_name
 
 
-# 购物车
+# 购物车记录
 class Cart(models.Model):
     studentID = models.ForeignKey(User, to_field='studentID')
     GoodID = models.ForeignKey(Goods, to_field='GoodISBN')
@@ -46,7 +48,7 @@ class Cart(models.Model):
 class Order(models.Model):
     orderid = models.AutoField(primary_key=True)
     orderdate = models.DateTimeField()
-    shipdate = models.DateTimeField(null=True)
+    shipdate = models.DateTimeField(null=True)  # 是否发货，由管理员决定
     user = models.ForeignKey(User, to_field="studentID")
     address = models.CharField(max_length=255)
     IsShipped = models.IntegerField(default=0)
@@ -63,7 +65,7 @@ class Order(models.Model):
         verbose_name_plural = verbose_name
 
 
-# 订单图书信息
+# 订单图书信息(因为一次订单可以订很多本书)
 class OrderGood(models.Model):
     id = models.AutoField(primary_key=True)
     order = models.ForeignKey(Order, to_field="orderid")

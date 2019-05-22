@@ -105,6 +105,11 @@
     </div><!-- Checkout /- -->
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script>
+    /*
+        通过url获取相关字段的值
+        比如你想获得GET 这本书的name
+        那么调用 getQueryString('name')就行
+     */
     function getQueryString(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
@@ -120,6 +125,11 @@
     }
     </script>
     <script>
+    /*
+        检查信息合法性，合法的话才跳转传参
+        如果只有单个商品，直接传商品名
+        否则，传递一个json类型的对象，到最后的交易页面，将记录插入Order表
+     */
         var good_name = getQueryString('good_name');
         $('#sub').click(function () {
             var name = document.getElementById('name').value;
