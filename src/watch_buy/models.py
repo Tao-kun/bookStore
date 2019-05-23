@@ -47,6 +47,9 @@ class Cart(models.Model):
     GoodID = models.ForeignKey(Goods, to_field='GoodISBN', verbose_name='商品信息')
     Qty = models.IntegerField(default=1, verbose_name='数量')
 
+    def __str__(self):
+        return "{}-{}".format(self.studentID.name, self.GoodID.GoodName)
+
     class Meta:
         verbose_name = "购物车信息"
         verbose_name_plural = verbose_name
@@ -67,6 +70,9 @@ class Order(models.Model):
     telephone = models.CharField(max_length=25, verbose_name='收货人电话')
     zipcode = models.CharField(max_length=25, verbose_name='收货人邮编')
     qq = models.CharField(max_length=15, verbose_name='收货人QQ')
+
+    def __str__(self):
+        pass
 
     class Meta:
         verbose_name = "订单信息"

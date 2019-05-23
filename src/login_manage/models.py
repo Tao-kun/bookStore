@@ -20,5 +20,5 @@ class User(models.Model):
         return '{}({})'.format(self.name, self.studentID)
 
     class Meta:
-        verbose_name = "普通用户"
+        verbose_name = "用户"
         verbose_name_plural = verbose_name
