@@ -2,14 +2,6 @@ from django.db import models
 
 
 # Create your models here.
-
-# 用户数据表，有
-# 1.学号
-# 2.姓名
-# 3.密码
-# 4.email   字段
-
-
 class User(models.Model):
     studentID = models.CharField(max_length=255, primary_key=True, unique=True, verbose_name='学号')
     name = models.CharField(max_length=255, unique=True, verbose_name='姓名')
@@ -25,7 +17,7 @@ class User(models.Model):
     is_banned = models.IntegerField(default=0, verbose_name='账户状态')
 
     def __str__(self):
-        return str(self.studentID)
+        return '{}({})'.format(self.name, self.studentID)
 
     class Meta:
         verbose_name = "普通用户"

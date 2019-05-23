@@ -4,7 +4,6 @@ from login_manage.models import User
 
 
 # Register your models here.
-
 class UserAdmin(admin.ModelAdmin):
     fieldsets = [
         ('账户信息', {'fields': ['studentID', 'email', 'name', 'password', 'money', 'is_banned']}),
