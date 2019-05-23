@@ -1,10 +1,16 @@
 from django.contrib import admin
 
-# Register your models here.
-
-from watch_buy.models import *
 from login_manage.models import User
 
-admin.site.register(Goods)
-admin.site.register(User)
-admin.site.register(Cart)
+
+# Register your models here.
+
+class UserAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('账户信息', {'fields': ['studentID', 'email', 'name', 'password', 'money']}),
+        ('个人信息', {'fields': ['city', 'detail_address', 'zip_code', 'qq']}),
+    ]
+    list_display = ['studentID', 'name', 'email']
+
+
+admin.site.register(User, UserAdmin)
