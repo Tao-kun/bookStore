@@ -150,7 +150,6 @@ def user_info(request):
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
-    print("sdfsdfsa")
     studentid = request.session.get('studentID')
     stu = models.User.objects.get(studentID=studentid)
     return render(request, "login_manage/user_info.html", locals())

@@ -1,0 +1,69 @@
+{% load staticfiles %}
+<meta http-equiv="content-type" content="text/html;charset=utf-8"/><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <title>Home</title>
+    <link href="{% static 'css/style.css' %}" media="screen" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/grid.css' %}" media="screen" rel="stylesheet" type="text/css">
+    <script src="{% static 'js/layer/layer.js' %}"></script>
+    <script src="{% static 'js/jquery-1.7.2.min.js' %} "></script>
+    <script src="{% static 'js/html5.js' %}"></script>
+    <script src="{% static 'js/jflow.plus.js' %}"></script>
+    <script src="{% static 'js/jquery.carouFredSel-5.2.2-packed.js' %}"></script>
+    <script src="{% static "js/jquery-1.7.2.min.js" %}"></script>
+    <script src="{% static "js/jflow.plus.js" %}"></script>
+    <script src="{% static "js/jquery.carouFredSel-5.2.2-packed.js" %}"></script>
+    <script src="{% static "js/checkbox.js" %}"></script>
+    <script src="{% static "js/radio.js" %}"></script>
+    <script src="{% static "js/selectBox.js" %}"></script>
+    <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
+</head>
+<h2 style="padding-top: 10%">商品信息</h2>
+<table class="cart_product">
+    <tr>
+        <th class="images"></th>
+        <th class="qty">书名</th>
+        <th class="qty">单价</th>
+        <th class="qty">数量</th>
+    </tr>
+    {% for rtn in goodrtnlist %}
+        <tr id="good_list">
+            <td class="images"><a href="product_page.html"><img
+                    src="/static/media/{{ rtn.goodpic.GoodPic }}"
+                    alt="Product 6"></a></td>
+            <td class="bg name">{{ rtn.good.GoodName }}</td>
+            <td class="bg price">{{ rtn.good.GoodPrice }}</td>
+            <td class="bg price">{{ rtn.qty }}</td>
+        </tr>
+    {% endfor %}
+
+
+</table>
+ <h2>详情信息</h2>
+    <table class="table table-hover">
+         <tr>
+        <th>收货人姓名</th>
+        <th>收货人手机号</th>
+        <th>收货详细地址</th>
+    </tr>
+        <tr>
+            <td>{{ order_info.username }}</td>
+            <td>{{ order_info.telephone }}</td>
+            <td>{{ order_info.address }}</td>
+        </tr>
+    </table>
+{% if order_info.IsShipped == 1 %}
+    <button class="btn btn-lg" disabled="disabled">取消订单</button>
+{% else %}
+    <button class="btn btn-lg">取消订单</button>
+{% endif %}
+<button class="btn btn-lg">申请退货</button>
+<button class="btn btn-lg">确认收货</button>
+<input type="text" style="width: 20%;height: 25%">
+<button>评价</button>
+
+

@@ -1,0 +1,65 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="../../../static/libraries/lib.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/css/bootstrap.css">
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>订单号</th>
+                <th>下单日期</th>
+                <th>发货日期</th>
+                <th>订单状态</th>
+                <th>详细信息</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in all_order %}
+                <tr>
+                    <td>{{ order.orderid }}</td>
+                    <td>{{ order.orderdate }}</td>
+                    <td>{{ order.shipdate }}</td>
+                    {% if order.IsShipped == 1 %}
+                        <td>正在送货</td>
+                    {% elif order.IsCalcle == 1 %}
+                        <td>申请退货中</td>
+                    {% elif order.IsHandled == 1 %}
+                        <td>已退货</td>
+                    {% elif order.IsCancled == 1 %}
+                        <td>已取消</td>
+                    {% elif order.IsCompleted == 1 %}
+                        <td>已完成</td>
+                    {% else %}
+                        <td>未发货</td>
+                    {% endif %}
+                    <td><a id="detail_info">detail</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="{% static "js/jquery-1.7.2.min.js" %}"></script>
+    <script src="{% static "js/layer/layer.js" %}"></script>
+    <script>
+
+        $(function () {
+            $("a[id='detail_info']").each(function () {
+                var currentEle = $(this);
+                var order_id = currentEle.parent().prev().prev().prev().prev().html();
+                currentEle.on('click', function () {
+                    layer.open({
+                        type: 2,
+                        area: ['800px', '600px'],
+                        shadeClose: true, //点击遮罩关闭
+                        content: '/order_detail/?order_id=' + order_id,
+                        end: function () {
+                            location.reload();
+                        }
+                    });
+                })
+            })
+        })
+
+    </script>
+{% endblock %}
