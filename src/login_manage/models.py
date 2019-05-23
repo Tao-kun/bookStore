@@ -22,6 +22,7 @@ class User(models.Model):
     telephone = models.CharField(max_length=20, null=True, verbose_name='电话')
     qq = models.CharField(max_length=20, null=True, verbose_name='QQ号')
     money = models.FloatField(null=True, verbose_name='账户余额')
+    is_banned = models.IntegerField(default=0, verbose_name='账户状态')
 
     def __str__(self):
         return str(self.studentID)

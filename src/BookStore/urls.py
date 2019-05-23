@@ -19,6 +19,9 @@ from django.contrib import admin
 from login_manage import views as login_manage_views
 from watch_buy import views as watch_buy_views
 
+admin.site.site_header = '系统管理'
+admin.site.site_title = '系统管理'
+
 # TODO: 部署时添加路由/media/
 
 urlpatterns = [
