@@ -71,13 +71,13 @@ class Order(models.Model):
     username = models.CharField(max_length=20, verbose_name='收货人姓名')
     telephone = models.CharField(max_length=25, verbose_name='收货人电话')
     zipcode = models.CharField(max_length=25, verbose_name='收货人邮编')
-    qq = models.CharField(max_length=15, verbose_name='收货人QQ')
+    qq = models.CharField(max_length=15, null=True, blank=True, verbose_name='收货人QQ')
     IsCompleted = models.IntegerField(default=0, verbose_name='订单是否完成')
     Comment = models.CharField(max_length=500, blank=True, null=True, verbose_name='用户评论')
-    IsReturn = models.IntegerField(default=0, verbose_name='是否要求退货')
+    IsReturn = models.IntegerField(default=0, verbose_name='是否退回')
 
     def __str__(self):
-        return 'NULL'
+        return '{}-{}({})'.format(self.orderid, self.user.name, self.orderdate)
 
     class Meta:
         verbose_name = "订单信息"

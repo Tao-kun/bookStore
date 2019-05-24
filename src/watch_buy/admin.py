@@ -32,6 +32,8 @@ class CartAdmin(admin.ModelAdmin):
     good_isbn.short_description = 'ISBN'
     good_name.short_description = '书籍名称'
 
+    admin.site.get_action('delete_selected').short_description = '删除所选的商品'
+
 
 class GoodsAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -80,24 +82,121 @@ class GoodsAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('订单信息', {'fields': ['orderdate', 'shipdate', 'user', 'IsShipped', 'IsCancle', 'IsHandled', 'IsCancled']}),
+        ('订单信息', {'fields': ['orderdate', 'shipdate', 'user']}),
         ('收货人信息', {'fields': ['username', 'telephone', 'address', 'zipcode', 'qq']})
     ]
-    list_display = ['username', 'address', 'orderdate', 'show_is_shipped']
+    list_display = ['username',
+                    'address',
+                    'orderdate',
+                    'show_canceled',
+                    'show_handle',
+                    'show_ship',
+                    'show_complete',
+                    'show_cancel',
+                    'show_return',
+                    ]
     inlines = [OrderGoodInline]
+    actions = []
 
-    def show_is_shipped(self, obj):
+    def show_cancel(self, obj):
+        if obj.IsCancle == 0:
+            return '否'
+        return '是'
+
+    def show_handle(self, obj):
+        if obj.IsHandled == 0:
+            return '否'
+        return '是'
+
+    def show_ship(self, obj):
         if obj.IsShipped == 0:
             return '否'
         return '是'
 
-    def show_is_completed(self, obj):
+    def show_complete(self, obj):
         if obj.IsCompleted == 0:
             return '否'
         return '是'
 
-    show_is_shipped.short_description = '是否发货'
-    show_is_completed.short_description = '订单是否完成'
+    def show_canceled(self, obj):
+        if obj.IsCancled == 0:
+            return '否'
+        return '是'
+
+    def show_return(self, obj):
+        if obj.IsReturn == 0:
+            return '否'
+        return '是'
+
+    def set_canceled(self, request, queryset):
+        rows_updated = queryset.update(show_canceled=1)
+        self.message_user(request, "成功设置{}个订单已取消".format(rows_updated))
+
+    def unset_canceled(self, request, queryset):
+        rows_updated = queryset.update(show_canceled=0)
+        self.message_user(request, "成功设置{}个订单为未取消".format(rows_updated))
+
+    def set_handle(self, request, queryset):
+        rows_updated = queryset.update(IsHandled=1)
+        self.message_user(request, "成功设置{}个订单为已确认".format(rows_updated))
+
+    def unset_handle(self, request, queryset):
+        rows_updated = queryset.update(IsHandled=0)
+        self.message_user(request, "成功设置{}个订单为未确认".format(rows_updated))
+
+    def set_ship(self, request, queryset):
+        rows_updated = queryset.update(IsShipped=1)
+        self.message_user(request, "成功设置{}个订单已发货".format(rows_updated))
+
+    def unset_ship(self, request, queryset):
+        rows_updated = queryset.update(IsShipped=0)
+        self.message_user(request, "成功设置{}个订单为未发货".format(rows_updated))
+
+    def set_complete(self, request, queryset):
+        rows_updated = queryset.update(IsCompleted=1)
+        self.message_user(request, "成功设置{}个订单已完成".format(rows_updated))
+
+    def unset_complete(self, request, queryset):
+        rows_updated = queryset.update(IsCompleted=0)
+        self.message_user(request, "成功设置{}个订单为未完成".format(rows_updated))
+
+    def set_cancel(self, request, queryset):
+        rows_updated = queryset.update(IsCancle=1)
+        self.message_user(request, "成功设置{}个订单为已申请退货".format(rows_updated))
+
+    def unset_cancel(self, request, queryset):
+        rows_updated = queryset.update(IsCancle=0)
+        self.message_user(request, "成功设置{}个订单为未申请退货".format(rows_updated))
+
+    def set_return(self, request, queryset):
+        rows_updated = queryset.update(IsReturn=1)
+        self.message_user(request, "成功设置{}个订单已退回".format(rows_updated))
+
+    def unset_return(self, request, queryset):
+        rows_updated = queryset.update(IsReturn=0)
+        self.message_user(request, "成功设置{}个订单为未退回".format(rows_updated))
+
+    admin.site.get_action('delete_selected').short_description = '删除所选的订单'
+    show_canceled.short_description = '是否取消订单'
+    show_handle.short_description = '是否确认订单'
+    show_ship.short_description = '是否发货'
+    show_complete.short_description = '订单是否完成'
+    show_cancel.short_description = '是否申请退货'
+    show_return.short_description = '是否退回'
+
+    set_cancel.short_description = '设置所选的订单为已申请退货'
+    set_canceled.short_description = '设置所选的订单为已取消'
+    set_complete.short_description = '设置所选的订单为已完成'
+    set_handle.short_description = '设置所选的订单为已确认'
+    set_return.short_description = '设置所选的订单为已退回'
+    set_ship.short_description = '设置所选的订单为已发货'
+
+    unset_cancel.short_description = '设置所选的订单为未申请退货'
+    unset_canceled.short_description = '设置所选的订单为未取消'
+    unset_complete.short_description = '设置所选的订单为未完成'
+    unset_handle.short_description = '设置所选的订单为未确认'
+    unset_return.short_description = '设置所选的订单为未退回'
+    unset_ship.short_description = '设置所选的订单为未发货'
 
 
 admin.site.register(Cart, CartAdmin)
