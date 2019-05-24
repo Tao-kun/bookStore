@@ -13,8 +13,6 @@ class OrderGoodInline(admin.TabularInline):
     extra = 0
 
 
-# Register your models here.
-
 class CartAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['studentID', 'GoodID', 'Qty']})
@@ -37,11 +35,11 @@ class CartAdmin(admin.ModelAdmin):
 
 class GoodsAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('基本信息', {'fields': ['GoodISBN', 'GoodName', 'GoodPrice', 'GoodAuthor', 'GoodIntro']}),
+        ('基本信息', {'fields': ['GoodISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro']}),
         ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount', 'IsForSale', 'IsNew']}),
         ('其他', {'fields': ['Intro_pic']})
     ]
-    list_display = ['GoodName', 'GoodISBN', 'GoodRemain', 'show_discount', 'show_new']
+    list_display = ['GoodName', 'GoodISBN', 'Category', 'GoodRemain', 'show_discount', 'show_new']
     inlines = [GoodsPicInline]
     actions = ['set_discount', 'unset_discount', 'set_new_item', 'unset_new_item']
 
@@ -93,7 +91,13 @@ class OrderAdmin(admin.ModelAdmin):
             return '否'
         return '是'
 
+    def show_is_completed(self, obj):
+        if obj.IsCompleted == 0:
+            return '否'
+        return '是'
+
     show_is_shipped.short_description = '是否发货'
+    show_is_completed.short_description = '订单是否完成'
 
 
 admin.site.register(Cart, CartAdmin)
