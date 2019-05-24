@@ -1,15 +1,6 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
 <title>Login</title>
-<link href="../../../static/css/style.css" media="screen" rel="stylesheet" type="text/css">
-<link href="../../../static/css/grid.css" media="screen" rel="stylesheet" type="text/css">
-<script src="../../../static/js/jquery-1.7.2.min.js"></script>
-<script src="../../../static/js/html5.js"></script>
-<script src="../../../static/js/jflow.plus.js"></script>
-<script src="../../../static/js/jquery.carouFredSel-5.2.2-packed.js"></script>
-<script src="../../../static/js/checkbox.js"></script>
-<script src="../../../static/js/radio.js"></script>
-<script src="../../../static/js/selectBox.js"></script>
 {% block content %}
     <section id="main" class="entire_width">
         <div class="container_12">
@@ -111,19 +102,4 @@
         });
 
     </script>
-
-    <script>
-        $(document).ready(function () {
-            $("select").selectBox();
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $("button").click(function () {
-                $(this).addClass('click')
-            });
-        })
-    </script>
-    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
 {% endblock %}

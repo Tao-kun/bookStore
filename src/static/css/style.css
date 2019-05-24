@@ -1937,9 +1937,9 @@ table.cart_product td{
 	vertical-align: top;
 	padding: 30px 0 0 0;
 }
-table.cart_product .images{width: 130px;}
+table.cart_product .images{width: 20%;}
 table.cart_product .name{
-	width: auto;
+	width: 20%;
 	text-align: left;
 	padding: 0 20px;
 }
@@ -1954,8 +1954,8 @@ table.cart_product .edit a{
 	text-decoration: none;
 }
 table.cart_product .edit a:hover{opacity: 0.8}
-table.cart_product .price{width: 115px;}
-table.cart_product .qty{width: 90px;}
+table.cart_product .price{width: 20%;}
+table.cart_product .qty{width: 20%;}
 table.cart_product .subtotal{width: 110px;}
 table.cart_product .close{width: 50px;}
 table.cart_product a.close {

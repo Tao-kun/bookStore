@@ -5,97 +5,57 @@
     <section id="main" class="entire_width">
         <div class="container_12">
             <div class="grid_12">
-                <h1 class="page_title">Shopping Cart</h1>
+                <h1 class="page_title">购物车</h1>
 
-                <table class="cart_product">
+                <table class="cart_product" id="cart_tb">
                     <tr>
+                        <th>id</th>
                         <th class="images"></th>
                         <th class="bg name">书名</th>
-                        <th class="edit"></th>
                         <th class="bg price">单价</th>
                         <th class="qty">数量</th>
                         <th class="bg subtotal">总价</th>
                         <th class="close"></th>
                     </tr>
                     {% for rtn in rtn_list %}
-                        <tr>
-                            <td class="images"><a href="product_page.html"><img src="/static/media/{{ rtn.pic.GoodPic }}"
-                                                                            alt="Product 6"></a></td>
-                        <td class="bg name">{{ rtn.info.GoodName }}<br/>
-                        </td>
-                        <td class="edit"><a title="Edit" href="#">Edit</a></td>
-                        <td class="bg price">{{ rtn.info.GoodPrice }}</td>
-                        <td class="qty"><input type="text" name="qty" value="" placeholder="{{ rtn.qty }}"/></td>
-                        <td class="bg subtotal">$750.00</td>
-                        <td class="close"><a title="close" class="close" href="#" style="padding-left: 0%"></a></td>
+                        <tr id="good_list">
+                            <td>{{ rtn.id }}</td>
+                            <td class="images"><a href="product_page.html"><img
+                                    src="/static/media/{{ rtn.pic.GoodPic }}"
+                                    alt="Product 6"></a></td>
+                            <td class="bg name">{{ rtn.info.GoodName }}</td>
+                            <td class="bg price">{{ rtn.info.GoodPrice }}</td>
+                            <td class="qty"><input type="text" name="qty" value="{{ rtn.qty }}" id="qty"
+                                                   style="width: 30%"/></td>
+                            <td class="bg subtotal">{{ rtn.sum }}</td>
+                            <td class="close"><a title="close" class="close" id="delete"></a></td>
                         </tr>
                     {% endfor %}
                     <tr>
                         <td colspan="7" class="cart_but">
-                            <button class="continue"><span>icon</span>Continue Shopping</button>
-                            <button class="update"><span>icon</span>Update Shopping Cart</button>
+                            <button class="continue" onclick="
+                              window.location.href = '/catalog_grid/';
+                            "><span>icon</span>重新购物</button>
+                            <button class="update" onclick="delete_all()"><span>icon</span>清空购物车</button>
                         </td>
                     </tr>
                 </table>
             </div><!-- .grid_12 -->
 
             <div id="content_bottom">
-                <div class="grid_4">
-                    <div class="bottom_block estimate">
-                        <h3>Estimate Shipping and Tax</h3>
-                        <p>Enter your destination to get a shipping estimate.</p>
-                        <form>
-                            <p>
-                                <strong>Country:</strong><sup class="surely">*</sup><br/>
-                                <select>
-                                    <option>United States</option>
-                                    <option>United States</option>
-                                </select>
-                            </p>
-                            <p>
-                                <strong>State/Province:</strong><br/>
-                                <select>
-                                    <option>Please select region, state or province</option>
-                                    <option>Please select region, state or province</option>
-                                </select>
-                            </p>
-                            <p>
-                                <strong>Zip/Postal Code</strong><br/>
-                                <input type="text" name="" value=""/>
-                            </p>
-                            <input type="submit" id="get_estimate" value="Get a Quote"/>
-                        </form>
-
-                    </div><!-- .estimate -->
-                </div><!-- .grid_4 -->
-
-                <div class="grid_4">
-                    <div class="bottom_block discount">
-                        <h3>Discount Codes</h3>
-                        <p>Enter your coupon code if you have one.</p>
-                        <form>
-                            <p>
-                                <input type="text" name="" value="" placeholder="United States"/>
-                            </p>
-                            <input type="submit" id="apply_coupon" value="Apply Coupon"/>
-                        </form>
-                    </div><!-- .discount -->
-                </div><!-- .grid_4 -->
-
-                <div class="grid_4">
+                <div class="grid_4" style="width: 20%">
+                </div>
+                <div class="grid_4" style="width: 20%">
+                </div>
+                <div class="grid_4" style="margin-left: 65%">
                     <div class="bottom_block total">
                         <table class="subtotal">
-                            <tr>
-                                <td>Subtotal</td>
-                                <td class="price">$1, 500.00</td>
-                            </tr>
                             <tr class="grand_total">
-                                <td>Grand Total</td>
-                                <td class="price">$1, 500.00</td>
+                                <td>总价</td>
+                                <td class="price">${{ Total_sum }}</td>
                             </tr>
                         </table>
-                        <button class="checkout">PROCEED TO CHECKOUT</button>
-                        <a href="#">Checkout with Multiple Addresses</a>
+                        <button class="checkout" onclick="check_out()">去结账</button>
                     </div><!-- .total -->
                 </div><!-- .grid_4 -->
 
@@ -231,4 +191,75 @@
             </div><!-- .carousel -->
         </div><!-- .container_12 -->
     </section><!-- #main -->
+    <script>
+        var jsonObj = {};
+        var count = 0;
+
+        /*
+            获取购物车页面的所有信息，比如书名，价格，输入的数量
+            之后将它们打包成一个json类型，传参跳转到checkout页面结算
+         */
+        function check_out() {
+            $("tr[id='good_list']").each(function () {
+                var currentEle = $(this);
+                var book_name = currentEle.children().next().next().html();
+                var book_price = currentEle.children().next().next().next().html();
+                var book_qty = currentEle.children().next().next().next().next().children().val();
+                jsonObj["book_name" + count] = book_name;
+                jsonObj["book_price" + count] = book_price;
+                jsonObj["book_qty" + count] = book_qty;
+                count++;
+            });
+            window.location.href = "/checkout/?jsonData=" + escape(JSON.stringify(jsonObj));
+        }
+    </script>
+    <script>
+        $("input[id='qty']").each(function () {
+            var currentEle = $(this);
+            currentEle.on('blur', function () {
+                var qty = currentEle.val();
+                var id = currentEle.parent().prev().prev().prev().prev().html();
+                $.ajax({
+                        url: "/changeqty/?id=" + id + "&qty=" + qty,
+                        type: 'GET',
+                        success: function (arg) {
+
+                        }
+                    }
+                );
+            })
+        })
+    </script>
+    <script>
+        $("a[id='delete']").each(function () {
+            var currentEle = $(this);
+            var id = currentEle.parent().prev().prev().prev().prev().prev().prev().prev().html();
+            currentEle.on('click', function () {
+                $.ajax({
+                        url: "/delete_item/?id=" + id,
+                        type: 'GET',
+                        success: function (arg) {
+                            currentEle.parent().parent().remove();
+                        }
+                    }
+                );
+            })
+        })
+    </script>
+    <script>
+        function delete_all() {
+            $.ajax({
+                    url: "/delete_all/",
+                    type: 'GET',
+                    success: function (arg) {
+                        var tb = document.getElementById('cart_tb');
+                        for(i = 1; i < tb.rows.length; i++){
+                            tb.deleteRow(i);
+                            rowNum = rowNum - 1;
+                        }
+                    }
+                }
+            );
+        }
+    </script>
 {% endblock %}
