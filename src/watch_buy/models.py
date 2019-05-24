@@ -58,22 +58,26 @@ class Cart(models.Model):
 
 
 class Order(models.Model):
-    orderid = models.AutoField(primary_key=True)
-    orderdate = models.DateTimeField()
-    shipdate = models.DateTimeField(null=True)  # 是否发货，由管理员决定
-    user = models.ForeignKey(User, to_field="studentID")    # 买方
-    address = models.CharField(max_length=255)
-    IsShipped = models.IntegerField(default=0)      # 是否发货
-    IsCancle = models.IntegerField(default=0)       # 是否申请退货中
-    IsHandled = models.IntegerField(default=0)      # 是否确认订单
-    IsCancled = models.IntegerField(default=0)      # 是否已经取消
-    username = models.CharField(max_length=20)      # 收方
-    telephone = models.CharField(max_length=25)
-    zipcode = models.CharField(max_length=25)
-    qq = models.CharField(max_length=15)
-    IsCompleted = models.IntegerField(default=0)    # 是否完成订单
-    Comment = models.CharField(max_length=500)      # 对订单的评价
-    IsReturn = models.IntegerField(default=0)       # 是否要求退货
+    """订单"""
+    orderid = models.AutoField(primary_key=True, verbose_name='订单号')
+    orderdate = models.DateTimeField(verbose_name='下单时间')
+    shipdate = models.DateTimeField(null=True, blank=True, verbose_name='发货时间')
+    user = models.ForeignKey(User, to_field="studentID", verbose_name='下单用户')
+    address = models.CharField(max_length=255, verbose_name='收货人地址')
+    IsShipped = models.IntegerField(default=0, verbose_name='是否发货')
+    IsCancle = models.IntegerField(default=0, verbose_name='是否申请退货中')
+    IsHandled = models.IntegerField(default=0, verbose_name='是否确认订单')
+    IsCancled = models.IntegerField(default=0, verbose_name='是否取消')
+    username = models.CharField(max_length=20, verbose_name='收货人姓名')
+    telephone = models.CharField(max_length=25, verbose_name='收货人电话')
+    zipcode = models.CharField(max_length=25, verbose_name='收货人邮编')
+    qq = models.CharField(max_length=15, verbose_name='收货人QQ')
+    IsCompleted = models.IntegerField(default=0, verbose_name='订单是否完成')
+    Comment = models.CharField(max_length=500, blank=True, null=True, verbose_name='用户评论')
+    IsReturn = models.IntegerField(default=0, verbose_name='是否要求退货')
+
+    def __str__(self):
+        return 'NULL'
 
     class Meta:
         verbose_name = "订单信息"
