@@ -61,6 +61,9 @@ class Order(models.Model):
     zipcode = models.CharField(max_length=25)
     qq = models.CharField(max_length=15)
     IsCompleted = models.IntegerField(default=0)    # 是否完成订单
+    Comment = models.CharField(max_length=500)      # 对订单的评价
+    IsReturn = models.IntegerField(default=0)       # 是否要求退货
+
 
     class Meta:
         verbose_name = "订单信息"

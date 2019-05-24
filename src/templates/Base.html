@@ -255,20 +255,6 @@
 </footer>
 
 </body>
-<script>
-        function logout() {
-            layer.msg('已退出');
-            $.ajax({
-                    url: "/logout/",
-                    type: 'GET',
-                    success: function (arg) {
-                        var textarea = document.getElementById("welcome1");
-                        textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
-                            "                href=\"/login/\">注册</a>.";
-                    }
-                }
-            )
-        }
-    </script>
+
 <!-- Added by HTTrack -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8"/><!-- /Added by HTTrack -->

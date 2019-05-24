@@ -90,18 +90,21 @@ def add_to_cart(request):
     good_price = request.GET.get("good_price")
     good_pic = request.GET.get("good_pic")
     good_ISBN = watch_buy_models.Goods.objects.get(GoodName=good_name).GoodISBN
+    qty = 1
+    qty = int(request.GET.get('qty'))
     studentID = request.session.get('studentID')
     new_good = watch_buy_models.Goods.objects.get(GoodISBN=good_ISBN)
     new_stu = login_manage_models.User.objects.get(studentID=studentID)
-    flag = watch_buy_models.Cart.objects.get(GoodID_id=good_ISBN, studentID_id=studentID)
+    flag = watch_buy_models.Cart.objects.filter(GoodID_id=good_ISBN, studentID_id=studentID)
     if not flag:
         new_cart = watch_buy_models.Cart()
         new_cart.GoodID = new_good
         new_cart.studentID = new_stu
+        new_cart.Qty = qty
         new_cart.save()
     else:
-        new_cart = flag
-        new_cart.Qty = new_cart.Qty + 1
+        new_cart = flag[0]
+        new_cart.Qty = new_cart.Qty + qty
         new_cart.save()
     return render(request, "watch_buy/add_to_cart.html", locals())
 

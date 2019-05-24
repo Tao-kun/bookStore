@@ -22,8 +22,10 @@
     <script src="{% static "js/selectBox.js" %}"></script>
     <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
 </head>
+
+<div class="container" style="margin-left: 20%">
 <h2 style="padding-top: 10%">商品信息</h2>
-<table class="cart_product">
+<table class="table table-hover" style="width: 40%">
     <tr>
         <th class="images"></th>
         <th class="qty">书名</th>
@@ -32,38 +34,132 @@
     </tr>
     {% for rtn in goodrtnlist %}
         <tr id="good_list">
-            <td class="images"><a href="product_page.html"><img
-                    src="/static/media/{{ rtn.goodpic.GoodPic }}"
-                    alt="Product 6"></a></td>
-            <td class="bg name">{{ rtn.good.GoodName }}</td>
-            <td class="bg price">{{ rtn.good.GoodPrice }}</td>
-            <td class="bg price">{{ rtn.qty }}</td>
+
+            <td><img src="/static/media/{{ rtn.goodpic.GoodPic }}"
+                    alt="Product 6"></td>
+            <td>{{ rtn.good.GoodName }}</td>
+            <td>{{ rtn.good.GoodPrice }}</td>
+            <td>{{ rtn.qty }}</td>
         </tr>
     {% endfor %}
 
 
 </table>
- <h2>详情信息</h2>
-    <table class="table table-hover">
-         <tr>
+
+<h2>详情信息</h2>
+<table class="table table-hover" style="width: 40%;">
+    <tr>
         <th>收货人姓名</th>
         <th>收货人手机号</th>
         <th>收货详细地址</th>
     </tr>
-        <tr>
-            <td>{{ order_info.username }}</td>
-            <td>{{ order_info.telephone }}</td>
-            <td>{{ order_info.address }}</td>
-        </tr>
-    </table>
-{% if order_info.IsShipped == 1 %}
-    <button class="btn btn-lg" disabled="disabled">取消订单</button>
-{% else %}
-    <button class="btn btn-lg">取消订单</button>
+
+    <tr>
+        <td>{{ order_info.username }}</td>
+        <td>{{ order_info.telephone }}</td>
+        <td>{{ order_info.address }}</td>
+    </tr>
+</table>
+
+{% if order_info.IsShipped == 0 and order_info.IsHandled == 1 %}
+    <button class="btn btn-lg" onclick="cancel_order()">取消订单</button>
 {% endif %}
-<button class="btn btn-lg">申请退货</button>
-<button class="btn btn-lg">确认收货</button>
-<input type="text" style="width: 20%;height: 25%">
-<button>评价</button>
+{% if order_info.IsShipped == 1 and order_info.IsCompleted == 0 and order_info.IsHandled == 1 and order_info.IsCancled == 0 %}
+    <button class="btn btn-lg" onclick="apply_return()">申请退货</button>
+    <button class="btn btn-lg" onclick="confirm_receive()">确认收货</button>
+{% endif %}
+
+{% if order_info.IsHandled == 0 %}
+    <button class="btn btn-lg" onclick="confirm_order()">确认订单</button>
+{% endif %}
+{% if order_info.IsCompleted == 1 %}
+    <h3>评论订单</h3>
+    <input class="form-control" type="text" style="width: 40%;height: 25%" id="comment">
+    <button onclick="comment_order()" style="width: 10%">评价</button>
+{% endif %}
+</div>
+<script>
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        var q = window.location.pathname.substr(1).match(reg_rewrite);
+        if (r != null) {
+            return unescape(r[2]);
+        } else if (q != null) {
+            return unescape(q[2]);
+        } else {
+            return null;
+        }
+    }
+</script>
+<script>
+    function comment_order() {
+        var id = getQueryString('order_id');
+        var comment = document.getElementById("comment").value;
+        //alert(comment);
+        $.ajax({
+                url: "/comment_order/?order_id=" + id + "&comment=" + comment,
+                type: 'GET',
+                success: function (arg) {
+                    alert(arg['info']);
+                }
+            }
+        );
+    }
+</script>
+<script>
+    function apply_return() {
+        var id = getQueryString('order_id');
+        $.ajax({
+                url: "/apply_return/?order_id=" + id,
+                type: 'GET',
+                success: function (arg) {
+                    alert(arg['info']);
+                }
+            }
+        );
+    }
+</script>
+<script>
+    function cancel_order() {
+        var id = getQueryString('order_id');
+        $.ajax({
+                url: "/cancel_order/?order_id=" + id,
+                type: 'GET',
+                success: function (arg) {
+                    alert(arg['info']);
+                }
+            }
+        );
+    }
+</script>
+<script>
+    function confirm_receive() {
+        var id = getQueryString('order_id');
+        $.ajax({
+                url: "/confirm_receive/?order_id=" + id,
+                type: 'GET',
+                success: function (arg) {
+                    alert(arg['info']);
+                }
+            }
+        );
+    }
+</script>
+<script>
+    function confirm_order() {
+        var id = getQueryString('order_id');
+        $.ajax({
+                url: "/confirm_order/?order_id=" + id,
+                type: 'GET',
+                success: function (arg) {
+                    alert(arg['info']);
+                }
+            }
+        );
+    }
+</script>
+
 
 
