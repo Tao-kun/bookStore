@@ -32,8 +32,6 @@ class CartAdmin(admin.ModelAdmin):
     good_isbn.short_description = 'ISBN'
     good_name.short_description = '书籍名称'
 
-    admin.site.get_action('delete_selected').short_description = '删除所选的商品'
-
 
 class GoodsAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -71,7 +69,6 @@ class GoodsAdmin(admin.ModelAdmin):
             return '否'
         return '是'
 
-    admin.site.get_action('delete_selected').short_description = '删除所选的商品'
     set_discount.short_description = '设置所选的商品为打折品'
     unset_discount.short_description = '设置所选的商品取消打折'
     set_new_item.short_description = '设置所选的商品为新品'
@@ -176,7 +173,6 @@ class OrderAdmin(admin.ModelAdmin):
         rows_updated = queryset.update(IsReturn=0)
         self.message_user(request, "成功设置{}个订单为未退回".format(rows_updated))
 
-    admin.site.get_action('delete_selected').short_description = '删除所选的订单'
     show_canceled.short_description = '是否取消订单'
     show_handle.short_description = '是否确认订单'
     show_ship.short_description = '是否发货'
