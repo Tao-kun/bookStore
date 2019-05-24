@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from login_manage import views as login_manage_views
 from watch_buy import views as watch_buy_views
+from after_sold.views import *
 
 
 urlpatterns = [
@@ -36,5 +37,6 @@ urlpatterns = [
     url(r'^user_info/', login_manage_views.user_info),
     url(r'^update_user/', login_manage_views.update_user),
     url(r'^product_page/', watch_buy_views.good_detail),
-    url(r'^add_order/', watch_buy_views.add_order)
+    url(r'^add_order/', watch_buy_views.add_order),
+    url(r'^past_comment/', post_comments)
 ]
