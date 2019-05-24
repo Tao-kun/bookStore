@@ -1,14 +1,12 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 import json
-
-
+from watch_buy import models as watch_buy_models
 # Create your views here.
+
 
 def post_comments(request):
     pass
-from watch_buy import models as watch_buy_models
-# Create your views here.
 
 
 def see_order(request):
