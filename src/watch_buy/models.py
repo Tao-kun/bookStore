@@ -64,6 +64,7 @@ class Order(models.Model):
     Comment = models.CharField(max_length=500)      # 对订单的评价
     IsReturn = models.IntegerField(default=0)       # 是否要求退货
 
+
     class Meta:
         verbose_name = "订单信息"
         verbose_name_plural = verbose_name

@@ -26,6 +26,7 @@ def order_detail(request):
         good = watch_buy_models.Goods.objects.get(GoodISBN=ISBN)
         pic = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=ISBN)
         goodrtnlist.append(Goodrtn(good, pic[0], order_goods[i].count))
+
     return render(request, "after_sold/order_detail.html", locals())
 
 
@@ -83,3 +84,4 @@ def comment_order(request):
     else:
         response = JsonResponse({"info": "未签收，无法评价"})
     return response
+

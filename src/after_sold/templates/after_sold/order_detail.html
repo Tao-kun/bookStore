@@ -22,6 +22,7 @@
     <script src="{% static "js/selectBox.js" %}"></script>
     <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
 </head>
+
 <div class="container" style="margin-left: 20%">
 <h2 style="padding-top: 10%">商品信息</h2>
 <table class="table table-hover" style="width: 40%">
@@ -33,6 +34,7 @@
     </tr>
     {% for rtn in goodrtnlist %}
         <tr id="good_list">
+
             <td><img src="/static/media/{{ rtn.goodpic.GoodPic }}"
                     alt="Product 6"></td>
             <td>{{ rtn.good.GoodName }}</td>
@@ -43,6 +45,7 @@
 
 
 </table>
+
 <h2>详情信息</h2>
 <table class="table table-hover" style="width: 40%;">
     <tr>
@@ -50,6 +53,7 @@
         <th>收货人手机号</th>
         <th>收货详细地址</th>
     </tr>
+
     <tr>
         <td>{{ order_info.username }}</td>
         <td>{{ order_info.telephone }}</td>
@@ -156,5 +160,6 @@
         );
     }
 </script>
+
 
 
