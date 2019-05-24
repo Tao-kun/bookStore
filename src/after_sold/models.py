@@ -16,5 +16,5 @@ class Comment(models.Model):
         return str(self.content)
 
     class Meta:
-        verbose_name = "这是一条评论"
+        verbose_name = "图书评论"
         verbose_name_plural = verbose_name
