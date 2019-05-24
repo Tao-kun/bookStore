@@ -56,21 +56,28 @@ def shopping_cart(request):
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
-    good_num_list = watch_buy_models.Cart.objects.all()
+    studentID = request.session.get('studentID')
+    good_num_list = watch_buy_models.Cart.objects.filter(studentID_id=studentID)
 
     class rtn:
-        def __init__(self, pic, info, qty):
+        def __init__(self, pic, info, qty, id, sum):
             self.pic = pic
             self.info = info
             self.qty = qty
+            self.id = id
+            self.sum = sum
+
     rtn_list = []
     studentID = request.session.get('studentID')
+    Total_sum = 0
     for i in range(len(good_num_list)):
         GoodID = good_num_list[i].GoodID_id
         pic_tmp = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=GoodID)
         info_tmp = watch_buy_models.Goods.objects.get(GoodISBN=GoodID)
         Qty_tmp = watch_buy_models.Cart.objects.get(GoodID_id=GoodID, studentID_id=studentID)
-        re = rtn(pic_tmp[0], info_tmp, Qty_tmp.Qty)
+        sum = Qty_tmp.Qty*info_tmp.GoodPrice
+        re = rtn(pic_tmp[0], info_tmp, Qty_tmp.Qty, Qty_tmp.id, sum)
+        Total_sum += sum
         rtn_list.append(re)
     return render(request, "watch_buy/shopping_cart.html", locals())
 
@@ -83,18 +90,21 @@ def add_to_cart(request):
     good_price = request.GET.get("good_price")
     good_pic = request.GET.get("good_pic")
     good_ISBN = watch_buy_models.Goods.objects.get(GoodName=good_name).GoodISBN
+    qty = 1
+    qty = int(request.GET.get('qty'))
     studentID = request.session.get('studentID')
     new_good = watch_buy_models.Goods.objects.get(GoodISBN=good_ISBN)
     new_stu = login_manage_models.User.objects.get(studentID=studentID)
-    flag = watch_buy_models.Cart.objects.get(GoodID_id=good_ISBN, studentID_id=studentID)
+    flag = watch_buy_models.Cart.objects.filter(GoodID_id=good_ISBN, studentID_id=studentID)
     if not flag:
         new_cart = watch_buy_models.Cart()
         new_cart.GoodID = new_good
         new_cart.studentID = new_stu
+        new_cart.Qty = qty
         new_cart.save()
     else:
-        new_cart = flag
-        new_cart.Qty = new_cart.Qty + 1
+        new_cart = flag[0]
+        new_cart.Qty = new_cart.Qty + qty
         new_cart.save()
     return render(request, "watch_buy/add_to_cart.html", locals())
 
@@ -117,7 +127,7 @@ def add_order(request):
     zipcode = request.GET.get('zipcode')
     telephone = request.GET.get('telephone')
     qq = request.GET.get('qq')
-
+    IsSured = request.GET.get("IsSured")
     order = watch_buy_models.Order()
     order.orderdate = timezone.now()
     order.user = login_manage_models.User.objects.get(studentID=stu_id)
@@ -126,6 +136,7 @@ def add_order(request):
     order.zipcode = zipcode
     order.telephone = telephone
     order.qq = qq
+    order.IsHandled = IsSured
     order.save()
     jsonObj = request.GET.get('goods')
     if jsonObj is not None:
@@ -142,3 +153,25 @@ def add_order(request):
         ordergood.order = order
         ordergood.save()
     return render(request, "watch_buy/add_order.html")
+
+
+def delete_item(request):
+    id = request.GET.get('id')
+    cart_obj = watch_buy_models.Cart.objects.get(id=id)
+    cart_obj.delete()
+    return render(request, "watch_buy/delete_item.html", locals())
+
+
+def changeqty(request):
+    id = request.GET.get('id')
+    qty = request.GET.get('qty')
+    cart_obj = watch_buy_models.Cart.objects.get(id=id)
+    cart_obj.Qty = qty
+    cart_obj.save()
+    return render(request, "watch_buy/changeqty.html", locals())
+
+
+def delete_all(request):
+    cart_obj = watch_buy_models.Cart.objects.all()
+    cart_obj.delete()
+    return render(request, "watch_buy/delete_all.html", locals())

@@ -63,10 +63,10 @@
                                     <tbody>
                                     {% for good in good_list %}
                                         <tr class="cart_item">
-                                        <td class="product-name">{{ good.good_name }}</td>
-                                        <td>{{ good.good_price }}</td>
-                                        <td>{{ good.good_qty }}</td>
-                                    </tr>
+                                            <td class="product-name">{{ good.good_name }}</td>
+                                            <td>{{ good.good_price }}</td>
+                                            <td>{{ good.good_qty }}</td>
+                                        </tr>
                                     {% endfor %}
                                     </tbody>
                                     <tfoot>
@@ -105,53 +105,102 @@
     </div><!-- Checkout /- -->
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script>
-    /*
-        通过url获取相关字段的值
-        比如你想获得GET 这本书的name
-        那么调用 getQueryString('name')就行
-     */
-    function getQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        var q = window.location.pathname.substr(1).match(reg_rewrite);
-        if(r != null){
-            return unescape(r[2]);
-        }else if(q != null){
-            return unescape(q[2]);
-        }else{
-            return null;
+        /*
+            通过url获取相关字段的值
+            比如你想获得GET 这本书的name
+            那么调用 getQueryString('name')就行
+         */
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            var q = window.location.pathname.substr(1).match(reg_rewrite);
+            if (r != null) {
+                return unescape(r[2]);
+            } else if (q != null) {
+                return unescape(q[2]);
+            } else {
+                return null;
+            }
         }
-    }
     </script>
     <script>
-    /*
-        检查信息合法性，合法的话才跳转传参
-        如果只有单个商品，直接传商品名
-        否则，传递一个json类型的对象，到最后的交易页面，将记录插入Order表
-     */
+        /*
+            检查信息合法性，合法的话才跳转传参
+            如果只有单个商品，直接传商品名
+            否则，传递一个json类型的对象，到最后的交易页面，将记录插入Order表
+         */
         var good_name = getQueryString('good_name');
         $('#sub').click(function () {
             var name = document.getElementById('name').value;
-            alert(good_name);
             var address = document.getElementById('address').value;
             var zipcode = document.getElementById('zipcode').value;
             var telephone = document.getElementById('telephone').value;
             var qq = document.getElementById('qq').value;
-            if (name === "")
-                layer.msg("收货人姓名不能为空");
-            else if (address === "")
-                layer.msg("地址不能为空");
-            else if (zipcode === "")
-                layer.msg("邮编不能为空");
-            else if (telephone === "")
-                layer.msg("电话号码不能为空");
-            else if (qq === "")
-                layer.msg("qq不能为空");
-            else if(good_name != null)
-                window.location.href = "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&good_name=" + good_name;
-            else
-                window.location.href = "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&goods=" + getQueryString('jsonData');
+            layer.confirm('您确定要支付嘛？', {
+                btn: ['确定', '再看看'] //按钮
+            }, function () {
+                if (name === "")
+                    layer.msg("收货人姓名不能为空");
+                else if (address === "")
+                    layer.msg("地址不能为空");
+                else if (zipcode === "")
+                    layer.msg("邮编不能为空");
+                else if (telephone === "")
+                    layer.msg("电话号码不能为空");
+                else if (qq === "")
+                    layer.msg("qq不能为空");
+                else if (good_name != null) {
+                    $.ajax({
+                            url: "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&good_name=" + good_name + "&IsSured=1",
+                            type: 'GET',
+                            success: function (arg) {
+                                layer.msg('付款成功', {icon: 1});
+                            }
+                        }
+                    );
+                } else {
+                    $.ajax({
+                            url: "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&goods=" + getQueryString('jsonData') + "&IsSured=1",
+                            type: 'GET',
+                            success: function (arg) {
+                                layer.msg('付款成功', {icon: 1});
+                            }
+                        }
+                    );
+                }
+            }, function () {
+                if (name === "")
+                    layer.msg("收货人姓名不能为空");
+                else if (address === "")
+                    layer.msg("地址不能为空");
+                else if (zipcode === "")
+                    layer.msg("邮编不能为空");
+                else if (telephone === "")
+                    layer.msg("电话号码不能为空");
+                else if (qq === "")
+                    layer.msg("qq不能为空");
+                else if (good_name != null) {
+                    $.ajax({
+                            url: "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&good_name=" + good_name + "&IsSured=0",
+                            type: 'GET',
+                            success: function (arg) {
+                                layer.msg('相信我们还会再见的呢~', {icon: 2});
+                            }
+                        }
+                    );
+                } else {
+                    $.ajax({
+                            url: "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&goods=" + getQueryString('jsonData') + "&IsSured=0",
+                            type: 'GET',
+                            success: function (arg) {
+                                layer.msg('相信我们还会再见的呢~', {icon: 2});
+                            }
+                        }
+                    );
+                }
+            });
+
         })
 
     </script>

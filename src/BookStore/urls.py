@@ -15,11 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+
+from after_sold import views as after_sold_views
 from login_manage import views as login_manage_views
 from watch_buy import views as watch_buy_views
 from after_sold.views import *
 
+admin.site.site_header = '系统管理'
+admin.site.site_title = '系统管理'
 
+# TODO: 部署时添加路由/media/
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^index/', login_manage_views.index),
@@ -38,5 +43,16 @@ urlpatterns = [
     url(r'^update_user/', login_manage_views.update_user),
     url(r'^product_page/', watch_buy_views.good_detail),
     url(r'^add_order/', watch_buy_views.add_order),
-    url(r'^past_comment/', post_comments)
+    url(r'^past_comment/', post_comments),
+    url(r'^see_order/', after_sold_views.see_order),
+    url(r'^order_detail/', after_sold_views.order_detail),
+    url(r'^delete_item/', watch_buy_views.delete_item),
+    url(r'^changeqty/', watch_buy_views.changeqty),
+    url(r'^delete_all/', watch_buy_views.delete_all),
+    url(r'^confirm_order/', after_sold_views.confirm_order),
+    url(r'^confirm_receive/', after_sold_views.confirm_receive),
+    url(r'^cancel_order/', after_sold_views.calcel_order),
+    url(r'^apply_return/', after_sold_views.apply_return),
+    url(r'^comment_order', after_sold_views.comment_order),
+    url(r'^$', login_manage_views.index),
 ]
