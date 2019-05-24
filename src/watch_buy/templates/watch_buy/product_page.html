@@ -136,7 +136,7 @@
             </div><!-- .sidebar -->
 
             <div id="content" class="grid_9">
-                <h1 class="page_title">{{ Good.GoodName }}</h1>
+                <h1 class="page_title" id="GoodName">{{ Good.GoodName }}</h1>
 
                 <div class="product_page">
                     <div class="grid_4 img_slid" id="products">
@@ -153,15 +153,20 @@
 
                         <ul class="pagination clearfix" id="thumblist">
 
-                            <li><a href='javascript:void(0);' rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.0.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.0.GoodPic }}'} "><img
+                            <li><a href='javascript:void(0);'
+                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.0.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.0.GoodPic }}'} "><img
                                     src='/static/images/{{ Good_pic_list.0.GoodPic }}' alt=""></a></li>
-                            <li><a href='javascript:void(0);' rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.1.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.1.GoodPic }}'} "><img
+                            <li><a href='javascript:void(0);'
+                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.1.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.1.GoodPic }}'} "><img
                                     src='/static/images/{{ Good_pic_list.1.GoodPic }}' alt=""></a></li>
-                             <li><a href='javascript:void(0);' rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.2.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.2.GoodPic }}'} "><img
+                            <li><a href='javascript:void(0);'
+                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.2.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.2.GoodPic }}'} "><img
                                     src='/static/images/{{ Good_pic_list.2.GoodPic }}' alt=""></a></li>
-                             <li><a href='javascript:void(0);' rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.3.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.3.GoodPic }}'} "><img
+                            <li><a href='javascript:void(0);'
+                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.3.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.3.GoodPic }}'} "><img
                                     src='/static/images/{{ Good_pic_list.3.GoodPic }}' alt=""></a></li>
-                             <li><a href='javascript:void(0);' rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.4.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.4.GoodPic }}'} "><img
+                            <li><a href='javascript:void(0);'
+                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.4.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.4.GoodPic }}'} "><img
                                     src='/static/images/{{ Good_pic_list.4.GoodPic }}' alt=""></a></li>
                         </ul>
 
@@ -198,10 +203,10 @@
 
                                 <div class="price">
                                     {% if Good.GoodDiscount != 1 %}
-                                        <div class="price_new">${{ Good.GoodPrice }}</div>
+                                        <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
                                         <div class="price_old">${{ Good.GoodPrice }}</div>
                                     {% else %}
-                                        <div class="price_new">${{ Good.GoodPrice }}</div>
+                                        <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
                                     {% endif %}
 
                                 </div><!-- .price -->
@@ -210,9 +215,12 @@
                             <div class="block_cart">
 
                                 <div class="cart">
-                                    <a href="#" class="bay">Add to Cart</a>
-                                    <input type="text" name="" class="number" value="1"/>
+                                    <a class="bay" id="add_to_cart" onclick="add_to_cart()">Add to Cart</a>
+                                    <input id="qty" type="text" name="" class="number" value="1"/>
                                     <span>Quantity:</span>
+                                </div>
+                                <div class="cart" style="padding-top: 2%">
+                                    <a class="bay" id="add_to_cart" onclick="checkout()">Checkout</a>
                                 </div>
                                 <div class="clear"></div>
                             </div><!-- .block_cart -->
@@ -487,6 +495,30 @@
     <script src="{% static "js/radio.js" %}"></script>
     <script src="{% static "js/selectBox.js" %}"></script>
     <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
+    <script src="{% static "js/layer/layer.js" %}"></script>
+    <script>
+        function checkout() {
+            var good_price = document.getElementById('price').innerHTML.replace("$","");
+            var good_name = document.getElementById('GoodName').innerHTML;
+            window.location.href = "/checkout/?good_name=" + good_name + "&good_price=" + good_price;
+        }
+    </script>
+    <script>
+        function add_to_cart() {
+            var good_name = document.getElementById('GoodName').innerHTML;
+            var good_price = document.getElementById('price').innerHTML.replace("$","");
+            var good_pic = document.getElementById('mainzoom').getAttribute("src");
+            var qty = document.getElementById('qty').value;
+            $.ajax({
+                    url: "/add_to_cart/?good_name=" + good_name + "&good_price=" + good_price + "&good_pic=" + good_pic + "&qty=" + qty,
+                    type: 'GET',
+                    success: function (arg) {
+                        layer.msg("已添加到购物车");
+                    }
+                }
+            )
+        }
+    </script>
     <script>
         $(document).ready(function () {
             $('.jqzoom').jqzoom({
@@ -516,9 +548,10 @@
     </script>
 
     <script>
-    /*
-        前后按钮
-     */
+
+        /*
+            前后按钮
+         */
         $(function () {
             $('#list_product').carouFredSel({
                 prev: '#prev_c1',

@@ -42,5 +42,10 @@ urlpatterns = [
     url(r'^order_detail/', after_sold_views.order_detail),
     url(r'^delete_item/', watch_buy_views.delete_item),
     url(r'^changeqty/', watch_buy_views.changeqty),
-    url(r'^delete_all/', watch_buy_views.delete_all)
+    url(r'^delete_all/', watch_buy_views.delete_all),
+    url(r'^confirm_order/', after_sold_views.confirm_order),
+    url(r'^confirm_receive/', after_sold_views.confirm_receive),
+    url(r'^cancel_order/', after_sold_views.calcel_order),
+    url(r'^apply_return/', after_sold_views.apply_return),
+    url(r'^comment_order', after_sold_views.comment_order)
 ]
