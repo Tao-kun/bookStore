@@ -33,7 +33,6 @@ class UserAdmin(admin.ModelAdmin):
             return '否'
         return '是'
 
-    admin.site.get_action('delete_selected').short_description = '删除所选的用户'
     ban_user.short_description = '封禁所选的用户'
     permit_user.short_description = '解禁所选的用户'
     user_ban_status.short_description = '是否被封禁'

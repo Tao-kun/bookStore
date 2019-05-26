@@ -16,7 +16,7 @@
                         <div class="billing-field">
                             <div class="col-md-12 form-group">
                                 <label>收件人姓名 *</label>
-                                <input id="name" class="form-control" type="text">
+                                <input id="name" class="form-control" type="text" value="{{ default_info.name }}">
                             </div>
                             <div class="col-md-12 form-group">
                                 <label>所在城市 *</label>
@@ -31,19 +31,22 @@
                             </div>
                             <div class="col-md-12 form-group">
                                 <label>详细地址</label>
-                                <input id="address" class="form-control" type="text">
+                                <input id="address" class="form-control" type="text"
+                                       value="{{ default_info.detail_address }}">
                             </div>
                             <div class="col-md-12 form-group">
                                 <label>邮编</label>
-                                <input id="zipcode" class="form-control" type="text">
+                                <input id="zipcode" class="form-control" type="text"
+                                       value="{{ default_info.zip_code }}">
                             </div>
                             <div class="col-md-12 form-group">
                                 <label>收件人电话</label>
-                                <input id="telephone" class="form-control" type="text">
+                                <input id="telephone" class="form-control" type="text"
+                                       value="{{ default_info.telephone }}">
                             </div>
                             <div class="col-md-12 form-group">
                                 <label>收件人QQ</label>
-                                <input id="qq" class="form-control" type="text">
+                                <input id="qq" class="form-control" type="text" value="{{ default_info.qq }}">
                             </div>
                         </div>
                     </div>
@@ -76,7 +79,7 @@
                                     </tr>
                                     <tr>
                                         <th>总价</th>
-                                        <td>{{ good_price }}</td>
+                                        <td>{{ sum_price }}</td>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -94,9 +97,15 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="place-order">
-                                <input id="sub" value="提交订单" type="button">
-                            </div>
+                            {% if default_info.is_banned == 0 %}
+                                <div class="place-order">
+                                    <input id="sub" value="提交订单" type="button">
+                                </div>
+                            {% else %}
+                                <div class="place-order">
+                                    <input id="sub" value="对不起，由于您的恶意行为，您已被禁止购物" type="button" disabled="disabled">
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </form>

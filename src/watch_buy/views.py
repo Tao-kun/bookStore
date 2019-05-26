@@ -14,7 +14,11 @@ def catalog_grid(request):
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
-    rtn_list = watch_buy_models.Goods.objects.all()
+    type = request.GET.get('type')
+    if type is None:
+        rtn_list = watch_buy_models.Goods.objects.all()
+    else:
+        rtn_list = watch_buy_models.Goods.objects.filter(Category=type)
     rtn_pic = []
     for i in range(len(rtn_list)):
         GoodID = rtn_list[i].GoodISBN
@@ -32,6 +36,8 @@ def checkout(request):
     good_name = request.GET.get("good_name")
     good_price = request.GET.get("good_price")
     good_json = request.GET.get("jsonData")     # 如果说是从购物车里边选择了多个商品,返回一个json对象
+    studentID = request.session.get('studentID')
+    default_info = login_manage_models.User.objects.get(studentID=studentID)
 
     class Good:
         def __init__(self, good_name, good_price, good_qty):
@@ -40,14 +46,20 @@ def checkout(request):
             self.good_qty = good_qty
     good_list = []
     count = 0
+    sum_price = 0
     if good_json is not None:
         good_dic = json.loads(good_json)
         # 把所有的图书的信息存在list里，之后返回到checkout页面的列表中
         while count < (len(good_dic)/3):
             good_list.append(Good(good_dic[("book_name" + str(count))].replace("%", "\\").encode('utf-8').decode('unicode_escape'), good_dic["book_price" + str(count)], good_dic["book_qty" + str(count)]))
+            sum_price += float(good_dic["book_price" + str(count)]) * float(good_dic["book_qty" + str(count)])
             count += 1
     else:
         good_list.append(Good(good_name, good_price, 1))
+    cart_all = watch_buy_models.Cart.objects.filter(studentID_id=studentID)
+    for cart_obj in cart_all:
+        cart_obj.delete()
+    print(sum_price)
     return render(request, "watch_buy/checkout.html", locals())
 
 
@@ -91,7 +103,10 @@ def add_to_cart(request):
     good_pic = request.GET.get("good_pic")
     good_ISBN = watch_buy_models.Goods.objects.get(GoodName=good_name).GoodISBN
     qty = 1
-    qty = int(request.GET.get('qty'))
+    try:
+        qty = int(request.GET.get('qty'))
+    except:
+        qty = 1
     studentID = request.session.get('studentID')
     new_good = watch_buy_models.Goods.objects.get(GoodISBN=good_ISBN)
     new_stu = login_manage_models.User.objects.get(studentID=studentID)
