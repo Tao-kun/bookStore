@@ -54,5 +54,4 @@ urlpatterns = [
     url(r'^comment_order/', after_sold_views.comment_order),
     url(r'^cancel_return/', after_sold_views.cancel_return),
     url(r'^$', login_manage_views.index)
-
 ]
