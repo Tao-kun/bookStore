@@ -15,8 +15,6 @@ function save() {
         var zipcode = document.getElementById("zipcode").value;
         var telephone = document.getElementById("telephone").value;
         var qq = document.getElementById("qq").value;
-        alert(citynum);
-        alert(city);
         $.ajax({
                     url: "/update_user/?studentid=" + studentid + "&city=" + city + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&citynum=" + citynum,
                     type: 'GET',

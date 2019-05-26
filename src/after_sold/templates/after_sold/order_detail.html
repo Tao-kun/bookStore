@@ -60,22 +60,25 @@
         <td>{{ order_info.address }}</td>
     </tr>
 </table>
-
-{% if order_info.IsShipped == 0 and order_info.IsHandled == 1 %}
+{% if order_info.IsCancle == 0 %}
+{% if order_info.IsShipped == 0 %}
     <button class="btn btn-lg" onclick="cancel_order()">取消订单</button>
 {% endif %}
-{% if order_info.IsShipped == 1 and order_info.IsCompleted == 0 and order_info.IsHandled == 1 and order_info.IsCancled == 0 %}
+{% if order_info.IsShipped == 1 and order_info.IsCompleted == 0 and order_info.IsHandled == 1 and order_info.IsCancled == 0 and order_info.IsReturn == 0 %}
     <button class="btn btn-lg" onclick="apply_return()">申请退货</button>
     <button class="btn btn-lg" onclick="confirm_receive()">确认收货</button>
 {% endif %}
-
+{% if order_info.IsReturn == 1 and order_info.IsCancled == 0 and order_info.IsCompleted == 0 %}
+    <button class="btn btn-lg" onclick="cancel_return()">取消申请退货</button>
+    {% endif %}
 {% if order_info.IsHandled == 0 %}
     <button class="btn btn-lg" onclick="confirm_order()">确认订单</button>
 {% endif %}
 {% if order_info.IsCompleted == 1 %}
     <h3>评论订单</h3>
-    <input class="form-control" type="text" style="width: 40%;height: 25%" id="comment">
+    <textarea class="form-control" type="text" style="width: 40%;height: 25%" id="comment"></textarea>
     <button onclick="comment_order()" style="width: 10%">评价</button>
+{% endif %}
 {% endif %}
 </div>
 <script>
@@ -94,6 +97,21 @@
     }
 </script>
 <script>
+    function cancel_return() {
+        var id = getQueryString('order_id');
+        //alert(comment);
+        $.ajax({
+                url: "/cancel_return/?order_id=" + id,
+                type: 'GET',
+                success: function (arg) {
+                    alert(arg['info']);
+                    window.location.reload();
+                }
+            }
+        );
+    }
+</script>
+<script>
     function comment_order() {
         var id = getQueryString('order_id');
         var comment = document.getElementById("comment").value;
@@ -103,6 +121,7 @@
                 type: 'GET',
                 success: function (arg) {
                     alert(arg['info']);
+                    window.location.reload();
                 }
             }
         );
@@ -116,6 +135,7 @@
                 type: 'GET',
                 success: function (arg) {
                     alert(arg['info']);
+                    window.location.reload();
                 }
             }
         );
@@ -129,6 +149,7 @@
                 type: 'GET',
                 success: function (arg) {
                     alert(arg['info']);
+                    window.location.reload();
                 }
             }
         );
@@ -142,6 +163,7 @@
                 type: 'GET',
                 success: function (arg) {
                     alert(arg['info']);
+                    window.location.reload();
                 }
             }
         );
@@ -155,6 +177,7 @@
                 type: 'GET',
                 success: function (arg) {
                     alert(arg['info']);
+                    window.location.reload();
                 }
             }
         );
