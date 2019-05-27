@@ -6,7 +6,7 @@ from watch_buy.models import *
 # Create your models here.
 
 class Comment(models.Model):
-    content = models.TextField(null=False, editable=False)  # 用户发表评论后不可修改！
+    content = models.TextField(null=False)  # 用户发表评论后不可修改！
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     good = models.ForeignKey(Goods, on_delete=models.CASCADE, null=False)
     quality = models.FloatField(null=False)
