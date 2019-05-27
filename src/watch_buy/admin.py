@@ -93,7 +93,8 @@ class OrderAdmin(admin.ModelAdmin):
                     'show_return',
                     ]
     inlines = [OrderGoodInline]
-    actions = []
+    actions = ['set_cancel', 'set_canceled', 'set_complete', 'set_handle', 'set_return', 'set_ship',
+               'unset_cancel', 'unset_canceled', 'unset_complete', 'unset_handle', 'unset_return', 'unset_ship']
 
     def show_cancel(self, obj):
         if obj.IsCancle == 0:
