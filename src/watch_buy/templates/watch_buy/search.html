@@ -1,0 +1,183 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <section id="main">
+        <div class="container_12">
+            <div id="sidebar" class="grid_3">
+                <aside id="categories_nav">
+                    <h3>Categories</h3>
+
+                    <nav class="left_menu">
+                        <ul>
+                            <li><a href="#">Solids <span>(21)</span></a></li>
+                            <li><a href="#">Liquids <span> (27)</span></a></li>
+                            <li><a href="#">Spray <span>(33)</span></a></li>
+                            <li><a href="#">Electric <span>(17)</span></a></li>
+                            <li><a href="#">For Cars <span>(23)</span></a></li>
+                            <li><a href="#">For Room <span>(7)</span></a></li>
+                            <li class="last"><a href="#">Other <span>(135)</span></a></li>
+                        </ul>
+                    </nav><!-- .left_menu -->
+                </aside><!-- #categories_nav -->
+
+                <aside id="shop_by">
+                    <h3>Shop By</h3>
+
+                    <div class="currently_shopping">
+                        <p>Currently Shopping by:</p>
+                        <ul>
+                            <li><a title="close" class="close" href="#"></a>Price: <span>$0.00 - $999.99</span></li>
+                            <li><a title="close" class="close" href="#"></a>Manufacturer: <span>Apple</span></li>
+                        </ul>
+
+                        <a class="clear_all" href="#">Clear All</a>
+
+                        <div class="clear"></div>
+                    </div><!-- .currently_shopping -->
+
+                    <h4>Category</h4>
+
+                    <form action="#" class="check_opt">
+                        <p><input class="niceCheck" type="checkbox">For Home (23)</p>
+                        <p><input class="niceCheck" type="checkbox" name="" value="">For Car (27)</p>
+                        <p><input class="niceCheck" type="checkbox" name="" value="">For Office (9)</p>
+                    </form>
+
+                    <h4>Price</h4>
+
+                    <form action="#" class="check_opt">
+                        <p><input class="niceCheck" type="checkbox" name="" value="">0.00 - $49.99 (21)</p>
+                        <p><input class="niceCheck" type="checkbox" name="" value="">$50.00 - $99.99 (7)</p>
+                        <p><input class="niceCheck" type="checkbox" name="" value="">0$100.00 and above (15)</p>
+                    </form>
+                </aside><!-- #shop_by -->
+
+                <aside id="specials" class="specials">
+                    <h3>Specials</h3>
+
+                    <ul>
+                        <li>
+                            <div class="prev">
+                                <a href="product_page.html"><img src="images/special1.png" alt="" title=""/></a>
+                            </div>
+
+                            <div class="cont">
+                                <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
+                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="prev">
+                                <a href="product_page.html"><img src="images/special2.png" alt="" title=""/></a>
+                            </div>
+
+                            <div class="cont">
+                                <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
+                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
+                            </div>
+                        </li>
+                    </ul>
+                </aside><!-- #specials -->
+
+                <aside id="newsletter_signup">
+                    <h3>Newsletter Signup</h3>
+                    <p>Phasellus vel ultricies felis. Duis
+                        rhoncus risus eu urna pretium.</p>
+
+                    <form class="newsletter">
+                        <input type="email" name="newsletter" class="your_email" value=""
+                               placeholder="Enter your email address..."/>
+                        <input type="submit" id="submit" value="Subscribe"/>
+                    </form>
+                </aside><!-- #newsletter_signup -->
+            </div><!-- .sidebar -->
+
+            <div id="content" class="grid_9">
+
+                <div class="listing_product">
+                    {% for good in rtn_list %}
+                        <div class="product_li">
+                            <div class="grid_3">
+                                {% if good.good.IsNew == 1 %}
+                                    <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                                {% elif good.good.IsForSale == 1 %}
+                                    <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                {% else %}
+                                    <div></div>
+                                {% endif %}
+                                <div class="prev">
+                                    <a href="/product_page/?ISBN={{ good.good.GoodISBN }}"><img src="/static/media/{{ good.pic.GoodPic }}" alt=""
+                                                                     title=""/></a>
+                                </div><!-- .prev -->
+                            </div><!-- .grid_3 -->
+
+                            <div class="grid_4">
+                                <div class="entry_content">
+                                    <a href="/product_page/?ISBN={{ good.good.GoodISBN }}"><h3 class="title">{{ good.good.GoodName }}</h3></a>
+                                    <div class="review">
+                                        <a class="plus" href="#"></a>
+                                        <a class="plus" href="#"></a>
+                                        <a class="plus" href="#"></a>
+                                        <a href="#"></a>
+                                        <a href="#"></a>
+                                        <span>1 REVIEW(S)</span>
+                                    </div>
+                                    <p>{{ good.good.GoodIntro }}</p>
+                                </div><!-- .entry_content -->
+                            </div><!-- .grid_4 -->
+
+                            <div class="grid_2">
+                                <div class="cart">
+                                    <div class="price">
+                                        <div class="price_new">${{ good.price }}</div>
+                                    </div>
+                                    <a href="#" class="bay" name="add_to_cart">Add to Cart</a>
+                                    <a href="#" class="bay" name="checkout">Buy it now</a>
+                                </div><!-- .cart -->
+                            </div><!-- .grid_2 -->
+                            <div class="clear"></div>
+                        </div><!-- .article -->
+                    {% endfor %}
+                </div>
+
+
+
+            </div><!-- #content -->
+
+            <div class="clear"></div>
+
+        </div><!-- .container_12 -->
+    </section><!-- #main -->
+    <script>
+        $("a[name='checkout']").each(function () {
+            var currentEle = $(this);
+            currentEle.on('click', function () {
+                var good_price = currentEle.prev().prev().children().text().replace("$", "");
+                var good_name = currentEle.parent().parent().prev().children().children().children().html();
+                window.location.href = "/checkout/?good_name=" + good_name + "&good_price=" + good_price;
+            })
+        });
+    </script>
+    <script>
+        $("a[name='add_to_cart']").each(function () {
+            var currentEle = $(this);
+            currentEle.on('click', function () {
+                var good_price = currentEle.prev().children().text().replace("$", "");
+                var good_name = currentEle.parent().parent().prev().children().children().children().html();
+                var good_pic = currentEle.parent().parent().prev().prev().children().children().children().attr("src");
+                $.ajax({
+                        url: "/add_to_cart/?good_name=" + good_name + "&good_price=" + good_price + "&good_pic=" + good_pic,
+                        type: 'GET',
+                        success: function (arg) {
+                            layer.msg("已添加到购物车");
+                        }
+                    }
+                )
+            })
+        });
+
+    </script>
+    <script src="{% static "js/jquery-1.7.2.min.js" %}"></script>
+    <script src="{% static "js/layer/layer.js" %}"></script>
+{% endblock %}
