@@ -14,9 +14,21 @@ def catalog_grid(request):
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
-    rtn_list = watch_buy_models.Goods.objects.all()
+    type = request.GET.get('type')
+    if type is None:
+        rtn_list = watch_buy_models.Goods.objects.all()
+    else:
+        rtn_list = watch_buy_models.Goods.objects.filter(Category=type)
+    for rtn in rtn_list:
+        rtn.GoodPrice = rtn.GoodPrice * rtn.GoodDiscount
     rtn_pic = []
-    for i in range(len(rtn_list)):
+
+    page_str = request.GET.get('page')
+    if page_str is None:
+        page = 1
+    else:
+        page = int(page_str)
+    for i in range((page - 1) * 10, min(len(rtn_list), (page - 1) * 10 + 10)):
         GoodID = rtn_list[i].GoodISBN
         pic_tmp = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=GoodID)
         rtn_pic.append(pic_tmp[0])
@@ -32,6 +44,8 @@ def checkout(request):
     good_name = request.GET.get("good_name")
     good_price = request.GET.get("good_price")
     good_json = request.GET.get("jsonData")     # 如果说是从购物车里边选择了多个商品,返回一个json对象
+    studentID = request.session.get('studentID')
+    default_info = login_manage_models.User.objects.get(studentID=studentID)
 
     class Good:
         def __init__(self, good_name, good_price, good_qty):
@@ -40,14 +54,21 @@ def checkout(request):
             self.good_qty = good_qty
     good_list = []
     count = 0
+    sum_price = 0
     if good_json is not None:
         good_dic = json.loads(good_json)
         # 把所有的图书的信息存在list里，之后返回到checkout页面的列表中
         while count < (len(good_dic)/3):
             good_list.append(Good(good_dic[("book_name" + str(count))].replace("%", "\\").encode('utf-8').decode('unicode_escape'), good_dic["book_price" + str(count)], good_dic["book_qty" + str(count)]))
+            sum_price += float(good_dic["book_price" + str(count)]) * float(good_dic["book_qty" + str(count)])
             count += 1
     else:
         good_list.append(Good(good_name, good_price, 1))
+        sum_price = good_price
+    cart_all = watch_buy_models.Cart.objects.filter(studentID_id=studentID)
+    for cart_obj in cart_all:
+        cart_obj.delete()
+    print(sum_price)
     return render(request, "watch_buy/checkout.html", locals())
 
 
@@ -74,6 +95,7 @@ def shopping_cart(request):
         GoodID = good_num_list[i].GoodID_id
         pic_tmp = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=GoodID)
         info_tmp = watch_buy_models.Goods.objects.get(GoodISBN=GoodID)
+        info_tmp.GoodPrice *= info_tmp.GoodDiscount
         Qty_tmp = watch_buy_models.Cart.objects.get(GoodID_id=GoodID, studentID_id=studentID)
         sum = Qty_tmp.Qty*info_tmp.GoodPrice
         re = rtn(pic_tmp[0], info_tmp, Qty_tmp.Qty, Qty_tmp.id, sum)
@@ -91,7 +113,10 @@ def add_to_cart(request):
     good_pic = request.GET.get("good_pic")
     good_ISBN = watch_buy_models.Goods.objects.get(GoodName=good_name).GoodISBN
     qty = 1
-    qty = int(request.GET.get('qty'))
+    try:
+        qty = int(request.GET.get('qty'))
+    except:
+        qty = 1
     studentID = request.session.get('studentID')
     new_good = watch_buy_models.Goods.objects.get(GoodISBN=good_ISBN)
     new_stu = login_manage_models.User.objects.get(studentID=studentID)
@@ -113,6 +138,7 @@ def add_to_cart(request):
 def good_detail(request):
     Good_ISBN = request.GET.get('ISBN')
     Good = watch_buy_models.Goods.objects.get(GoodISBN=Good_ISBN)
+    Good.GoodPrice = Good.GoodPrice * Good.GoodDiscount
     Good_pic_list = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=Good_ISBN)
     return render(request, "watch_buy/product_page.html", locals())
 
@@ -175,3 +201,31 @@ def delete_all(request):
     cart_obj = watch_buy_models.Cart.objects.all()
     cart_obj.delete()
     return render(request, "watch_buy/delete_all.html", locals())
+
+
+def search(request):
+    keyword = request.GET.get('search')
+    rtn_set = set()
+    rtn_list = []
+    name_key = watch_buy_models.Goods.objects.filter(GoodName__contains=keyword)
+    content_key = watch_buy_models.Goods.objects.filter(GoodIntro__contains=keyword)
+    author_key = watch_buy_models.Goods.objects.filter(GoodAuthor__contains=keyword)
+    ISBN_key = watch_buy_models.Goods.objects.filter(GoodISBN__contains=keyword)
+
+    class Good:
+        def __init__(self, good, pic, price):
+            self.good = good
+            self.pic = pic
+            self.price = price
+
+    for name in name_key:
+        rtn_set.add(name)
+    for content in content_key:
+        rtn_set.add(content)
+    for author in author_key:
+        rtn_set.add(author)
+    for ISBN in ISBN_key:
+        rtn_set.add(ISBN)
+    for rtn_good in rtn_set:
+        rtn_list.append(Good(rtn_good, watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=rtn_good.GoodISBN)[0], rtn_good.GoodPrice*rtn_good.GoodDiscount))
+    return render(request, "watch_buy/search.html", locals())
