@@ -100,7 +100,7 @@
                         rhoncus risus eu urna pretium.</p>
 
                     <form class="newsletter">
-                        <input type="email" name="newsletter" class="your_email" value=""
+                        <input type="email" name="newsletter" class="your_email" value="New"
                                placeholder="Enter your email address..."/>
                         <input type="submit" id="submit" value="Subscribe"/>
                     </form>
@@ -108,22 +108,28 @@
             </div><!-- .sidebar -->
 
             <div id="content" class="grid_9">
-                <h1 class="page_title">Product List</h1>
+                <div></div>
                 <div class="grid_product">
                     {% for x,y in rtn_dic.items %}
                         <div class="grid_3 product" id="product">
+                            {% if y.IsNew == 1 %}
+                                <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                            {% elif y.IsForSale == 1 %}
+                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                            {% else %}
+                                <div></div>
+                            {% endif %}
                             <div class="prev">
-                                <a href="/product_page/?ISBN={{ y.GoodISBN }}"><img id="Good" src="/static/media/{{ x.GoodPic }}" alt=""
-                                                                 title=""/></a>
+                                <a href="/product_page/?ISBN={{ y.GoodISBN }}">
+                                    <img id="Good" src="/static/media/{{ x.GoodPic }}" alt="" title=""/>
+                                </a>
                             </div><!-- .prev -->
                             <h3 class="title" id="good_name">{{ y.GoodName }}</h3>
                             <div class="cart">
                                 <div class="price">
                                     <div class="vert">
                                         <div class="price_new" id="price">{{ y.GoodPrice }}</div>
-                                        {% if y.GoodDiscount < 1.0 %}
-                                            <div class="price_old">{{ y.GoodPrice }}</div>
-                                        {% endif %}
+
                                     </div>
                                 </div>
                                 <a class="obn"></a>
@@ -139,20 +145,12 @@
             </div><!-- .grid_product -->
 
 
-            <div class="pagination" style="margin-left: 18%">
+            <div class="pagination" style="margin-left: 38%">
                 <ul>
-                    <li class="prev"><span>&#8592;</span></li>
-                    <li class="curent"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><span>...</span></li>
-                    <li><a href="#">100</a></li>
-                    <li class="next"><a href="#">&#8594;</a></li>
+                    <li class="prev"><a onclick="prevpage()" id="prev">&#8592;</a></li>
+                    <li class="next"><a onclick="nextpage()" id="next">&#8594;</a></li>
                 </ul>
             </div><!-- .pagination -->
-            <p class="pagination_info">Displaying 1 to 12 (of 100 products)</p>
         </div><!-- #content -->
 
         <div class="clear"></div>
@@ -164,4 +162,53 @@
     <script src="{% static "js/jump.js" %}"></script>
     <script src="{% static "js/jquery-1.7.2.min.js" %}"></script>
     <script src="{% static "js/layer/layer.js" %}"></script>
+    <script>
+        /*
+            通过url获取相关字段的值
+            比如你想获得GET 这本书的name
+            那么调用 getQueryString('name')就行
+         */
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            var q = window.location.pathname.substr(1).match(reg_rewrite);
+            if (r != null) {
+                return unescape(r[2]);
+            } else if (q != null) {
+                return unescape(q[2]);
+            } else {
+                return null;
+            }
+        }
+    </script>
+    <script>
+        function prevpage() {
+            var page = getQueryString('page');
+            var type = getQueryString('type');
+            if (page == null || page === "1") {
+                var prev = document.getElementById('prev');
+                prev.disabled = true;
+            } else {
+                page--;
+                if (type == null)
+                    window.location.href = '/catalog_grid/?page=' + page;
+                else
+                    window.location.href = '/catalog_grid/?page=' + page + "&type=" + type;
+            }
+
+        }
+    </script>
+    <script>
+        function nextpage() {
+            var page = getQueryString('page');
+            var type = getQueryString('type');
+            if (page == null) page = 2;
+            else page++;
+            if (type == null)
+                window.location.href = '/catalog_grid/?page=' + page;
+            else
+                window.location.href = '/catalog_grid/?page=' + page + "&type=" + type;
+        }
+    </script>
 {% endblock %}
