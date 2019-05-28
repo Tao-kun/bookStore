@@ -2,7 +2,7 @@ $("a[name='checkout']").each(function () {
         var currentEle = $(this);
         currentEle.on('click', function () {
             var good_price = currentEle.prev().prev().children().children().text();
-            var good_name = currentEle.prev().parent().parent().children().next().html();
+            var good_name = currentEle.parent().prev().html();
             window.location.href = "/checkout/?good_name=" + good_name + "&good_price=" + good_price;
         })
     });
@@ -29,8 +29,8 @@ $("a[name='add_to_cart']").each(function () {
         var currentEle = $(this);
         currentEle.on('click', function () {
             var good_price = currentEle.prev().prev().prev().children().children().html();
-            var good_name = currentEle.parent().parent().children().next().html();
-            var good_pic = currentEle.parent().parent().children().children().children().attr("src");
+            var good_name = currentEle.parent().prev().html();
+            var good_pic = currentEle.parent().parent().children().next().children().children().attr("src");
             $.ajax({
                     url: "/add_to_cart/?good_name=" + good_name + "&good_price=" + good_price + "&good_pic=" + good_pic,
                     type: 'GET',
