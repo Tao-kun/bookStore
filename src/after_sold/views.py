@@ -8,7 +8,11 @@ import time
 
 
 def post_comments(request):
-    pass
+    content = request.GET.get('content')
+    print(content)
+    isbn = request.GET.get('isbn')
+    print(isbn)
+    return render("/index/")
 
 
 def see_order(request):

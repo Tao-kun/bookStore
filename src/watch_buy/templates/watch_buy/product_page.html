@@ -2,6 +2,8 @@
 {% load staticfiles %}
 {% block content %}
 
+
+
     <div class="container_12">
         <div class="grid_12">
             <div class="breadcrumbs">
@@ -182,13 +184,18 @@
                     <div class="grid_5">
                         <div class="entry_content">
                             <div class="review">
-                                <a class="plus" href="#"></a>
-                                <a class="plus" href="#"></a>
-                                <a class="plus" href="#"></a>
-                                <a href="#"></a>
-                                <a href="#"></a>
-                                <span>1 REVIEW(S)</span>
-                                <a class="add_review" href="#">ADD YOUR REVIEW</a>
+                                {% for quality_star in quality_star_list %}
+                                    {% ifequal quality_star 2 %}
+                                        <a class="plus" ></a>
+                                    {% endifequal %}
+                                    {% ifequal quality_star 1 %}
+                                        <a class="plus_minus" ></a>
+                                    {% endifequal %}
+                                    {% ifequal quality_star 0 %}
+                                        <a  ></a>
+                                    {% endifequal %}
+                                {% endfor %}
+                                <span>{{ comments_number }} 条书评</span>
                             </div>
                             <p>{{ Good.GoodIntro }}</p>
                             <div class="ava_price">
@@ -206,7 +213,7 @@
                                         <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
                                         <div class="price_old">${{ Good.GoodPrice }}</div>
                                     {% else %}
-                                        <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
+                                        <div class="price_new" id="price">${{ Good.GoodPrice }}</div> 
                                     {% endif %}
 
                                 </div><!-- .price -->
@@ -233,7 +240,7 @@
                     <div class="grid_9">
                         <div id="wrapper_tab" class="tab1">
                             <a href="#" class="tab1 tab_link">Description</a>
-                            <a href="#" class="tab2 tab_link">Reviews</a>
+                            <a href="#" class="tab2 tab_link">书评</a>
 
                             <div class="clear"></div>
 
@@ -243,125 +250,80 @@
                             </div><!-- .tab1 .tab_body -->
 
                             <div class="tab2 tab_body">
-                                <h4>Customer reviews</h4>
-                                <ul class="comments">
+                                <ul class="comments" id = "comments">
+
+                                {% for each_page_comment in page_comments %}
+
                                     <li>
-                                        <div class="autor">Mike Example</div>
+                                        <div class="autor">{{each_page_comment.comment.user.name}}</div>
                                         ,
-                                        <time datetime="2012-11-03">03.11.2012</time>
+                                        <time datetime="2012-11-03">{{ each_page_comment.comment.c_time|date:"Y-m-d H:i:s" }}</time>
 
                                         <div class="evaluation">
                                             <div class="quality">
-                                                <strong>Quality</strong>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a href="#"></a>
-                                                <a href="#"></a>
+                                                {% for star in each_page_comment.star_list %}
+                                    {% ifequal star 2 %}
+                                        <a class="plus" ></a>
+                                    {% endifequal %}
+                                    {% ifequal star 1 %}
+                                        <a class="plus_minus" ></a>
+                                    {% endifequal %}
+                                    {% ifequal star 0 %}
+                                        <a  ></a>
+                                    {% endifequal %}
+                                {% endfor %}
                                             </div>
-                                            <div class="price">
-                                                <strong>Price</strong>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus_minus" href="#"></a>
-                                                <a href="#"></a>
-                                            </div>
+                                            
                                             <div class="clear"></div>
                                         </div><!-- .evaluation -->
 
-                                        <p>Suspendisse at placerat turpis. Duis luctus erat vel magna pharetra aliquet.
-                                            Maecenas tincidunt feugiat ultricies. Phasellus et dui risus. Vestibulum
-                                            adipiscing, eros quis lobortis dictum.</p>
+                                        <p>{{ each_page_comment.comment.content }}</p>
                                     </li>
+                                
+                                {% endfor %}                              
 
-                                    <li>
-                                        <div class="autor">Mike Example</div>
-                                        ,
-                                        <time datetime="2012-11-03">03.11.2012</time>
 
-                                        <div class="evaluation">
-                                            <div class="quality">
-                                                <strong>Quality</strong>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus_minus" href="#"></a>
-                                            </div>
-                                            <div class="price">
-                                                <strong>Price</strong>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a href="#"></a>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .evaluation -->
 
-                                        <p>Etiam mollis volutpat odio, id euismod justo gravida a. Aliquam erat
-                                            volutpat. Phasellus faucibus venenatis lorem, vitae commodo elit pretium et.
-                                            Duis rhoncus lobortis congue. Vestibulum et purus dui, vel porta lectus. Sed
-                                            vulputate pulvinar adipiscing.</p>
-                                    </li>
                                 </ul><!-- .comments -->
 
-                                <form class="add_comments">
-                                    <h4>Write Your Own Review</h4>
+
+                                {% if already_comment %}
+                                {% else %}
+
+                                <form class="add_comments" id="add_comments">
+                                    <h4>写下对此书的评价</h4>
 
                                     <div class="evaluation">
                                         <div class="quality">
-                                            <strong>Quality</strong><sup class="surely">*</sup>
-                                            <input class="niceRadio" type="radio" name="quality" value="1"/><span
+                                            <strong>评分：</strong>
+                                            <input  type="radio" name="quality_radio" value="1"/><span
                                                 class="eva_num">1</span>
-                                            <input class="niceRadio" type="radio" name="quality" value="2"/><span
+                                            <input  type="radio" name="quality_radio" value="2"/><span
                                                 class="eva_num">2</span>
-                                            <input class="niceRadio" type="radio" name="quality" value="3"/><span
+                                            <input  type="radio" name="quality_radio" value="3"/><span
                                                 class="eva_num">3</span>
-                                            <input class="niceRadio" type="radio" name="quality" value="4"/><span
+                                            <input  type="radio" name="quality_radio" value="4"/><span
                                                 class="eva_num">4</span>
-                                            <input class="niceRadio" type="radio" name="quality" value="5"/><span
-                                                class="eva_num">5</span>
-                                        </div>
-                                        <div class="price">
-                                            <strong>Price</strong><sup class="surely">*</sup>
-                                            <input class="niceRadio" type="radio" name="price" value="1"/><span
-                                                class="eva_num">1</span>
-                                            <input class="niceRadio" type="radio" name="price" value="2"/><span
-                                                class="eva_num">2</span>
-                                            <input class="niceRadio" type="radio" name="price" value="3"/><span
-                                                class="eva_num">3</span>
-                                            <input class="niceRadio" type="radio" name="price" value="4"/><span
-                                                class="eva_num">4</span>
-                                            <input class="niceRadio" type="radio" name="price" value="5"/><span
+                                            <input  type="radio" name="quality_radio" value="5"/><span
                                                 class="eva_num">5</span>
                                         </div>
                                         <div class="clear"></div>
                                     </div><!-- .evaluation -->
 
-                                    <div class="nickname">
-                                        <strong>Nickname</strong><sup class="surely">*</sup><br/>
-                                        <input type="text" name="" class="" value=""/>
-                                    </div><!-- .nickname -->
-
-                                    <div class="your_review">
-                                        <strong>Summary of Your Review</strong><sup class="surely">*</sup><br/>
-                                        <input type="text" name="" class="" value=""/>
-                                    </div><!-- .your_review -->
 
                                     <div class="clear"></div>
 
                                     <div class="text_review">
-                                        <strong>Review</strong><sup class="surely">*</sup><br/>
-                                        <textarea name="text"></textarea>
-                                        <i>Note: HTML is not translated!</i>
+                                        <strong>评论：</strong><br/>
+                                        <textarea id = "comment_content" name="text"></textarea>
                                     </div><!-- .text_review -->
 
-                                    <input type="submit" value="Submit Review"/>
+                                    <input id="btn_submit_comment"  value="发表评论" type="button"/>
                                 </form><!-- .add_comments -->
+                                {% endif %}
+
                                 <div class="clear"></div>
-                            </div><!-- .tab2 .tab_body -->
+                            </div><!-- .tab2 .tab_body -->                            
 
                             <div class="tab3 tab_body">
                                 <h4>Custom Tab</h4>
@@ -580,6 +542,65 @@
             });
         })
     </script>
+
+    <!-- 这是是评论区设计的js代码 -->
+
+                            <!-- 如果没有买过这本书，那么按钮无功能 -->
+
+                            {% if user_buy %}
+
+                             <!-- 点击按钮之后，保存新发表的评论，然后局部刷新评论区 -->
+                            <script type="text/javascript">
+                            
+                                $(document).ready(function(){
+                                    $("#btn_submit_comment").click(function(){
+                                        var quality = "0";
+                                        var radios = document.getElementsByName("quality_radio");
+                                        for(var i = 0 ;i<radios.length;i++){
+                                            if(radios[i].checked){
+                                                quality = radios[i].value
+                                            }
+                                        }
+                                        var content = document.getElementById("comment_content").value;
+                                        if(quality==="0"){
+                                            alert("请选择评分！");
+                                        } else {
+                                            if(content===""){
+                                                alert("请填写评论！");
+                                            }else {
+                                                var data = {
+                                                    "quality": quality,
+                                                    "content": content,
+                                                };
+                                                $.getJSON('/show_comments/', data, function(data){
+                                                        $("#comments").html(data.main_data)
+                                                }) ;
+                                                layer.msg("书评发表成功！");
+                                                $('#add_comments').css('display','none');
+                                            }
+                                        }
+                                    })
+                                })
+
+                            </script>
+
+                            {% else %}
+                            <script type="text/javascript">
+                                $(document).ready(function(){
+                                    $('#comment_content').css('readonly','readonly');
+                                    $("#btn_submit_comment").click(function(){
+                                        layer.msg("你未购买这本书，无法评论！");
+                                    })
+                                })
+                            </script>
+
+                            {% endif %}
+
+                           
+
+
+
+
 
 
 {% endblock %}
