@@ -19,6 +19,7 @@ from django.contrib import admin
 from after_sold import views as after_sold_views
 from login_manage import views as login_manage_views
 from watch_buy import views as watch_buy_views
+from after_sold.views import *
 
 admin.site.site_header = '系统管理'
 admin.site.site_title = '系统管理'
@@ -42,6 +43,8 @@ urlpatterns = [
     url(r'^update_user/', login_manage_views.update_user),
     url(r'^product_page/', watch_buy_views.good_detail),
     url(r'^add_order/', watch_buy_views.add_order),
+    url(r'^past_comment/', post_comments),
+    url(r'^show_comments/',watch_buy_views.show_comments),
     url(r'^see_order/', after_sold_views.see_order),
     url(r'^order_detail/', after_sold_views.order_detail),
     url(r'^delete_item/', watch_buy_views.delete_item),

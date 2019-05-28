@@ -1,9 +1,18 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+import json
 from watch_buy import models as watch_buy_models
 import datetime
 import time
 # Create your views here.
+
+
+def post_comments(request):
+    content = request.GET.get('content')
+    print(content)
+    isbn = request.GET.get('isbn')
+    print(isbn)
+    return render("/index/")
 
 
 def see_order(request):

@@ -1546,6 +1546,10 @@ a.more:hover{text-decoration: underline!important;}
 .product_page .entry_content .review a.plus{
 	background-position: 100% 0;
 }
+
+.product_page .entry_content .review a.plus_minus{
+	background-position: 50% 0;
+}
 .product_page .entry_content .review a.add_review{
 	display: block;
 	float: left;
@@ -1783,7 +1787,7 @@ a.more:hover{text-decoration: underline!important;}
 	float: left;
 	height: 14px;
 	width: 14px;
-	margin: 0px 2px 0 0;
+	margin: 6px 2px 0 0;
 	background: url(../images/review.png) no-repeat 0 0;
 }
 .evaluation .quality a.plus,
