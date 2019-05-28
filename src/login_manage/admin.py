@@ -18,6 +18,9 @@ class UserAdmin(admin.ModelAdmin):
     ]
     list_display = ['studentID', 'name', 'email', 'user_ban_status']
     actions = ['ban_user', 'permit_user']
+    list_filter = [
+        ('is_banned', admin.BooleanFieldListFilter)
+    ]
     form = UserForm
 
     def ban_user(self, request, queryset):

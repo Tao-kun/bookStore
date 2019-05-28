@@ -11,14 +11,14 @@ class Goods(models.Model):
     GoodISBN = models.CharField(max_length=50, primary_key=True, verbose_name='ISBN')
     GoodName = models.CharField(max_length=255, unique=True, verbose_name='书籍名称')
     GoodPrice = models.FloatField(verbose_name='单价')
-    GoodAuthor = models.CharField(max_length=255, null=True, verbose_name='作者')
-    GoodIntro = models.TextField(null=True, verbose_name='商品介绍')
+    GoodAuthor = models.CharField(max_length=255, null=True, blank=True, verbose_name='作者')
+    GoodIntro = models.TextField(null=True, blank=True, verbose_name='商品介绍')
     GoodRemain = models.IntegerField(default=0, verbose_name='库存')
     GoodDiscount = models.FloatField(default=1.0, verbose_name='折扣')
     IsForSale = models.IntegerField(default=0, verbose_name='是否打折')
     IsNew = models.IntegerField(default=0, verbose_name='是否新品')
-    Intro_pic = models.ImageField(null=True, verbose_name='介绍图片')
-    Category = models.CharField(null=True, max_length=20, verbose_name='分类')
+    Intro_pic = models.ImageField(null=True, blank=True, verbose_name='介绍图片')
+    Category = models.CharField(null=True, blank=True, max_length=20, verbose_name='分类')
 
     def __str__(self):
         return '{}({})'.format(self.GoodName, self.GoodISBN)
@@ -73,7 +73,7 @@ class Order(models.Model):
     zipcode = models.CharField(max_length=25, verbose_name='收货人邮编')
     qq = models.CharField(max_length=15, null=True, blank=True, verbose_name='收货人QQ')
     IsCompleted = models.IntegerField(default=0, verbose_name='订单是否完成')
-    Comment = models.CharField(max_length=500, blank=True, null=True, verbose_name='用户评论')
+    Comment = models.CharField(max_length=500, null=True, blank=True, verbose_name='用户评论')
     IsReturn = models.IntegerField(default=0, verbose_name='是否退回')
 
     def __str__(self):

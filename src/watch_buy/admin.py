@@ -42,6 +42,10 @@ class GoodsAdmin(admin.ModelAdmin):
     list_display = ['GoodName', 'GoodISBN', 'Category', 'GoodRemain', 'show_discount', 'show_new']
     inlines = [GoodsPicInline]
     actions = ['set_discount', 'unset_discount', 'set_new_item', 'unset_new_item']
+    list_filter = [
+        ('IsForSale', admin.BooleanFieldListFilter),
+        ('IsNew', admin.BooleanFieldListFilter)
+    ]
 
     def set_discount(self, request, queryset):
         rows_updated = queryset.update(IsForSale=1)
@@ -95,6 +99,14 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderGoodInline]
     actions = ['set_cancel', 'set_canceled', 'set_complete', 'set_handle', 'set_return', 'set_ship',
                'unset_cancel', 'unset_canceled', 'unset_complete', 'unset_handle', 'unset_return', 'unset_ship']
+    list_filter = [
+        ('IsCancle', admin.BooleanFieldListFilter),
+        ('IsHandled', admin.BooleanFieldListFilter),
+        ('IsShipped', admin.BooleanFieldListFilter),
+        ('IsCompleted', admin.BooleanFieldListFilter),
+        ('IsCancled', admin.BooleanFieldListFilter),
+        ('IsReturn', admin.BooleanFieldListFilter)
+    ]
 
     def show_cancel(self, obj):
         if obj.IsCancle == 0:
