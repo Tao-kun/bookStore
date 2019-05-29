@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 from login_manage import models
 from login_manage.forms import LoginForm
 from login_manage.models import User
+import watch_buy.models as watch_buy_model
 
 
 # 主页，返回登录信息到主页以判断是登录注册还是注销
@@ -15,6 +16,17 @@ def index(request):
     is_login = request.session.get('is_login', None)
     if is_login:
         user = User.objects.get(pk=request.session.get('studentID'))
+
+    rtn_list = watch_buy_model.Goods.objects.filter(IsForSale=1)
+    for rtn in rtn_list:
+        rtn.GoodPrice = rtn.GoodPrice * rtn.GoodDiscount
+    rtn_pic = []
+
+    for i in range(len(rtn_list)):
+        GoodID = rtn_list[i].GoodISBN
+        pic_tmp = watch_buy_model.GoodsPic.objects.filter(GoodISBN_id=GoodID)
+        rtn_pic.append(pic_tmp[0])
+    rtn_dic = dict(map(lambda x, y: [x, y], rtn_pic, rtn_list))
     return render(request, "login_manage/index.html", locals())
 
 

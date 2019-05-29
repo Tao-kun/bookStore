@@ -104,7 +104,7 @@ def shopping_cart(request):
         GoodID = good_num_list[i].GoodID_id
         pic_tmp = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=GoodID)
         info_tmp = watch_buy_models.Goods.objects.get(GoodISBN=GoodID)
-
+        info_tmp.GoodPrice = info_tmp.GoodPrice * info_tmp.GoodDiscount
         Qty_tmp = watch_buy_models.Cart.objects.get(
             GoodID_id=GoodID, studentID_id=studentID)
         sum = Qty_tmp.Qty * info_tmp.GoodPrice
@@ -190,7 +190,21 @@ def comments_sort_rule(comment: Comment):  # 从数据库获取的评论列表�
 # 查看商品详细信息
 def good_detail(request):
     Good_ISBN = request.GET.get('ISBN')
+    class Recommend:
+        def __init__(self, good, pic):
+            self.good = good
+            self.pic = pic
+    Good_recommend = Comment.objects.filter(quality__gt=4)
+    ISBN_set = set()
+    for gr in Good_recommend:
+        ISBN_set.add(gr.good.GoodISBN)
+    Good_recommend_rtn = []
+    for isbn in ISBN_set:
+            ojb = watch_buy_models.Goods.objects.get(GoodISBN=isbn)
+            pic = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=isbn)[0]
+            Good_recommend_rtn.append(Recommend(ojb, pic))
     Good = watch_buy_models.Goods.objects.get(GoodISBN=Good_ISBN)
+    Good.GoodPrice *= Good.GoodDiscount
     Good_pic_list = watch_buy_models.GoodsPic.objects.filter(
         GoodISBN_id=Good_ISBN)
     studentID = request.session['studentID']
@@ -202,7 +216,10 @@ def good_detail(request):
     total_quality = 0
     for comment in comments:
         total_quality += comment.quality
-    quality = total_quality / (comments_number * 1.0)
+    if comments_number != 0:
+        quality = total_quality / (comments_number * 1.0)
+    else:
+        quality = 5
     quality_star_list = quality_stars_list(quality)
 
     page_comments = []
@@ -212,11 +229,11 @@ def good_detail(request):
             comment, quality_starts_lists_simple(comment.quality))
         page_comments.append(page_comment)
 
-    tmp_order = Order.objects.filter(user = user, IsCompleted=1)
+    tmp_order = watch_buy_models.Order.objects.filter(user = user, IsCompleted=1)
     user_buy = False
     if tmp_order.exists():
         for each_order in tmp_order:
-            tmp = OrderGood.objects.filter(order_id=each_order.orderid,good=Good)
+            tmp = watch_buy_models.OrderGood.objects.filter(order_id=each_order.orderid,good=Good)
             if tmp.exists():
                 user_buy = True
     

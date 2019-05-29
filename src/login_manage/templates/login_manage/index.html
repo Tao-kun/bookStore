@@ -4,16 +4,16 @@
     首页
 {% endblock %}
 {% block islogin %}
-{% if is_login %}
-                    <div class="welcome" id="welcome1">
-                        欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
-                    </div><!-- .welcome -->
-                {% else %}
-                    <div class="welcome" id="welcome1">
-                        欢迎您，游客 <a href="/login/">登录</a> or <a
-                            href="/login/">注册</a>.
-                    </div><!-- .welcome -->
-                {% endif %}
+    {% if is_login %}
+        <div class="welcome" id="welcome1">
+            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+        </div><!-- .welcome -->
+    {% else %}
+        <div class="welcome" id="welcome1">
+            欢迎您，游客 <a href="/login/">登录</a> or <a
+                href="/login/">注册</a>.
+        </div><!-- .welcome -->
+    {% endif %}
 {% endblock %}
 {% block content %}
     <div class="container_12">
@@ -90,313 +90,52 @@
             <div class="carousel">
                 <div class="c_header">
                     <div class="grid_10">
-                        <h2>Best Sellers</h2>
+                        <h2>促销商品</h2>
                     </div><!-- .grid_10 -->
-
-                    <div class="grid_2">
-                        <a id="next_c1" class="next arows" href="#"><span>Next</span></a>
-                        <a id="prev_c1" class="prev arows" href="#"><span>Prev</span></a>
-                    </div><!-- .grid_2 -->
                 </div><!-- .c_header -->
 
-                <div class="list_carousel">
 
-                    <ul id="list_product" class="list_product">
-                        <li class="">
-                            <div class="grid_3 product">
-                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/product_1.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                            <div class="price_old">$725.00</div>
+                    <div id="content" class="grid_9" >
+                        <div></div>
+                        <div class="grid_product">
+                            {% for x,y in rtn_dic.items %}
+                                <div class="grid_3 product" id="product">
+                                    {% if y.IsNew == 1 %}
+                                        <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                                    {% elif y.IsForSale == 1 %}
+                                        <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                    {% else %}
+                                        <div></div>
+                                    {% endif %}
+                                    <div class="prev">
+                                        <a href="/product_page/?ISBN={{ y.GoodISBN }}">
+                                            <img id="Good" src="/static/media/{{ x.GoodPic }}" alt="" title=""/>
+                                        </a>
+                                    </div><!-- .prev -->
+                                    <h3 class="title" id="good_name">{{ y.GoodName }}</h3>
+                                    <div class="cart">
+                                        <div class="price">
+                                            <div class="vert">
+                                                <div class="price_new" id="price">{{ y.GoodPrice }}</div>
+
+                                            </div>
                                         </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
+                                        <a class="obn"></a>
+                                        <a class="like" id="checkout" name="checkout"></a>
+                                        <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                    </div><!-- .cart -->
+                                </div><!-- .grid_3 -->
 
-                        <li class="">
-                            <div class="grid_3 product">
-                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/product_2.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                            <div class="price_old">$725.00</div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
+                            {% endfor %}
+                        </div>
+                    </div>
 
-                        <li class="">
-                            <div class="grid_3 product">
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/product_3.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
 
-                        <li class="">
-                            <div class="grid_3 product">
-                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/product_4.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                            <div class="price_old">$725.00</div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
+<div class="clear"></div>
 
-                        <li class="">
-                            <div class="grid_3 product">
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/product_8.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                            <div class="price_old">$725.00</div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
-
-                    </ul><!-- #list_product -->
-                </div><!-- .list_carousel -->
-            </div><!-- .carousel -->
-
-            <div class="carousel">
-                <div class="c_header">
-                    <div class="grid_10">
-                        <h2>Featured Products</h2>
-                    </div><!-- .grid_10 -->
-
-                    <div class="grid_2">
-                        <a id="next_c2" class="next arows" href="#"><span>Next</span></a>
-                        <a id="prev_c2" class="prev arows" href="#"><span>Prev</span></a>
-                    </div><!-- .grid_2 -->
-                </div><!-- .c_header -->
-
-                <div class="list_carousel">
-                    <ul id="list_product2" class="list_product">
-                        <li class="">
-                            <div class="grid_3 product">
-                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/product_5.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                            <div class="price_old">$725.00</div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
-
-                        <li class="">
-                            <div class="grid_3 product">
-                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/product_6.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                            <div class="price_old">$725.00</div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
-
-                        <li class="">
-                            <div class="grid_3 product">
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/product_7.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
-
-                        <li class="">
-                            <div class="grid_3 product">
-                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/produkt_slid1.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                            <div class="price_old">$725.00</div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
-
-                        <li class="">
-                            <div class="grid_3 product">
-                                <div class="prev">
-                                    <a href="../../../watch_buy/templates/watch_buy/product_page.html"><img
-                                            src="../../../static/images/product_9.png" alt="" title=""/></a>
-                                </div><!-- .prev -->
-                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new">$550.00</div>
-                                            <div class="price_old">$725.00</div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="obn"></a>
-                                    <a href="#" class="like"></a>
-                                    <a href="#" class="bay"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-                        </li>
-
-                    </ul><!-- #list_product2 -->
-                </div><!-- .list_carousel -->
-            </div><!-- .carousel -->
-
-            <div id="content_bottom">
-                <div class="grid_4">
-                    <div class="bottom_block about_as">
-                        <h3>About Us</h3>
-                        <p>A block of text is a stack of line boxes. In the case of 'left', 'right' and 'center', this
-                            property specifies how the inline-level boxes within each line box align with respect to the
-                            line box's </p>
-                        <p>Alignment is not with respect to the viewport. In the case of 'justify', this property
-                            specifies that the inline-level boxes are to be made flush with both sides of the line box
-                            if possible.</p>
-                        <p>by expanding or contracting the contents of inline boxes, else aligned as for the initial
-                            value.</p>
-                    </div><!-- .about_as -->
-                </div><!-- .grid_4 -->
-
-                <div class="grid_4">
-                    <div class="bottom_block news">
-                        <h3>News</h3>
-                        <ul>
-                            <li>
-                                <time datetime="2012-03-03">3 january 2012</time>
-                                <a href="#">A block of text is a stack of line boxes. In the case of 'left', 'right' and
-                                    'center', this property specifies</a>
-                            </li>
-
-                            <li>
-                                <time datetime="2012-02-03">2 january 2012</time>
-                                <a href="#">A block of text is a stack of line boxes. In the case of 'left', 'right' and
-                                    'center', this property specifies</a>
-                            </li>
-
-                            <li>
-                                <time datetime="2012-01-03">1 january 2012</time>
-                                <a href="#">A block of text is a stack of line boxes. In the case of 'left', 'right' and
-                                    'center', this property specifies how the inline-level boxes within each line</a>
-                            </li>
-                        </ul>
-                    </div><!-- .news -->
-                </div><!-- .grid_4 -->
-
-                <div class="grid_4">
-                    <div class="bottom_block newsletter">
-                        <h3>Newsletter</h3>
-                        <p>Cursus in dapibus ultrices velit fusce. Felis lacus erat. Fermentum parturient lacus
-                            tristique habitant nullam morbi et odio nibh mus dictum tellus erat.</p>
-                        <form class="letter_form">
-                            <input type="email" name="newsletter" class="l_form" value=""
-                                   placeholder="Enter your email address..."/>
-                            <input type="submit" id="submit" value=""/>
-                        </form>
-                        <div class="lettel_description">
-                            Vel lobortis gravida. Cursus in dapibus ultrices velit fusce. Felis lacus erat.
-                        </div><!-- .lettel_description -->
-                    </div><!-- .newsletter -->
-                </div><!-- .grid_4 -->
-            </div>
-        </div>
     </section>
     <script src="{% static 'js/layer/layer.js' %}"></script>
+    <script src="{% static 'js/jump.js' %}"></script>
     <script>
         function logout() {
             layer.msg('已退出');

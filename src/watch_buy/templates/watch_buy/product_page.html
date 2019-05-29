@@ -142,13 +142,19 @@
 
                 <div class="product_page">
                     <div class="grid_4 img_slid" id="products">
-                        <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                        {% if Good.IsForSale == 1 %}
+                            <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                        {% elif Good.IsNew == 1 %}
+                            <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                        {% else %}
+                            <div></div>
+                        {% endif %}
                         <div class="preview slides_container">
                             <div class="prev_bg">
                                 <a id="fdzoom" href="http://127.0.0.1:8000/static/media/{{ Good_pic_list.0.GoodPic }}"
                                    class="jqzoom" rel='gal1' title="">
                                     <img id="mainzoom" src="/static/media/{{ Good_pic_list.0.GoodPic }}" title=""
-                                         alt=""/>
+                                         alt="" height="440px" width="440px"/>
                                 </a>
                             </div>
                         </div><!-- .prev -->
@@ -156,20 +162,25 @@
                         <ul class="pagination clearfix" id="thumblist">
 
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.0.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.0.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.0.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.0.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.0.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.0.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.1.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.1.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.1.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.1.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.1.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.1.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.2.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.2.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.2.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.2.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.2.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.2.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.3.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.3.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.3.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.3.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.3.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.3.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.4.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.4.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.4.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.4.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.4.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.4.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                         </ul>
 
 
@@ -186,13 +197,13 @@
                             <div class="review">
                                 {% for quality_star in quality_star_list %}
                                     {% ifequal quality_star 2 %}
-                                        <a class="plus" ></a>
+                                        <a class="plus"></a>
                                     {% endifequal %}
                                     {% ifequal quality_star 1 %}
-                                        <a class="plus_minus" ></a>
+                                        <a class="plus_minus"></a>
                                     {% endifequal %}
                                     {% ifequal quality_star 0 %}
-                                        <a  ></a>
+                                        <a></a>
                                     {% endifequal %}
                                 {% endfor %}
                                 <span>{{ comments_number }} 条书评</span>
@@ -209,12 +220,7 @@
                                 </div><!-- .availability_sku -->
 
                                 <div class="price">
-                                    {% if Good.GoodDiscount != 1 %}
                                         <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
-                                        <div class="price_old">${{ Good.GoodPrice }}</div>
-                                    {% else %}
-                                        <div class="price_new" id="price">${{ Good.GoodPrice }}</div> 
-                                    {% endif %}
 
                                 </div><!-- .price -->
                             </div><!-- .ava_price -->
@@ -239,49 +245,48 @@
 
                     <div class="grid_9">
                         <div id="wrapper_tab" class="tab1">
-                            <a href="#" class="tab1 tab_link">Description</a>
+                            <a href="#" class="tab1 tab_link">介绍</a>
                             <a href="#" class="tab2 tab_link">书评</a>
 
                             <div class="clear"></div>
 
                             <div class="tab1 tab_body">
-                                <img src="/static/images/{{ Good.Intro_pic }}">
+                                <img src="/static/media/{{ Good.Intro_pic }}">
                                 <div class="clear"></div>
                             </div><!-- .tab1 .tab_body -->
 
                             <div class="tab2 tab_body">
-                                <ul class="comments" id = "comments">
+                                <ul class="comments" id="comments">
 
-                                {% for each_page_comment in page_comments %}
+                                    {% for each_page_comment in page_comments %}
 
-                                    <li>
-                                        <div class="autor">{{each_page_comment.comment.user.name}}</div>
-                                        ,
-                                        <time datetime="2012-11-03">{{ each_page_comment.comment.c_time|date:"Y-m-d H:i:s" }}</time>
+                                        <li>
+                                            <div class="autor">{{ each_page_comment.comment.user.name }}</div>
+                                            ,
+                                            <time datetime="2012-11-03">{{ each_page_comment.comment.c_time|date:"Y-m-d H:i:s" }}</time>
 
-                                        <div class="evaluation">
-                                            <div class="quality">
-                                                {% for star in each_page_comment.star_list %}
-                                    {% ifequal star 2 %}
-                                        <a class="plus" ></a>
-                                    {% endifequal %}
-                                    {% ifequal star 1 %}
-                                        <a class="plus_minus" ></a>
-                                    {% endifequal %}
-                                    {% ifequal star 0 %}
-                                        <a  ></a>
-                                    {% endifequal %}
-                                {% endfor %}
-                                            </div>
-                                            
-                                            <div class="clear"></div>
-                                        </div><!-- .evaluation -->
+                                            <div class="evaluation">
+                                                <div class="quality">
+                                                    {% for star in each_page_comment.star_list %}
+                                                        {% ifequal star 2 %}
+                                                            <a class="plus"></a>
+                                                        {% endifequal %}
+                                                        {% ifequal star 1 %}
+                                                            <a class="plus_minus"></a>
+                                                        {% endifequal %}
+                                                        {% ifequal star 0 %}
+                                                            <a></a>
+                                                        {% endifequal %}
+                                                    {% endfor %}
+                                                </div>
 
-                                        <p>{{ each_page_comment.comment.content }}</p>
-                                    </li>
-                                
-                                {% endfor %}                              
+                                                <div class="clear"></div>
+                                            </div><!-- .evaluation -->
 
+                                            <p>{{ each_page_comment.comment.content }}</p>
+                                        </li>
+
+                                    {% endfor %}
 
 
                                 </ul><!-- .comments -->
@@ -290,40 +295,40 @@
                                 {% if already_comment %}
                                 {% else %}
 
-                                <form class="add_comments" id="add_comments">
-                                    <h4>写下对此书的评价</h4>
+                                    <form class="add_comments" id="add_comments">
+                                        <h4>写下对此书的评价</h4>
 
-                                    <div class="evaluation">
-                                        <div class="quality">
-                                            <strong>评分：</strong>
-                                            <input  type="radio" name="quality_radio" value="1"/><span
-                                                class="eva_num">1</span>
-                                            <input  type="radio" name="quality_radio" value="2"/><span
-                                                class="eva_num">2</span>
-                                            <input  type="radio" name="quality_radio" value="3"/><span
-                                                class="eva_num">3</span>
-                                            <input  type="radio" name="quality_radio" value="4"/><span
-                                                class="eva_num">4</span>
-                                            <input  type="radio" name="quality_radio" value="5"/><span
-                                                class="eva_num">5</span>
-                                        </div>
+                                        <div class="evaluation">
+                                            <div class="quality">
+                                                <strong>评分：</strong>
+                                                <input type="radio" name="quality_radio" value="1"/><span
+                                                    class="eva_num">1</span>
+                                                <input type="radio" name="quality_radio" value="2"/><span
+                                                    class="eva_num">2</span>
+                                                <input type="radio" name="quality_radio" value="3"/><span
+                                                    class="eva_num">3</span>
+                                                <input type="radio" name="quality_radio" value="4"/><span
+                                                    class="eva_num">4</span>
+                                                <input type="radio" name="quality_radio" value="5"/><span
+                                                    class="eva_num">5</span>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div><!-- .evaluation -->
+
+
                                         <div class="clear"></div>
-                                    </div><!-- .evaluation -->
 
+                                        <div class="text_review">
+                                            <strong>评论：</strong><br/>
+                                            <textarea id="comment_content" name="text"></textarea>
+                                        </div><!-- .text_review -->
 
-                                    <div class="clear"></div>
-
-                                    <div class="text_review">
-                                        <strong>评论：</strong><br/>
-                                        <textarea id = "comment_content" name="text"></textarea>
-                                    </div><!-- .text_review -->
-
-                                    <input id="btn_submit_comment"  value="发表评论" type="button"/>
-                                </form><!-- .add_comments -->
+                                        <input id="btn_submit_comment" value="发表评论" type="button"/>
+                                    </form><!-- .add_comments -->
                                 {% endif %}
 
                                 <div class="clear"></div>
-                            </div><!-- .tab2 .tab_body -->                            
+                            </div><!-- .tab2 .tab_body -->
 
                             <div class="tab3 tab_body">
                                 <h4>Custom Tab</h4>
@@ -340,102 +345,27 @@
                     <div class="related">
                         <div class="c_header">
                             <div class="grid_7">
-                                <h2>Related Products</h2>
+                                <h2>店主推荐</h2>
                             </div><!-- .grid_7 -->
-
-                            <div class="grid_2">
-                                <a id="next_c1" class="next arows" href="#"><span>Next</span></a>
-                                <a id="prev_c1" class="prev arows" href="#"><span>Prev</span></a>
-                            </div><!-- .grid_2 -->
                         </div><!-- .c_header -->
 
                         <div class="list_carousel">
 
                             <ul id="list_product" class="list_product">
-                                <li class="">
-                                    <div class="grid_3 product">
-                                        <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                        <div class="prev">
-                                            <a href="product_page.html"><img src="../../../static/images/product_1.png"
-                                                                             alt="" title=""/></a>
-                                        </div><!-- .prev -->
-                                        <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                        <div class="cart">
-                                            <div class="price">
-                                                <div class="vert">
-                                                    <div class="price_new">$550.00</div>
-                                                    <div class="price_old">$725.00</div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="obn"></a>
-                                            <a href="#" class="like"></a>
-                                            <a href="#" class="bay"></a>
-                                        </div><!-- .cart -->
-                                    </div><!-- .grid_3 -->
-                                </li>
+                                {% for Good_rec in Good_recommend_rtn %}
+                                    <li class="">
+                                        <div style="padding-left: 10%">
+                                            <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                            <div class="prev">
+                                                <a><img
+                                                        src="/static/media/{{ Good_rec.pic.GoodPic }}"
+                                                        alt="" title="" width="200px" height="200px"/></a>
+                                            </div><!-- .prev -->
+                                        </div><!-- .grid_3 -->
+                                    </li>
+                                {% endfor %}
 
-                                <li class="">
-                                    <div class="grid_3 product">
-                                        <div class="prev">
-                                            <a href="product_page.html"><img src="../../../static/images/product_2.png"
-                                                                             alt="" title=""/></a>
-                                        </div><!-- .prev -->
-                                        <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                        <div class="cart">
-                                            <div class="price">
-                                                <div class="vert">
-                                                    <div class="price_new">$550.00</div>
-                                                    <div class="price_old">$725.00</div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="obn"></a>
-                                            <a href="#" class="like"></a>
-                                            <a href="#" class="bay"></a>
-                                        </div><!-- .cart -->
-                                    </div><!-- .grid_3 -->
-                                </li>
 
-                                <li class="">
-                                    <div class="grid_3 product">
-                                        <div class="prev">
-                                            <a href="product_page.html"><img src="../../../static/images/product_3.png"
-                                                                             alt="" title=""/></a>
-                                        </div><!-- .prev -->
-                                        <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                        <div class="cart">
-                                            <div class="price">
-                                                <div class="vert">
-                                                    <div class="price_new">$550.00</div>
-                                                    <div class="price_old">$725.00</div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="obn"></a>
-                                            <a href="#" class="like"></a>
-                                            <a href="#" class="bay"></a>
-                                        </div><!-- .cart -->
-                                    </div><!-- .grid_3 -->
-                                </li>
-
-                                <li class="">
-                                    <div class="grid_3 product">
-                                        <div class="prev">
-                                            <a href="product_page.html"><img src="../../../static/images/product_4.png"
-                                                                             alt="" title=""/></a>
-                                        </div><!-- .prev -->
-                                        <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                        <div class="cart">
-                                            <div class="price">
-                                                <div class="vert">
-                                                    <div class="price_new">$550.00</div>
-                                                    <div class="price_old">$725.00</div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="obn"></a>
-                                            <a href="#" class="like"></a>
-                                            <a href="#" class="bay"></a>
-                                        </div><!-- .cart -->
-                                    </div><!-- .grid_3 -->
-                                </li>
                             </ul><!-- #list_product -->
                         </div><!-- .list_carousel -->
                     </div><!-- .carousel -->
@@ -460,7 +390,7 @@
     <script src="{% static "js/layer/layer.js" %}"></script>
     <script>
         function checkout() {
-            var good_price = document.getElementById('price').innerHTML.replace("$","");
+            var good_price = document.getElementById('price').innerHTML.replace("$", "");
             var good_name = document.getElementById('GoodName').innerHTML;
             window.location.href = "/checkout/?good_name=" + good_name + "&good_price=" + good_price;
         }
@@ -468,7 +398,7 @@
     <script>
         function add_to_cart() {
             var good_name = document.getElementById('GoodName').innerHTML;
-            var good_price = document.getElementById('price').innerHTML.replace("$","");
+            var good_price = document.getElementById('price').innerHTML.replace("$", "");
             var good_pic = document.getElementById('mainzoom').getAttribute("src");
             var qty = document.getElementById('qty').value;
             $.ajax({
@@ -545,58 +475,58 @@
 
     <!-- 这是是评论区设计的js代码 -->
 
-                            <!-- 如果没有买过这本书，那么按钮无功能 -->
+    <!-- 如果没有买过这本书，那么按钮无功能 -->
 
-                            {% if user_buy %}
+    {% if user_buy %}
 
-                             <!-- 点击按钮之后，保存新发表的评论，然后局部刷新评论区 -->
-                            <script type="text/javascript">
-                            
-                                $(document).ready(function(){
-                                    $("#btn_submit_comment").click(function(){
-                                        var quality = "0";
-                                        var radios = document.getElementsByName("quality_radio");
-                                        for(var i = 0 ;i<radios.length;i++){
-                                            if(radios[i].checked){
-                                                quality = radios[i].value
-                                            }
-                                        }
-                                        var content = document.getElementById("comment_content").value;
-                                        if(quality==="0"){
-                                            alert("请选择评分！");
-                                        } else {
-                                            if(content===""){
-                                                alert("请填写评论！");
-                                            }else {
-                                                var data = {
-                                                    "quality": quality,
-                                                    "content": content,
-                                                };
-                                                $.getJSON('/show_comments/', data, function(data){
-                                                        $("#comments").html(data.main_data)
-                                                }) ;
-                                                layer.msg("书评发表成功！");
-                                                $('#add_comments').css('display','none');
-                                            }
-                                        }
-                                    })
-                                })
+        <!-- 点击按钮之后，保存新发表的评论，然后局部刷新评论区 -->
+        <script type="text/javascript">
 
-                            </script>
+            $(document).ready(function () {
+                $("#btn_submit_comment").click(function () {
+                    var quality = "0";
+                    var radios = document.getElementsByName("quality_radio");
+                    for (var i = 0; i < radios.length; i++) {
+                        if (radios[i].checked) {
+                            quality = radios[i].value
+                        }
+                    }
+                    var content = document.getElementById("comment_content").value;
+                    if (quality === "0") {
+                        alert("请选择评分！");
+                    } else {
+                        if (content === "") {
+                            alert("请填写评论！");
+                        } else {
+                            var data = {
+                                "quality": quality,
+                                "content": content,
+                            };
+                            $.getJSON('/show_comments/', data, function (data) {
+                                $("#comments").html(data.main_data)
+                            });
+                            layer.msg("书评发表成功！");
+                            $('#add_comments').css('display', 'none');
+                        }
+                    }
+                })
+            })
 
-                            {% else %}
-                            <script type="text/javascript">
-                                $(document).ready(function(){
-                                    $('#comment_content').css('readonly','readonly');
-                                    $("#btn_submit_comment").click(function(){
-                                        layer.msg("你未购买这本书，无法评论！");
-                                    })
-                                })
-                            </script>
+        </script>
 
-                            {% endif %}
+    {% else %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#comment_content').css('readonly', 'readonly');
+                $("#btn_submit_comment").click(function () {
+                    layer.msg("你未购买这本书，无法评论！");
+                })
+            })
+        </script>
 
-                           
+    {% endif %}
+
+
 
 
 
