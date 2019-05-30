@@ -37,6 +37,7 @@ def login(request):
         message = ""
         if login_form.is_valid():
             studentID = login_form.cleaned_data['studentID']
+            print(studentID)
             password = login_form.cleaned_data['password']
             try:
                 user = User.objects.get(studentID=studentID)
@@ -51,6 +52,8 @@ def login(request):
                     message = "密码错误！"
             except:
                 message = "学号错误！"
+        else:
+            message = "学号错误！"
     login_form = LoginForm(request.POST)
     return render(request, "login_manage/login.html", locals())
 

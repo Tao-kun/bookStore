@@ -134,12 +134,24 @@
         }
     </script>
     <script>
+        function getUrlParam(key) {
+            // 获取参数
+            var url = window.location.search;
+            // 正则筛选地址栏
+            var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+            // 匹配目标参数
+            var result = url.substr(1).match(reg);
+            //返回参数值
+            return result ? decodeURIComponent(result[2]) : null;
+        }
+    </script>
+    <script>
         /*
             检查信息合法性，合法的话才跳转传参
             如果只有单个商品，直接传商品名
             否则，传递一个json类型的对象，到最后的交易页面，将记录插入Order表
          */
-        var good_name = getQueryString('good_name');
+        var good_name = getUrlParam('good_name');
         $('#sub').click(function () {
             var name = document.getElementById('name').value;
             var address = document.getElementById('address').value;

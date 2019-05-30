@@ -159,7 +159,7 @@ class Page_comment(object):
 
 def quality_stars_list(quality: float):
     whole_star_number = math.floor(quality)
-    print(math.modf(quality))
+
     if math.modf(quality)[1] < 0.5:
         part_star_number = False
     else:
@@ -276,6 +276,7 @@ def show_comments(request):
 def add_order(request):
     stu_id = request.session.get('studentID')
     name = request.GET.get('name')
+    Good_name = request.GET.get('good_name')
     address = request.GET.get('address')
     zipcode = request.GET.get('zipcode')
     telephone = request.GET.get('telephone')
@@ -303,8 +304,10 @@ def add_order(request):
             new_ordgood.save()
             count += 1
     else:
+        good = watch_buy_models.Goods.objects.get(GoodName=Good_name)
         ordergood = watch_buy_models.OrderGood()
         ordergood.order = order
+        ordergood.good = good
         ordergood.save()
     return render(request, "watch_buy/add_order.html")
 

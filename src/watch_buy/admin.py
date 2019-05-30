@@ -35,7 +35,7 @@ class CartAdmin(admin.ModelAdmin):
 
 class GoodsAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('基本信息', {'fields': ['GoodISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro']}),
+        ('基本信息', {'fields': ['GoodISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro', 'Publisher', 'Pages', 'PublishDate', 'PrintDate', 'Size', 'Edition']}),
         ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount', 'IsForSale', 'IsNew']}),
         ('其他', {'fields': ['Intro_pic']})
     ]
@@ -52,8 +52,9 @@ class GoodsAdmin(admin.ModelAdmin):
         self.message_user(request, "成功打折{}个商品".format(rows_updated))
 
     def unset_discount(self, request, queryset):
-        rows_updated = queryset.update(IsForSale=0)
-        self.message_user(request, "{}个商品成功恢复原价".format(rows_updated))
+        rows_updated1 = queryset.update(IsForSale=0)
+        rows_updated2 = queryset.update(GoodDiscount=1)
+        self.message_user(request, "{}个商品成功恢复原价".format(rows_updated1, rows_updated2))
 
     def set_new_item(self, request, queryset):
         rows_updated = queryset.update(IsNew=1)
