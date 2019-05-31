@@ -212,15 +212,12 @@
                             <div class="ava_price">
                                 <div class="availability_sku">
                                     <div class="availability">
-                                        Availability: <span>In stock</span>
-                                    </div>
-                                    <div class="sku">
-                                        SKU: <span>Candles OV</span>
+                                        <strong>价格：</strong>
                                     </div>
                                 </div><!-- .availability_sku -->
 
                                 <div class="price">
-                                        <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
+                                    <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
 
                                 </div><!-- .price -->
                             </div><!-- .ava_price -->
@@ -228,12 +225,18 @@
                             <div class="block_cart">
 
                                 <div class="cart">
-                                    <a class="bay" id="add_to_cart" onclick="add_to_cart()">Add to Cart</a>
+                                    {% if Good.GoodRemain != 0 %}
+                                         <a class="bay" id="add_to_cart" onclick="add_to_cart()">加入购物车</a>
                                     <input id="qty" type="text" name="" class="number" value="1"/>
                                     <span>Quantity:</span>
+                                    {% endif %}
                                 </div>
                                 <div class="cart" style="padding-top: 2%">
-                                    <a class="bay" id="add_to_cart" onclick="checkout()">Checkout</a>
+                                    {% if Good.GoodRemain != 0 %}
+                                    <a class="bay" id="add_to_cart" onclick="checkout()">结账</a>
+                                    {% else %}
+                                    <a class="bay" id="add_to_cart">此商品已经卖完辣</a>
+                                    {% endif %}
                                 </div>
                                 <div class="clear"></div>
                             </div><!-- .block_cart -->
@@ -247,7 +250,7 @@
                         <div id="wrapper_tab" class="tab1">
                             <a href="#" class="tab1 tab_link">介绍</a>
                             <a href="#" class="tab2 tab_link">书评</a>
-
+                            <a href="#" class="tab3 tab_link">详细</a>
                             <div class="clear"></div>
 
                             <div class="tab1 tab_body">
@@ -323,7 +326,7 @@
                                             <textarea id="comment_content" name="text"></textarea>
                                         </div><!-- .text_review -->
 
-                                        <input id="btn_submit_comment" value="发表评论" type="button"/>
+                                        <input id="btn_submit_comment" value="发表评论" type="button" class="btn btn-primary"/>
                                     </form><!-- .add_comments -->
                                 {% endif %}
 
@@ -331,9 +334,17 @@
                             </div><!-- .tab2 .tab_body -->
 
                             <div class="tab3 tab_body">
-                                <h4>Custom Tab</h4>
+                                <h4>书籍详细信息</h4>
+                                <ul>
+                                    <li><strong>出版社:</strong><span style="padding-left: 5%">{{ Good.Publisher }}</span></li>
+                                    <li><strong>页数:</strong><span style="padding-left: 7%">{{ Good.Pages }}</span></li>
+                                    <li><strong>出版日期:</strong><span style="padding-left: 3%">{{ Good.PublishDate }}</span></li>
+                                    <li><strong>印刷日期:</strong><span style="padding-left: 3%">{{ Good.PrintDate }}</span></li>
+                                    <li><strong>开本:</strong><span style="padding-left: 7%">{{ Good.Size }}</span></li>
+                                    <li><strong>版次:</strong><span style="padding-left: 7%">第{{ Good.Edition }}版</span></li>
+                                </ul>
                                 <div class="clear"></div>
-                            </div><!-- .tab3 .tab_body -->
+                            </div><!-- .tab1 .tab_body -->
                             <div class="clear"></div>
                         </div>
                         ​<!-- #wrapper_tab -->
@@ -353,6 +364,7 @@
 
                             <ul id="list_product" class="list_product">
                                 {% for Good_rec in Good_recommend_rtn %}
+                                    {% if forloop.counter <= 3 %}
                                     <li class="">
                                         <div style="padding-left: 10%">
                                             <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
@@ -363,6 +375,7 @@
                                             </div><!-- .prev -->
                                         </div><!-- .grid_3 -->
                                     </li>
+                                    {% endif %}
                                 {% endfor %}
 
 
