@@ -36,6 +36,11 @@
                             <a class="forgot" id="forget_password">忘记密码?</a>
                         </div><!-- .password -->
 
+                        <div class="form-group" style="width: 58%;">
+                            <strong style="padding-bottom: 2px">{{ login_form.captcha.label_tag }}</strong><br/>
+                            <div style="padding-top: 3px">{{ login_form.captcha }}</div>
+                        </div><!-- 验证码 -->                    
+
                         <div class="remember">
                             <input class="niceCheck" type="checkbox" name="rememberpasswd"/>
                             <span class="rem">记住密码</span>
@@ -57,6 +62,8 @@
             layer.msg("密码错误，请重新输入");
         {% elif message == "学号错误！" %}
             layer.msg("学号错误，请重新输入");
+         {% elif message == "验证码错误！" %}
+            layer.msg("验证码错误，请重新输入！");
         {% endif %}
     </script>
     <script>

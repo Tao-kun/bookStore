@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 
 from after_sold import views as after_sold_views
@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^product_page/', watch_buy_views.good_detail),
     url(r'^add_order/', watch_buy_views.add_order),
     url(r'^past_comment/', post_comments),
-    url(r'^show_comments/',watch_buy_views.show_comments),
+    url(r'^show_comments/', watch_buy_views.show_comments),
     url(r'^see_order/', after_sold_views.see_order),
     url(r'^order_detail/', after_sold_views.order_detail),
     url(r'^delete_item/', watch_buy_views.delete_item),
@@ -57,6 +57,6 @@ urlpatterns = [
     url(r'^comment_order/', after_sold_views.comment_order),
     url(r'^cancel_return/', after_sold_views.cancel_return),
     url(r'^search/', watch_buy_views.search),
-    url(r'^$', login_manage_views.index)
-
+    url(r'^$', login_manage_views.index),
+    url(r'captcha/', include('captcha.urls'))
 ]

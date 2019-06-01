@@ -53,7 +53,7 @@ def login(request):
             except:
                 message = "学号错误！"
         else:
-            message = "学号错误！"
+            message = "验证码错误！"
     login_form = LoginForm(request.POST)
     return render(request, "login_manage/login.html", locals())
 
