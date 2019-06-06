@@ -23,7 +23,7 @@ class Goods(models.Model):
     Pages = models.IntegerField(null=True, verbose_name='页数')
     PublishDate = models.DateField(null=True, verbose_name='出版日期')
     PrintDate = models.DateField(null=True, verbose_name='印刷日期')
-    Size = models.CharField(null=True,max_length=20, verbose_name='开本')
+    Size = models.CharField(null=True, max_length=20, verbose_name='开本')
     Edition = models.IntegerField(null=True, verbose_name='版本')
 
     def __str__(self):

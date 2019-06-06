@@ -38,7 +38,7 @@ class GoodsAdmin(admin.ModelAdmin):
         ('基本信息', {
             'fields': ['GoodISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro', 'Publisher', 'Pages',
                        'PublishDate', 'PrintDate', 'Size', 'Edition']}),
-        ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount', 'IsForSale', 'IsNew']}),
+        ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount']}),
         ('其他', {'fields': ['Intro_pic']})
     ]
     list_display = ['GoodName', 'GoodISBN', 'Category', 'GoodRemain', 'show_discount', 'show_new']
