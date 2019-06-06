@@ -35,7 +35,9 @@ class CartAdmin(admin.ModelAdmin):
 
 class GoodsAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('基本信息', {'fields': ['GoodISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro', 'Publisher', 'Pages', 'PublishDate', 'PrintDate', 'Size', 'Edition']}),
+        ('基本信息', {
+            'fields': ['GoodISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro', 'Publisher', 'Pages',
+                       'PublishDate', 'PrintDate', 'Size', 'Edition']}),
         ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount', 'IsForSale', 'IsNew']}),
         ('其他', {'fields': ['Intro_pic']})
     ]
@@ -140,11 +142,11 @@ class OrderAdmin(admin.ModelAdmin):
         return '是'
 
     def set_canceled(self, request, queryset):
-        rows_updated = queryset.update(show_canceled=1)
+        rows_updated = queryset.update(IsCancled=1)
         self.message_user(request, "成功设置{}个订单已取消".format(rows_updated))
 
     def unset_canceled(self, request, queryset):
-        rows_updated = queryset.update(show_canceled=0)
+        rows_updated = queryset.update(IsCancled=0)
         self.message_user(request, "成功设置{}个订单为未取消".format(rows_updated))
 
     def set_handle(self, request, queryset):
