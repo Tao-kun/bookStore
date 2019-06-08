@@ -27,7 +27,7 @@ SECRET_KEY = 'y!9%^xxo-03%i!%=py@3!wvpe@j!+d&1wm6c*m9jq4h&)xqec2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['114.115.222.43']
 
 # Application definition
 
@@ -126,7 +126,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+    '/root/venv/lib/python3.6/site-packages/django/contrib/admin/static',
 ]
+STATIC_ROOT = 'static'
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname('__file__')))
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
