@@ -24,8 +24,8 @@
 </head>
 
 <div class="container" style="margin-left: 20%">
-<h2 style="padding-top: 10%">商品信息</h2>
-<table class="table table-hover" style="width: 40%">
+<h3 style="padding-top: 10%"><strong>订单详细信息</strong></h3>
+<table class="table table-hover" style="width: 50%">
     <tr>
         <th class="images"></th>
         <th class="qty">书名</th>
@@ -36,7 +36,7 @@
         <tr id="good_list">
 
             <td><img src="/static/media/{{ rtn.goodpic.GoodPic }}"
-                    alt="Product 6"></td>
+                    alt="Product 6" width="70px" height="70px"></td>
             <td>{{ rtn.good.GoodName }}</td>
             <td>{{ rtn.good.GoodPrice }}</td>
             <td>{{ rtn.qty }}</td>
@@ -46,8 +46,8 @@
 
 </table>
 
-<h2>详情信息</h2>
-<table class="table table-hover" style="width: 40%;">
+
+<table class="table table-hover" style="width: 50%;">
     <tr>
         <th>收货人姓名</th>
         <th>收货人手机号</th>
@@ -60,19 +60,20 @@
         <td>{{ order_info.address }}</td>
     </tr>
 </table>
-{% if order_info.IsCancle == 0 %}
+<div>
+    {% if order_info.IsCancle == 0 %}
 {% if order_info.IsShipped == 0 %}
-    <button class="btn btn-lg" onclick="cancel_order()">取消订单</button>
+    <button style="float: left" class="btn btn-lg" onclick="cancel_order()">取消订单</button>
 {% endif %}
 {% if order_info.IsShipped == 1 and order_info.IsCompleted == 0 and order_info.IsHandled == 1 and order_info.IsCancled == 0 and order_info.IsReturn == 0 %}
-    <button class="btn btn-lg" onclick="apply_return()">申请退货</button>
-    <button class="btn btn-lg" onclick="confirm_receive()">确认收货</button>
+    <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="apply_return()">申请退货</button>
+    <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="confirm_receive()">确认收货</button>
 {% endif %}
 {% if order_info.IsReturn == 1 and order_info.IsCancled == 0 and order_info.IsCompleted == 0 %}
-    <button class="btn btn-lg" onclick="cancel_return()">取消申请退货</button>
+    <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="cancel_return()">取消申请退货</button>
     {% endif %}
 {% if order_info.IsHandled == 0 %}
-    <button class="btn btn-lg" onclick="confirm_order()">确认订单</button>
+    <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="confirm_order()">确认订单</button>
 {% endif %}
 {% if order_info.IsCompleted == 1 %}
     <h3>评论订单</h3>
@@ -80,6 +81,7 @@
     <button onclick="comment_order()" style="width: 10%">评价</button>
 {% endif %}
 {% endif %}
+</div>
 </div>
 <script>
     function getQueryString(name) {

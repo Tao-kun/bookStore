@@ -136,19 +136,4 @@
     </section>
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script src="{% static 'js/jump.js' %}"></script>
-    <script>
-        function logout() {
-            layer.msg('已退出');
-            $.ajax({
-                    url: "/logout/",
-                    type: 'GET',
-                    success: function (arg) {
-                        var textarea = document.getElementById("welcome1");
-                        textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
-                            "                href=\"/login/\">注册</a>.";
-                    }
-                }
-            )
-        }
-    </script>
 {% endblock %}

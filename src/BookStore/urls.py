@@ -58,5 +58,8 @@ urlpatterns = [
     url(r'^cancel_return/', after_sold_views.cancel_return),
     url(r'^search/', watch_buy_views.search),
     url(r'^$', login_manage_views.index),
-    url(r'captcha/', include('captcha.urls'))
+    url(r'captcha/', include('captcha.urls')),
+    url(r'^change_pwd/', login_manage_views.change_pwd),
+    url(r'^check_new_password/', login_manage_views.check_new_password),
+    url(r'^save_new_password/', login_manage_views.save_new_password),
 ]

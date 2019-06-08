@@ -1,5 +1,17 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+{% block islogin %}
+    {% if is_login %}
+        <div class="welcome" id="welcome1">
+            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+        </div><!-- .welcome -->
+    {% else %}
+        <div class="welcome" id="welcome1">
+            欢迎您，游客 <a href="/login/">登录</a> or <a
+                href="/login/">注册</a>.
+        </div><!-- .welcome -->
+    {% endif %}
+{% endblock %}
 {% block content %}
     <section id="main">
         <div class="container_12">

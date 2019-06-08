@@ -1,9 +1,18 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+{% block islogin %}
+    {% if is_login %}
+        <div class="welcome" id="welcome1">
+            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+        </div><!-- .welcome -->
+    {% else %}
+        <div class="welcome" id="welcome1">
+            欢迎您，游客 <a href="/login/">登录</a> or <a
+                href="/login/">注册</a>.
+        </div><!-- .welcome -->
+    {% endif %}
+{% endblock %}
 {% block content %}
-
-
-
     <div class="container_12">
         <div class="grid_12">
             <div class="breadcrumbs">
@@ -226,16 +235,16 @@
 
                                 <div class="cart">
                                     {% if Good.GoodRemain != 0 %}
-                                         <a class="bay" id="add_to_cart" onclick="add_to_cart()">加入购物车</a>
-                                    <input id="qty" type="text" name="" class="number" value="1"/>
-                                    <span>Quantity:</span>
+                                        <a class="bay" id="add_to_cart" onclick="add_to_cart()">加入购物车</a>
+                                        <input id="qty" type="text" name="" class="number" value="1"/>
+                                        <span>Quantity:</span>
                                     {% endif %}
                                 </div>
                                 <div class="cart" style="padding-top: 2%">
                                     {% if Good.GoodRemain != 0 %}
-                                    <a class="bay" id="add_to_cart" onclick="checkout()">结账</a>
+                                        <a class="bay" id="add_to_cart" onclick="checkout()">结账</a>
                                     {% else %}
-                                    <a class="bay" id="add_to_cart">此商品已经卖完辣</a>
+                                        <a class="bay" id="add_to_cart">此商品已经卖完辣</a>
                                     {% endif %}
                                 </div>
                                 <div class="clear"></div>
@@ -326,7 +335,8 @@
                                             <textarea id="comment_content" name="text"></textarea>
                                         </div><!-- .text_review -->
 
-                                        <input id="btn_submit_comment" value="发表评论" type="button" class="btn btn-primary"/>
+                                        <input id="btn_submit_comment" value="发表评论" type="button"
+                                               class="btn btn-primary"/>
                                     </form><!-- .add_comments -->
                                 {% endif %}
 
@@ -336,12 +346,16 @@
                             <div class="tab3 tab_body">
                                 <h4>书籍详细信息</h4>
                                 <ul>
-                                    <li><strong>出版社:</strong><span style="padding-left: 5%">{{ Good.Publisher }}</span></li>
+                                    <li><strong>出版社:</strong><span style="padding-left: 5%">{{ Good.Publisher }}</span>
+                                    </li>
                                     <li><strong>页数:</strong><span style="padding-left: 7%">{{ Good.Pages }}</span></li>
-                                    <li><strong>出版日期:</strong><span style="padding-left: 3%">{{ Good.PublishDate }}</span></li>
-                                    <li><strong>印刷日期:</strong><span style="padding-left: 3%">{{ Good.PrintDate }}</span></li>
+                                    <li><strong>出版日期:</strong><span
+                                            style="padding-left: 3%">{{ Good.PublishDate }}</span></li>
+                                    <li><strong>印刷日期:</strong><span style="padding-left: 3%">{{ Good.PrintDate }}</span>
+                                    </li>
                                     <li><strong>开本:</strong><span style="padding-left: 7%">{{ Good.Size }}</span></li>
-                                    <li><strong>版次:</strong><span style="padding-left: 7%">第{{ Good.Edition }}版</span></li>
+                                    <li><strong>版次:</strong><span style="padding-left: 7%">第{{ Good.Edition }}版</span>
+                                    </li>
                                 </ul>
                                 <div class="clear"></div>
                             </div><!-- .tab1 .tab_body -->
@@ -355,26 +369,40 @@
 
                     <div class="related">
                         <div class="c_header">
-                            <div class="grid_7">
-                                <h2>店主推荐</h2>
-                            </div><!-- .grid_7 -->
+
                         </div><!-- .c_header -->
 
                         <div class="list_carousel">
-
+                            <h3>畅销书籍</h3>
                             <ul id="list_product" class="list_product">
                                 {% for Good_rec in Good_recommend_rtn %}
                                     {% if forloop.counter <= 3 %}
-                                    <li class="">
-                                        <div style="padding-left: 10%">
-                                            <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                        <div class="grid_3 product" id="product">
+                                            {% if Good_rec.good.IsNew == 1 %}
+                                                <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                                            {% elif Good_rec.good.IsForSale == 1 %}
+                                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                            {% else %}
+                                                <div></div>
+                                            {% endif %}
                                             <div class="prev">
-                                                <a><img
-                                                        src="/static/media/{{ Good_rec.pic.GoodPic }}"
-                                                        alt="" title="" width="200px" height="200px"/></a>
+                                                <a href="/product_page/?ISBN={{ Good_rec.good.GoodISBN }}">
+                                                    <img id="Good" src="/static/media/{{ Good_rec.pic.GoodPic }}" alt="" title=""/>
+                                                </a>
                                             </div><!-- .prev -->
+                                            <h3 class="title" id="good_name">{{ Good_rec.good.GoodName }}</h3>
+                                            <div class="cart">
+                                                <div class="price">
+                                                    <div class="vert">
+                                                        <div class="price_new" id="price">{{ Good_rec.good.GoodPrice }}</div>
+
+                                                    </div>
+                                                </div>
+                                                <a class="obn"></a>
+                                                <a class="like" id="checkout" name="checkout"></a>
+                                                <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                            </div><!-- .cart -->
                                         </div><!-- .grid_3 -->
-                                    </li>
                                     {% endif %}
                                 {% endfor %}
 
@@ -401,6 +429,7 @@
     <script src="{% static "js/selectBox.js" %}"></script>
     <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
     <script src="{% static "js/layer/layer.js" %}"></script>
+    <script src="{% static "js/jump.js" %}"></script>
     <script>
         function checkout() {
             var good_price = document.getElementById('price').innerHTML.replace("$", "");

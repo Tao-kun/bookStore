@@ -1,5 +1,17 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+{% block islogin %}
+    {% if is_login %}
+        <div class="welcome" id="welcome1">
+            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+        </div><!-- .welcome -->
+    {% else %}
+        <div class="welcome" id="welcome1">
+            欢迎您，游客 <a href="/login/">登录</a> or <a
+                href="/login/">注册</a>.
+        </div><!-- .welcome -->
+    {% endif %}
+{% endblock %}
 {% block content %}
     <link rel="stylesheet" type="text/css" href="../../../static/libraries/lib.css">
     <link rel="stylesheet" type="text/css" href="../../../static/css/bootstrap.css">
@@ -7,11 +19,11 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th style="padding-left: 4%">订单号</th>
-                <th style="padding-left: 12%">下单日期</th>
-                <th style="padding-left: 12%">发货日期</th>
-                <th style="padding-left: 5%">订单状态</th>
-                <th style="padding-left: 5%">详细信息</th>
+                <th style="padding-left: 6%">订单号</th>
+                <th style="padding-left: 13%">下单日期</th>
+                <th style="padding-left: 7%">发货日期</th>
+                <th style="padding-left: 7%">订单状态</th>
+                <th style="padding-left: 7%">详细信息</th>
             </tr>
             </thead>
             <tbody>

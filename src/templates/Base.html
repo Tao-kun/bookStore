@@ -40,6 +40,24 @@
     <link rel="stylesheet" type="text/css" href="../static/css/shortcode.css">
     <link rel="stylesheet" type="text/css" href="../static/css/style1.css">
     <script>
+        function logout() {
+            layer.msg('已退出');
+            $.ajax({
+                    url: "/logout/",
+                    type: 'GET',
+                    success: function (arg) {
+                        var textarea = document.getElementById("welcome1");
+                        textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
+                            "                href=\"/login/\">注册</a>.";
+                        var location = window.location.pathname;
+                        if(location !== "/index")
+                            window.location.href = "/index/";
+                    }
+                }
+            )
+        }
+    </script>
+    <script>
         $(document).ready(function () {
             $("#myController").jFlow({
                 controller: ".control", // must be class, use . sign
@@ -116,16 +134,7 @@
             </form>
         </div><!-- .grid_3 -->
         <div style="padding-left: 73%">
-            <div style="float: left;margin-left: 4%">
-                <ul id="cart_nav" style="padding-left: 89%;">
-                    <li>
-                        <a class="cart_ac" href="/user_info/">Account</a>
-                    </li>
-                </ul>
-
-                </ul>
-            </div>
-            <div style="float: left">
+            <div>
                 <ul id="cart_nav">
                     <li>
                         <a class="cart_li" href="/shopping_cart/">Cart</a>
@@ -151,10 +160,11 @@
                     <li><a href="/catalog_grid/?type=professional">专业著作</a></li>
                     <li><a href="/catalog_grid/">全部书籍</a></li>
                     <li>
-                        <a href="#">更多</a>
+                        <a href="#">账户</a>
                         <ul class="sub">
                             <li><a href="/user_info/">个人信息</a></li>
                             <li><a href="/see_order/">我的订单</a></li>
+                            <li><a href="/change_pwd/">修改密码</a></li>
                         </ul>
                     </li>
                 </ul>
