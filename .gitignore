@@ -134,3 +134,5 @@ src/bookstore.log
 src/uwsgi.ini
 src/static/admin
 src/static/admin/
+src/static/media/
+src/static/images/
