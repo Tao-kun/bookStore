@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.contrib import admin
 
 from watch_buy.models import Cart, Goods, GoodsPic, Order, OrderGood
@@ -35,13 +37,17 @@ class CartAdmin(admin.ModelAdmin):
 
 class GoodsAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('基本信息', {'fields': ['GoodISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro', 'Publisher', 'Pages', 'PublishDate', 'PrintDate', 'Size', 'Edition']}),
-        ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount', 'IsForSale', 'IsNew']}),
+        ('基本信息', {
+            'fields': ['GoodISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro', 'Publisher', 'Pages',
+                       'PublishDate', 'PrintDate', 'Size', 'Edition']}),
+        ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount']}),
         ('其他', {'fields': ['Intro_pic']})
     ]
-    list_display = ['GoodName', 'GoodISBN', 'Category', 'GoodRemain', 'show_discount', 'show_new']
+    list_display = ['GoodName', 'GoodISBN', 'Category',
+                    'GoodRemain', 'show_discount', 'show_new']
     inlines = [GoodsPicInline]
-    actions = ['set_discount', 'unset_discount', 'set_new_item', 'unset_new_item']
+    actions = ['set_discount', 'unset_discount',
+               'set_new_item', 'unset_new_item']
     list_filter = [
         ('IsForSale', admin.BooleanFieldListFilter),
         ('IsNew', admin.BooleanFieldListFilter)
@@ -54,7 +60,8 @@ class GoodsAdmin(admin.ModelAdmin):
     def unset_discount(self, request, queryset):
         rows_updated1 = queryset.update(IsForSale=0)
         rows_updated2 = queryset.update(GoodDiscount=1)
-        self.message_user(request, "{}个商品成功恢复原价".format(rows_updated1, rows_updated2))
+        self.message_user(request, "{}个商品成功恢复原价".format(
+            rows_updated1, rows_updated2))
 
     def set_new_item(self, request, queryset):
         rows_updated = queryset.update(IsNew=1)
@@ -84,8 +91,9 @@ class GoodsAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('订单信息', {'fields': ['orderdate', 'shipdate', 'user']}),
-        ('收货人信息', {'fields': ['username', 'telephone', 'address', 'zipcode', 'qq']})
+        ('订单信息', {'fields': ['orderdate', 'shipdate', 'user', 'Comment']}),
+        ('收货人信息', {'fields': ['username',
+                              'telephone', 'address', 'zipcode', 'qq']})
     ]
     list_display = ['username',
                     'address',
@@ -96,6 +104,7 @@ class OrderAdmin(admin.ModelAdmin):
                     'show_complete',
                     'show_cancel',
                     'show_return',
+                    'Comment'
                     ]
     inlines = [OrderGoodInline]
     actions = ['set_cancel', 'set_canceled', 'set_complete', 'set_handle', 'set_return', 'set_ship',
@@ -140,12 +149,12 @@ class OrderAdmin(admin.ModelAdmin):
         return '是'
 
     def set_canceled(self, request, queryset):
-        rows_updated = queryset.update(show_canceled=1)
-        self.message_user(request, "成功设置{}个订单已取消".format(rows_updated))
+        rows_updated = queryset.update(IsCancled=1)
+        self.message_user(request, "成功设置{}个订单已退款完成".format(rows_updated))
 
     def unset_canceled(self, request, queryset):
-        rows_updated = queryset.update(show_canceled=0)
-        self.message_user(request, "成功设置{}个订单为未取消".format(rows_updated))
+        rows_updated = queryset.update(IsCancled=0)
+        self.message_user(request, "成功设置{}个订单为未退款完成".format(rows_updated))
 
     def set_handle(self, request, queryset):
         rows_updated = queryset.update(IsHandled=1)
@@ -156,8 +165,10 @@ class OrderAdmin(admin.ModelAdmin):
         self.message_user(request, "成功设置{}个订单为未确认".format(rows_updated))
 
     def set_ship(self, request, queryset):
-        rows_updated = queryset.update(IsShipped=1)
-        self.message_user(request, "成功设置{}个订单已发货".format(rows_updated))
+        rows_updated1 = queryset.update(IsShipped=1)
+        rows_updated2 = queryset.update(shipdate=timezone.now())
+        self.message_user(request, "成功设置{}个订单已发货".format(
+            rows_updated1, rows_updated2))
 
     def unset_ship(self, request, queryset):
         rows_updated = queryset.update(IsShipped=0)
@@ -173,39 +184,39 @@ class OrderAdmin(admin.ModelAdmin):
 
     def set_cancel(self, request, queryset):
         rows_updated = queryset.update(IsCancle=1)
-        self.message_user(request, "成功设置{}个订单为已申请退货".format(rows_updated))
+        self.message_user(request, "成功设置{}个订单为取消订单成功".format(rows_updated))
 
     def unset_cancel(self, request, queryset):
         rows_updated = queryset.update(IsCancle=0)
-        self.message_user(request, "成功设置{}个订单为未申请退货".format(rows_updated))
+        self.message_user(request, "成功设置{}个订单为未取消订单".format(rows_updated))
 
     def set_return(self, request, queryset):
         rows_updated = queryset.update(IsReturn=1)
-        self.message_user(request, "成功设置{}个订单已退回".format(rows_updated))
+        self.message_user(request, "成功设置{}个订单已退货".format(rows_updated))
 
     def unset_return(self, request, queryset):
         rows_updated = queryset.update(IsReturn=0)
-        self.message_user(request, "成功设置{}个订单为未退回".format(rows_updated))
+        self.message_user(request, "成功设置{}个订单为未退货".format(rows_updated))
 
-    show_canceled.short_description = '是否取消订单'
+    show_canceled.short_description = '是否完成退款'
     show_handle.short_description = '是否确认订单'
     show_ship.short_description = '是否发货'
     show_complete.short_description = '订单是否完成'
-    show_cancel.short_description = '是否申请退货'
-    show_return.short_description = '是否退回'
+    show_cancel.short_description = '是否已取消订单'
+    show_return.short_description = '是否要求退款'
 
-    set_cancel.short_description = '设置所选的订单为已申请退货'
-    set_canceled.short_description = '设置所选的订单为已取消'
+    set_cancel.short_description = '设置所选的订单为已取消订单'
+    set_canceled.short_description = '设置所选的订单为已退款'
     set_complete.short_description = '设置所选的订单为已完成'
     set_handle.short_description = '设置所选的订单为已确认'
-    set_return.short_description = '设置所选的订单为已退回'
+    set_return.short_description = '设置所选的订单为已退货'
     set_ship.short_description = '设置所选的订单为已发货'
 
-    unset_cancel.short_description = '设置所选的订单为未申请退货'
+    unset_cancel.short_description = '设置所选的订单为未取消订单'
     unset_canceled.short_description = '设置所选的订单为未取消'
     unset_complete.short_description = '设置所选的订单为未完成'
     unset_handle.short_description = '设置所选的订单为未确认'
-    unset_return.short_description = '设置所选的订单为未退回'
+    unset_return.short_description = '设置所选的订单为未退货'
     unset_ship.short_description = '设置所选的订单为未发货'
 
 

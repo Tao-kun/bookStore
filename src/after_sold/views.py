@@ -1,7 +1,8 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import json
 from watch_buy import models as watch_buy_models
+from login_manage.models import User
 import datetime
 import time
 # Create your views here.
@@ -9,13 +10,17 @@ import time
 
 def post_comments(request):
     content = request.GET.get('content')
-    print(content)
     isbn = request.GET.get('isbn')
-    print(isbn)
     return render("/index/")
 
 
 def see_order(request):
+    if not request.session.get('studentID'):
+        request.session.flush()
+        return redirect('/login/')
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
     stu_id = request.session.get('studentID')
     all_order = watch_buy_models.Order.objects.filter(user_id=stu_id)
     for order in all_order:
@@ -24,7 +29,7 @@ def see_order(request):
             timenow = time.mktime(datetime.datetime.now().timetuple())
             timeord = time.mktime(order_datetime.timetuple())
             diff = timenow - timeord
-            if float(diff) / 3600000 >= 0.5:
+            if float(diff) / 3600 >= 0.5:
                 order.IsCancle = 1
                 order.save()
     return render(request, "after_sold/Order.html", locals())
@@ -62,7 +67,7 @@ def confirm_receive(request):
     id = request.GET.get('order_id')
     response = JsonResponse({"info": "成功收货"})
     order_obj = watch_buy_models.Order.objects.get(orderid=id)
-    if order_obj.IsShipped == 1 and order_obj.IsCancled == 0:       #   已发货但是没有被取消
+    if order_obj.IsShipped == 1 and order_obj.IsCancled == 0:  # 已发货但是没有被取消
         order_obj.IsCompleted = 1
         order_obj.save()
     else:
@@ -117,4 +122,3 @@ def cancel_return(request):
     else:
         response = JsonResponse({"info": "取消失败"})
     return response
-
