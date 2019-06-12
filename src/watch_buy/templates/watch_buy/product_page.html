@@ -1,7 +1,18 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+{% block islogin %}
+    {% if is_login %}
+        <div class="welcome" id="welcome1">
+            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+        </div><!-- .welcome -->
+    {% else %}
+        <div class="welcome" id="welcome1">
+            欢迎您，游客 <a href="/login/">登录</a> or <a
+                href="/login/">注册</a>.
+        </div><!-- .welcome -->
+    {% endif %}
+{% endblock %}
 {% block content %}
-
     <div class="container_12">
         <div class="grid_12">
             <div class="breadcrumbs">
@@ -15,124 +26,6 @@
     <section id="main">
         <div class="container_12">
             <div id="sidebar" class="grid_3">
-                <aside id="categories_nav">
-                    <h3>Categories</h3>
-
-                    <nav class="left_menu">
-                        <ul>
-                            <li><a href="#">Solids <span>(21)</span></a></li>
-                            <li><a href="#">Liquids <span> (27)</span></a></li>
-                            <li><a href="#">Spray <span>(33)</span></a></li>
-                            <li><a href="#">Electric <span>(17)</span></a></li>
-                            <li><a href="#">For Cars <span>(23)</span></a></li>
-                            <li><a href="#">For Room <span>(7)</span></a></li>
-                            <li class="last"><a href="#">Other <span>(135)</span></a></li>
-                        </ul>
-                    </nav><!-- .left_menu -->
-                </aside><!-- #categories_nav -->
-
-                <aside id="specials" class="specials">
-                    <h3>Specials</h3>
-
-                    <ul>
-                        <li>
-                            <div class="prev">
-                                <a href="#"><img src="../../../static/images/special1.png" alt="" title=""/></a>
-                            </div>
-
-                            <div class="cont">
-                                <a href="#">Honeysuckle Flameless Luminary Refill</a>
-                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="prev">
-                                <a href="#"><img src="../../../static/images/special2.png" alt="" title=""/></a>
-                            </div>
-
-                            <div class="cont">
-                                <a href="#">Honeysuckle Flameless Luminary Refill</a>
-                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                            </div>
-                        </li>
-                    </ul>
-                </aside><!-- #specials -->
-
-                <aside id="newsletter_signup">
-                    <h3>Newsletter Signup</h3>
-                    <p>Phasellus vel ultricies felis. Duis
-                        rhoncus risus eu urna pretium.</p>
-
-                    <form class="newsletter">
-                        <input type="email" name="newsletter" class="your_email" value=""
-                               placeholder="Enter your email address..."/>
-                        <input type="submit" id="submit" value="Subscribe"/>
-                    </form>
-                </aside><!-- #newsletter_signup -->
-
-                <aside id="banners">
-                    <a id="ban_next" class="next arows" href="#"><span>Next</span></a>
-                    <a id="ban_prev" class="prev arows" href="#"><span>Prev</span></a>
-
-                    <h3>Banners</h3>
-
-                    <div class="list_carousel">
-                        <ul id="list_banners">
-                            <li class="banner"><a href="#">
-                                <div class="prev">
-                                    <img src="../../../static/images/banner.png" alt="" title=""/>
-                                </div><!-- .prev -->
-
-                                <h2>New smells</h2>
-
-                                <p>in the next series</p>
-                            </a></li>
-
-                            <li class="banner"><a href="#">
-                                <div class="prev">
-                                    <img src="../../../static/images/banner.png" alt="" title=""/>
-                                </div><!-- .prev -->
-
-                                <h2>New smells</h2>
-
-                                <p>in the next series</p>
-                            </a></li>
-
-                            <li class="banner"><a href="#">
-                                <div class="prev">
-                                    <img src="../../../static/images/banner.png" alt="" title=""/>
-                                </div><!-- .prev -->
-
-                                <h2>New smells</h2>
-
-                                <p>in the next series</p>
-                            </a></li>
-
-                        </ul>
-                    </div><!-- .list_carousel -->
-                </aside><!-- #banners -->
-
-                <aside id="tags">
-                    <h3>Tags</h3>
-                    <a class="t1" href="#">california</a>
-                    <a class="t2" href="#">canada</a>
-                    <a class="t3" href="#">canon</a>
-                    <a class="t4" href="#">cat</a>
-                    <a class="t5" href="#">chicago</a>
-                    <a class="t6" href="#">christmas</a>
-                    <a class="t7" href="#">mars</a>
-                    <a class="t8" href="#">church</a>
-                    <a class="t9" href="#">city</a>
-                    <a class="t10" href="#">clouds</a>
-                    <a class="t11" href="#">color</a>
-                    <a class="t12" href="#">concert</a>
-                    <a class="t13" href="#">dance</a>
-                    <a class="t14" href="#">day</a>
-                    <a class="t15" href="#">dog</a>
-                    <a class="t16" href="#">england</a>
-                    <a class="t17" href="#">europe</a>
-                </aside><!-- #community_poll -->
             </div><!-- .sidebar -->
 
             <div id="content" class="grid_9">
@@ -140,13 +33,19 @@
 
                 <div class="product_page">
                     <div class="grid_4 img_slid" id="products">
-                        <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                        {% if Good.IsForSale == 1 %}
+                            <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                        {% elif Good.IsNew == 1 %}
+                            <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                        {% else %}
+                            <div></div>
+                        {% endif %}
                         <div class="preview slides_container">
                             <div class="prev_bg">
                                 <a id="fdzoom" href="http://127.0.0.1:8000/static/media/{{ Good_pic_list.0.GoodPic }}"
                                    class="jqzoom" rel='gal1' title="">
                                     <img id="mainzoom" src="/static/media/{{ Good_pic_list.0.GoodPic }}" title=""
-                                         alt=""/>
+                                         alt="" height="440px" width="440px"/>
                                 </a>
                             </div>
                         </div><!-- .prev -->
@@ -154,20 +53,25 @@
                         <ul class="pagination clearfix" id="thumblist">
 
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.0.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.0.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.0.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.0.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.0.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.0.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.1.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.1.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.1.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.1.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.1.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.1.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.2.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.2.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.2.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.2.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.2.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.2.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.3.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.3.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.3.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.3.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.3.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.3.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                             <li><a href='javascript:void(0);'
-                                   rel="{gallery: 'gal1',smallimage: '/static/images/{{ Good_pic_list.4.GoodPic }}',largeimage: '/static/images/{{ Good_pic_list.4.GoodPic }}'} "><img
-                                    src='/static/images/{{ Good_pic_list.4.GoodPic }}' alt=""></a></li>
+                                   rel="{gallery: 'gal1',smallimage: '/static/media/{{ Good_pic_list.4.GoodPic }}',largeimage: '/static/media/{{ Good_pic_list.4.GoodPic }}'} "><img
+                                    src='/static/media/{{ Good_pic_list.4.GoodPic }}' alt="" height="140px"
+                                    width="140px"></a></li>
                         </ul>
 
 
@@ -182,32 +86,29 @@
                     <div class="grid_5">
                         <div class="entry_content">
                             <div class="review">
-                                <a class="plus" href="#"></a>
-                                <a class="plus" href="#"></a>
-                                <a class="plus" href="#"></a>
-                                <a href="#"></a>
-                                <a href="#"></a>
-                                <span>1 REVIEW(S)</span>
-                                <a class="add_review" href="#">ADD YOUR REVIEW</a>
+                                {% for quality_star in quality_star_list %}
+                                    {% ifequal quality_star 2 %}
+                                        <a class="plus"></a>
+                                    {% endifequal %}
+                                    {% ifequal quality_star 1 %}
+                                        <a class="plus_minus"></a>
+                                    {% endifequal %}
+                                    {% ifequal quality_star 0 %}
+                                        <a></a>
+                                    {% endifequal %}
+                                {% endfor %}
+                                <span>{{ comments_number }} 条书评</span>
                             </div>
                             <p>{{ Good.GoodIntro }}</p>
                             <div class="ava_price">
                                 <div class="availability_sku">
                                     <div class="availability">
-                                        Availability: <span>In stock</span>
-                                    </div>
-                                    <div class="sku">
-                                        SKU: <span>Candles OV</span>
+                                        <strong>价格：</strong>
                                     </div>
                                 </div><!-- .availability_sku -->
 
                                 <div class="price">
-                                    {% if Good.GoodDiscount != 1 %}
-                                        <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
-                                        <div class="price_old">${{ Good.GoodPrice }}</div>
-                                    {% else %}
-                                        <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
-                                    {% endif %}
+                                    <div class="price_new" id="price">${{ Good.GoodPrice }}</div>
 
                                 </div><!-- .price -->
                             </div><!-- .ava_price -->
@@ -215,12 +116,18 @@
                             <div class="block_cart">
 
                                 <div class="cart">
-                                    <a class="bay" id="add_to_cart" onclick="add_to_cart()">Add to Cart</a>
-                                    <input id="qty" type="text" name="" class="number" value="1"/>
-                                    <span>Quantity:</span>
+                                    {% if Good.GoodRemain != 0 %}
+                                        <a class="bay" id="add_to_cart" onclick="add_to_cart()">加入购物车</a>
+                                        <input id="qty" type="text" name="" class="number" value="1"/>
+                                        <span>Quantity:</span>
+                                    {% endif %}
                                 </div>
                                 <div class="cart" style="padding-top: 2%">
-                                    <a class="bay" id="add_to_cart" onclick="checkout()">Checkout</a>
+                                    {% if Good.GoodRemain != 0 %}
+                                        <a class="bay" id="add_to_cart" onclick="checkout()">结账</a>
+                                    {% else %}
+                                        <a class="bay" id="add_to_cart">此商品已经卖完辣</a>
+                                    {% endif %}
                                 </div>
                                 <div class="clear"></div>
                             </div><!-- .block_cart -->
@@ -232,141 +139,108 @@
 
                     <div class="grid_9">
                         <div id="wrapper_tab" class="tab1">
-                            <a href="#" class="tab1 tab_link">Description</a>
-                            <a href="#" class="tab2 tab_link">Reviews</a>
-
+                            <a href="#" class="tab1 tab_link">介绍</a>
+                            <a href="#" class="tab2 tab_link">书评</a>
+                            <a href="#" class="tab3 tab_link">详细</a>
                             <div class="clear"></div>
 
                             <div class="tab1 tab_body">
-                                <img src="/static/images/{{ Good.Intro_pic }}">
+                                <img src="/static/media/{{ Good.Intro_pic }}">
                                 <div class="clear"></div>
                             </div><!-- .tab1 .tab_body -->
 
                             <div class="tab2 tab_body">
-                                <h4>Customer reviews</h4>
-                                <ul class="comments">
-                                    <li>
-                                        <div class="autor">Mike Example</div>
-                                        ,
-                                        <time datetime="2012-11-03">03.11.2012</time>
+                                <ul class="comments" id="comments">
 
-                                        <div class="evaluation">
-                                            <div class="quality">
-                                                <strong>Quality</strong>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a href="#"></a>
-                                                <a href="#"></a>
-                                            </div>
-                                            <div class="price">
-                                                <strong>Price</strong>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus_minus" href="#"></a>
-                                                <a href="#"></a>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .evaluation -->
+                                    {% for each_page_comment in page_comments %}
 
-                                        <p>Suspendisse at placerat turpis. Duis luctus erat vel magna pharetra aliquet.
-                                            Maecenas tincidunt feugiat ultricies. Phasellus et dui risus. Vestibulum
-                                            adipiscing, eros quis lobortis dictum.</p>
-                                    </li>
+                                        <li>
+                                            <div class="autor">{{ each_page_comment.comment.user.name }}</div>
+                                            ,
+                                            <time datetime="2012-11-03">{{ each_page_comment.comment.c_time|date:"Y-m-d H:i:s" }}</time>
 
-                                    <li>
-                                        <div class="autor">Mike Example</div>
-                                        ,
-                                        <time datetime="2012-11-03">03.11.2012</time>
+                                            <div class="evaluation">
+                                                <div class="quality">
+                                                    {% for star in each_page_comment.star_list %}
+                                                        {% ifequal star 2 %}
+                                                            <a class="plus"></a>
+                                                        {% endifequal %}
+                                                        {% ifequal star 1 %}
+                                                            <a class="plus_minus"></a>
+                                                        {% endifequal %}
+                                                        {% ifequal star 0 %}
+                                                            <a></a>
+                                                        {% endifequal %}
+                                                    {% endfor %}
+                                                </div>
 
-                                        <div class="evaluation">
-                                            <div class="quality">
-                                                <strong>Quality</strong>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus_minus" href="#"></a>
-                                            </div>
-                                            <div class="price">
-                                                <strong>Price</strong>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a class="plus" href="#"></a>
-                                                <a href="#"></a>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div><!-- .evaluation -->
+                                                <div class="clear"></div>
+                                            </div><!-- .evaluation -->
 
-                                        <p>Etiam mollis volutpat odio, id euismod justo gravida a. Aliquam erat
-                                            volutpat. Phasellus faucibus venenatis lorem, vitae commodo elit pretium et.
-                                            Duis rhoncus lobortis congue. Vestibulum et purus dui, vel porta lectus. Sed
-                                            vulputate pulvinar adipiscing.</p>
-                                    </li>
+                                            <p>{{ each_page_comment.comment.content }}</p>
+                                        </li>
+
+                                    {% endfor %}
+
+
                                 </ul><!-- .comments -->
 
-                                <form class="add_comments">
-                                    <h4>Write Your Own Review</h4>
 
-                                    <div class="evaluation">
-                                        <div class="quality">
-                                            <strong>Quality</strong><sup class="surely">*</sup>
-                                            <input class="niceRadio" type="radio" name="quality" value="1"/><span
-                                                class="eva_num">1</span>
-                                            <input class="niceRadio" type="radio" name="quality" value="2"/><span
-                                                class="eva_num">2</span>
-                                            <input class="niceRadio" type="radio" name="quality" value="3"/><span
-                                                class="eva_num">3</span>
-                                            <input class="niceRadio" type="radio" name="quality" value="4"/><span
-                                                class="eva_num">4</span>
-                                            <input class="niceRadio" type="radio" name="quality" value="5"/><span
-                                                class="eva_num">5</span>
-                                        </div>
-                                        <div class="price">
-                                            <strong>Price</strong><sup class="surely">*</sup>
-                                            <input class="niceRadio" type="radio" name="price" value="1"/><span
-                                                class="eva_num">1</span>
-                                            <input class="niceRadio" type="radio" name="price" value="2"/><span
-                                                class="eva_num">2</span>
-                                            <input class="niceRadio" type="radio" name="price" value="3"/><span
-                                                class="eva_num">3</span>
-                                            <input class="niceRadio" type="radio" name="price" value="4"/><span
-                                                class="eva_num">4</span>
-                                            <input class="niceRadio" type="radio" name="price" value="5"/><span
-                                                class="eva_num">5</span>
-                                        </div>
+                                {% if already_comment %}
+                                {% else %}
+
+                                    <form class="add_comments" id="add_comments">
+                                        <h4>写下对此书的评价</h4>
+
+                                        <div class="evaluation">
+                                            <div class="quality">
+                                                <strong>评分：</strong>
+                                                <input type="radio" name="quality_radio" value="1"/><span
+                                                    class="eva_num">1</span>
+                                                <input type="radio" name="quality_radio" value="2"/><span
+                                                    class="eva_num">2</span>
+                                                <input type="radio" name="quality_radio" value="3"/><span
+                                                    class="eva_num">3</span>
+                                                <input type="radio" name="quality_radio" value="4"/><span
+                                                    class="eva_num">4</span>
+                                                <input type="radio" name="quality_radio" value="5"/><span
+                                                    class="eva_num">5</span>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div><!-- .evaluation -->
+
+
                                         <div class="clear"></div>
-                                    </div><!-- .evaluation -->
 
-                                    <div class="nickname">
-                                        <strong>Nickname</strong><sup class="surely">*</sup><br/>
-                                        <input type="text" name="" class="" value=""/>
-                                    </div><!-- .nickname -->
+                                        <div class="text_review">
+                                            <strong>评论：</strong><br/>
+                                            <textarea id="comment_content" name="text"></textarea>
+                                        </div><!-- .text_review -->
 
-                                    <div class="your_review">
-                                        <strong>Summary of Your Review</strong><sup class="surely">*</sup><br/>
-                                        <input type="text" name="" class="" value=""/>
-                                    </div><!-- .your_review -->
+                                        <input id="btn_submit_comment" value="发表评论" type="button"
+                                               class="btn btn-primary"/>
+                                    </form><!-- .add_comments -->
+                                {% endif %}
 
-                                    <div class="clear"></div>
-
-                                    <div class="text_review">
-                                        <strong>Review</strong><sup class="surely">*</sup><br/>
-                                        <textarea name="text"></textarea>
-                                        <i>Note: HTML is not translated!</i>
-                                    </div><!-- .text_review -->
-
-                                    <input type="submit" value="Submit Review"/>
-                                </form><!-- .add_comments -->
                                 <div class="clear"></div>
                             </div><!-- .tab2 .tab_body -->
 
                             <div class="tab3 tab_body">
-                                <h4>Custom Tab</h4>
+                                <h4>书籍详细信息</h4>
+                                <ul>
+                                    <li><strong>出版社:</strong><span style="padding-left: 5%">{{ Good.Publisher }}</span>
+                                    </li>
+                                    <li><strong>页数:</strong><span style="padding-left: 7%">{{ Good.Pages }}</span></li>
+                                    <li><strong>出版日期:</strong><span
+                                            style="padding-left: 3%">{{ Good.PublishDate }}</span></li>
+                                    <li><strong>印刷日期:</strong><span style="padding-left: 3%">{{ Good.PrintDate }}</span>
+                                    </li>
+                                    <li><strong>开本:</strong><span style="padding-left: 7%">{{ Good.Size }}</span></li>
+                                    <li><strong>版次:</strong><span style="padding-left: 7%">第{{ Good.Edition }}版</span>
+                                    </li>
+                                </ul>
                                 <div class="clear"></div>
-                            </div><!-- .tab3 .tab_body -->
+                            </div><!-- .tab1 .tab_body -->
                             <div class="clear"></div>
                         </div>
                         ​<!-- #wrapper_tab -->
@@ -377,103 +251,44 @@
 
                     <div class="related">
                         <div class="c_header">
-                            <div class="grid_7">
-                                <h2>Related Products</h2>
-                            </div><!-- .grid_7 -->
 
-                            <div class="grid_2">
-                                <a id="next_c1" class="next arows" href="#"><span>Next</span></a>
-                                <a id="prev_c1" class="prev arows" href="#"><span>Prev</span></a>
-                            </div><!-- .grid_2 -->
                         </div><!-- .c_header -->
 
                         <div class="list_carousel">
-
+                            <h3>畅销书籍</h3>
                             <ul id="list_product" class="list_product">
-                                <li class="">
-                                    <div class="grid_3 product">
-                                        <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                        <div class="prev">
-                                            <a href="product_page.html"><img src="../../../static/images/product_1.png"
-                                                                             alt="" title=""/></a>
-                                        </div><!-- .prev -->
-                                        <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                        <div class="cart">
-                                            <div class="price">
-                                                <div class="vert">
-                                                    <div class="price_new">$550.00</div>
-                                                    <div class="price_old">$725.00</div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="obn"></a>
-                                            <a href="#" class="like"></a>
-                                            <a href="#" class="bay"></a>
-                                        </div><!-- .cart -->
-                                    </div><!-- .grid_3 -->
-                                </li>
+                                {% for Good_rec in Good_recommend_rtn %}
+                                    {% if forloop.counter <= 3 %}
+                                        <div class="grid_3 product" id="product">
+                                            {% if Good_rec.good.IsNew == 1 %}
+                                                <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                                            {% elif Good_rec.good.IsForSale == 1 %}
+                                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                            {% else %}
+                                                <div></div>
+                                            {% endif %}
+                                            <div class="prev">
+                                                <a href="/product_page/?ISBN={{ Good_rec.good.GoodISBN }}">
+                                                    <img id="Good" src="/static/media/{{ Good_rec.pic.GoodPic }}" alt="" title=""/>
+                                                </a>
+                                            </div><!-- .prev -->
+                                            <h3 class="title" id="good_name">{{ Good_rec.good.GoodName }}</h3>
+                                            <div class="cart">
+                                                <div class="price">
+                                                    <div class="vert">
+                                                        <div class="price_new" id="price">{{ Good_rec.good.GoodPrice }}</div>
 
-                                <li class="">
-                                    <div class="grid_3 product">
-                                        <div class="prev">
-                                            <a href="product_page.html"><img src="../../../static/images/product_2.png"
-                                                                             alt="" title=""/></a>
-                                        </div><!-- .prev -->
-                                        <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                        <div class="cart">
-                                            <div class="price">
-                                                <div class="vert">
-                                                    <div class="price_new">$550.00</div>
-                                                    <div class="price_old">$725.00</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <a href="#" class="obn"></a>
-                                            <a href="#" class="like"></a>
-                                            <a href="#" class="bay"></a>
-                                        </div><!-- .cart -->
-                                    </div><!-- .grid_3 -->
-                                </li>
+                                                <a class="obn"></a>
+                                                <a class="like" id="checkout" name="checkout"></a>
+                                                <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                            </div><!-- .cart -->
+                                        </div><!-- .grid_3 -->
+                                    {% endif %}
+                                {% endfor %}
 
-                                <li class="">
-                                    <div class="grid_3 product">
-                                        <div class="prev">
-                                            <a href="product_page.html"><img src="../../../static/images/product_3.png"
-                                                                             alt="" title=""/></a>
-                                        </div><!-- .prev -->
-                                        <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                        <div class="cart">
-                                            <div class="price">
-                                                <div class="vert">
-                                                    <div class="price_new">$550.00</div>
-                                                    <div class="price_old">$725.00</div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="obn"></a>
-                                            <a href="#" class="like"></a>
-                                            <a href="#" class="bay"></a>
-                                        </div><!-- .cart -->
-                                    </div><!-- .grid_3 -->
-                                </li>
 
-                                <li class="">
-                                    <div class="grid_3 product">
-                                        <div class="prev">
-                                            <a href="product_page.html"><img src="../../../static/images/product_4.png"
-                                                                             alt="" title=""/></a>
-                                        </div><!-- .prev -->
-                                        <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
-                                        <div class="cart">
-                                            <div class="price">
-                                                <div class="vert">
-                                                    <div class="price_new">$550.00</div>
-                                                    <div class="price_old">$725.00</div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="obn"></a>
-                                            <a href="#" class="like"></a>
-                                            <a href="#" class="bay"></a>
-                                        </div><!-- .cart -->
-                                    </div><!-- .grid_3 -->
-                                </li>
                             </ul><!-- #list_product -->
                         </div><!-- .list_carousel -->
                     </div><!-- .carousel -->
@@ -496,9 +311,10 @@
     <script src="{% static "js/selectBox.js" %}"></script>
     <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
     <script src="{% static "js/layer/layer.js" %}"></script>
+    <script src="{% static "js/jump.js" %}"></script>
     <script>
         function checkout() {
-            var good_price = document.getElementById('price').innerHTML.replace("$","");
+            var good_price = document.getElementById('price').innerHTML.replace("$", "");
             var good_name = document.getElementById('GoodName').innerHTML;
             window.location.href = "/checkout/?good_name=" + good_name + "&good_price=" + good_price;
         }
@@ -506,7 +322,7 @@
     <script>
         function add_to_cart() {
             var good_name = document.getElementById('GoodName').innerHTML;
-            var good_price = document.getElementById('price').innerHTML.replace("$","");
+            var good_price = document.getElementById('price').innerHTML.replace("$", "");
             var good_pic = document.getElementById('mainzoom').getAttribute("src");
             var qty = document.getElementById('qty').value;
             $.ajax({
@@ -580,6 +396,65 @@
             });
         })
     </script>
+
+    <!-- 这是是评论区设计的js代码 -->
+
+    <!-- 如果没有买过这本书，那么按钮无功能 -->
+
+    {% if user_buy %}
+
+        <!-- 点击按钮之后，保存新发表的评论，然后局部刷新评论区 -->
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $("#btn_submit_comment").click(function () {
+                    var quality = "0";
+                    var radios = document.getElementsByName("quality_radio");
+                    for (var i = 0; i < radios.length; i++) {
+                        if (radios[i].checked) {
+                            quality = radios[i].value
+                        }
+                    }
+                    var content = document.getElementById("comment_content").value;
+                    if (quality === "0") {
+                        alert("请选择评分！");
+                    } else {
+                        if (content === "") {
+                            alert("请填写评论！");
+                        } else {
+                            var data = {
+                                "quality": quality,
+                                "content": content,
+                            };
+                            $.getJSON('/show_comments/', data, function (data) {
+                                $("#comments").html(data.main_data)
+                            });
+                            layer.msg("书评发表成功！");
+                            $('#add_comments').css('display', 'none');
+                        }
+                    }
+                })
+            })
+
+        </script>
+
+    {% else %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#comment_content').css('readonly', 'readonly');
+                $("#btn_submit_comment").click(function () {
+                    layer.msg("你未购买这本书，无法评论！");
+                })
+            })
+        </script>
+
+    {% endif %}
+
+
+
+
+
+
 
 
 {% endblock %}

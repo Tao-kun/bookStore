@@ -1,0 +1,29 @@
+{% for each_page_comment in page_comments %}
+
+                                    <li>
+                                        <div class="autor">{{each_page_comment.comment.user.name}}</div>
+                                        ,
+                                        <time datetime="2012-11-03">{{ each_page_comment.comment.c_time|date:"Y-m-d H:i:s" }}</time>
+
+                                        <div class="evaluation">
+                                            <div class="quality">
+                                                {% for star in each_page_comment.star_list %}
+                                    {% ifequal star 2 %}
+                                        <a class="plus" ></a>
+                                    {% endifequal %}
+                                    {% ifequal star 1 %}
+                                        <a class="plus_minus" ></a>
+                                    {% endifequal %}
+                                    {% ifequal star 0 %}
+                                        <a  ></a>
+                                    {% endifequal %}
+                                {% endfor %}
+                                            </div>
+                                            
+                                            <div class="clear"></div>
+                                        </div><!-- .evaluation -->
+
+                                        <p>{{ each_page_comment.comment.content }}</p>
+                                    </li>
+                                
+                                {% endfor %}

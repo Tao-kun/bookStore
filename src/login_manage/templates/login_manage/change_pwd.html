@@ -1,0 +1,79 @@
+{% extends 'Base.html' %}
+{% load staticfiles %}
+{% block islogin %}
+    {% if is_login %}
+        <div class="welcome" id="welcome1">
+            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+        </div><!-- .welcome -->
+    {% else %}
+        <div class="welcome" id="welcome1">
+            欢迎您，游客 <a href="/login/">登录</a> or <a
+                href="/login/">注册</a>.
+        </div><!-- .welcome -->
+    {% endif %}
+{% endblock %}
+{% block content %}
+
+    <div class="clear"></div>
+    <!-- Billing -->
+    <!-- Checkout -->
+    <div class="container-fluid no-left-padding no-right-padding woocommerce-checkout">
+        <!-- Container -->
+        <div class="container">
+            <!-- Login -->
+            <!-- Billing -->
+            <div class="checkout-form col-lg-40 col-lg-40 col-lg-40 login-block"
+                 style="padding-top: 4%;padding-left: 22%">
+
+                    <div class="col-md-6 col-lg-8 col-lg-8">
+                        <h3>更改密码</h3>
+                        <div class="billing-field">
+                            <div class="col-md-12 form-group">
+                                <label>旧密码</label>
+                                <input class="form-control" type="password" id="oldpassword" onblur="checknewpwd()">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>新密码</label>
+                                <input class="form-control" type="password" id="newpassword" onblur="checknewpwd()">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label>重复密码</label>
+                                <input class="form-control" type="password" id="passwordagain" onblur="checknewpwd()">
+                            </div>
+                            <div style="padding-left: 45%;padding-bottom: 3%; padding-top: 2%">
+                                <button class="btn btn-primary" style="color: white;" id="savenewpassword"
+                                        onclick="savenewpassword()" disabled="disabled">保存</button>
+                            </div>
+                        </div>
+                    </div>
+
+            </div><!-- Billing /- -->
+        </div><!-- Container /- -->
+    </div><!-- Checkout /- -->
+    <script src="{% static "js/jump.js" %}"></script>
+    <script src="{% static "js/jquery-1.7.2.min.js" %}"></script>
+    <script src="{% static 'js/layer/layer.js' %}"></script>
+    <script>
+        function checknewpwd() {
+            var oldpassword = document.getElementById('oldpassword').value;
+            var newpassword1 = document.getElementById('newpassword').value;
+            var newpassword2 = document.getElementById('passwordagain').value;
+            var btn = document.getElementById('savenewpassword');
+            $.ajax({
+                    url: "/check_new_password/?oldpassword=" + oldpassword + "&newpassword1=" + newpassword1 + "&newpassword2=" + newpassword2,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success: function (arg) {
+                        if (arg['message'] === "yes") {
+                            $("#savenewpassword").attr("disabled", false);
+                        } else {
+                            $("#savenewpassword").attr("disabled", true);
+                        }
+                    }
+                }
+            )
+        }
+    </script>
+
+
+{% endblock %}

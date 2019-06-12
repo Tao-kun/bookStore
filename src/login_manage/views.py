@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 from login_manage import models
 from login_manage.forms import LoginForm
 from login_manage.models import User
+import watch_buy.models as watch_buy_model
 
 
 # 主页，返回登录信息到主页以判断是登录注册还是注销
@@ -15,6 +16,17 @@ def index(request):
     is_login = request.session.get('is_login', None)
     if is_login:
         user = User.objects.get(pk=request.session.get('studentID'))
+
+    rtn_list = watch_buy_model.Goods.objects.filter(IsForSale=1)
+    for rtn in rtn_list:
+        rtn.GoodPrice = rtn.GoodPrice * rtn.GoodDiscount
+    rtn_pic = []
+
+    for i in range(len(rtn_list)):
+        GoodID = rtn_list[i].GoodISBN
+        pic_tmp = watch_buy_model.GoodsPic.objects.filter(GoodISBN_id=GoodID)
+        rtn_pic.append(pic_tmp[0])
+    rtn_dic = dict(map(lambda x, y: [x, y], rtn_pic, rtn_list))
     return render(request, "login_manage/index.html", locals())
 
 
@@ -39,6 +51,8 @@ def login(request):
                     message = "密码错误！"
             except:
                 message = "学号错误！"
+        else:
+            message = "验证码错误！"
     login_form = LoginForm(request.POST)
     return render(request, "login_manage/login.html", locals())
 
@@ -147,6 +161,9 @@ def sendemail(request):
 
 # 显示用户信息
 def user_info(request):
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
@@ -173,3 +190,33 @@ def update_user(request):
     stu.city_num = citynum
     stu.save()
     return render(request, "login_manage/update_user.html")
+
+
+def change_pwd(request):
+    if not request.session.get('studentID'):
+        request.session.flush()
+        return redirect('/login/')
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
+    return render(request, "login_manage/change_pwd.html", locals())
+
+
+def check_new_password(request):
+    originpwd = User.objects.get(pk=request.session.get('studentID')).password
+    oldpwd = request.GET.get('oldpassword')
+    newpwd1 = request.GET.get('newpassword1')
+    newpwd2 = request.GET.get('newpassword2')
+    message = "no"
+    if originpwd == oldpwd and newpwd1 == newpwd2 and oldpwd and newpwd1 and newpwd2:
+        message = "yes"
+    return HttpResponse(json.dumps({"message": message}))
+
+
+def save_new_password(request):
+    newpwd = request.GET.get('newpassword')
+    user = User.objects.get(pk=request.session.get('studentID'))
+    user.password = newpwd
+    user.save()
+    request.session.flush()
+    return redirect('/index/')
