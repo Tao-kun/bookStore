@@ -72,7 +72,7 @@ def checkout(request):
             good_list.append(Good(good_dic[("book_name" + str(count))].replace("%", "\\").encode('utf-8').decode(
                 'unicode_escape'), good_dic["book_price" + str(count)], good_dic["book_qty" + str(count)]))
             sum_price += float(good_dic["book_price" + str(count)]) * \
-                         float(good_dic["book_qty" + str(count)])
+                float(good_dic["book_qty" + str(count)])
             count += 1
         cart_all = watch_buy_models.Cart.objects.filter(studentID_id=studentID)
         for cart_obj in cart_all:
@@ -199,6 +199,7 @@ def good_detail(request):
     if is_login:
         user = User.objects.get(pk=request.session.get('studentID'))
     Good_ISBN = request.GET.get('ISBN')
+
     class Recommend:
         def __init__(self, good, pic):
             self.good = good
@@ -209,9 +210,9 @@ def good_detail(request):
         ISBN_set.add(gr.good.GoodISBN)
     Good_recommend_rtn = []
     for isbn in ISBN_set:
-            ojb = watch_buy_models.Goods.objects.get(GoodISBN=isbn)
-            pic = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=isbn)[0]
-            Good_recommend_rtn.append(Recommend(ojb, pic))
+        ojb = watch_buy_models.Goods.objects.get(GoodISBN=isbn)
+        pic = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=isbn)[0]
+        Good_recommend_rtn.append(Recommend(ojb, pic))
     Good = watch_buy_models.Goods.objects.get(GoodISBN=Good_ISBN)
     Good.GoodPrice *= Good.GoodDiscount
     Good_pic_list = watch_buy_models.GoodsPic.objects.filter(
@@ -246,14 +247,15 @@ def good_detail(request):
     user_buy = False
     if tmp_order.exists():
         for each_order in tmp_order:
-            tmp = watch_buy_models.OrderGood.objects.filter(order_id=each_order.orderid,good=Good)
+            tmp = watch_buy_models.OrderGood.objects.filter(
+                order_id=each_order.orderid, good=Good)
             if tmp.exists():
                 user_buy = True
 
-    tmp_comment = Comment.objects.filter(user=user,good=Good)
+    tmp_comment = Comment.objects.filter(user=user, good=Good)
     if tmp_comment.exists():
         already_comment = True
-    else :
+    else:
         already_comment = False
     return render(request, "watch_buy/product_page.html", locals())
 
@@ -265,7 +267,8 @@ def show_comments(request):
     new_quality = request.GET.get('quality')
     studentID = request.session['studentID']
     user = User.objects.get(studentID=studentID)
-    new_comment = Comment(content=new_content, user=user, good=Good, quality=new_quality)
+    new_comment = Comment(content=new_content, user=user,
+                          good=Good, quality=new_quality)
     new_comment.save()
     comments = list(Comment.objects.filter(good=Good))
     comments.sort(key=comments_sort_rule, reverse=True)
@@ -277,7 +280,8 @@ def show_comments(request):
         page_comments.append(page_comment)
 
     people_cannot_post_comment = False
-    main_data = str(render(request, "watch_buy/show_comments.html", locals()).content, encoding="utf-8")
+    main_data = str(render(request, "watch_buy/show_comments.html",
+                           locals()).content, encoding="utf-8")
     ret = {'main_data': main_data}
     return HttpResponse(json.dumps(ret), content_type='application/json')
 
@@ -358,10 +362,14 @@ def search(request):
     keyword = request.GET.get('search')
     rtn_set = set()
     rtn_list = []
-    name_key = watch_buy_models.Goods.objects.filter(GoodName__contains=keyword)
-    content_key = watch_buy_models.Goods.objects.filter(GoodIntro__contains=keyword)
-    author_key = watch_buy_models.Goods.objects.filter(GoodAuthor__contains=keyword)
-    ISBN_key = watch_buy_models.Goods.objects.filter(GoodISBN__contains=keyword)
+    name_key = watch_buy_models.Goods.objects.filter(
+        GoodName__contains=keyword)
+    content_key = watch_buy_models.Goods.objects.filter(
+        GoodIntro__contains=keyword)
+    author_key = watch_buy_models.Goods.objects.filter(
+        GoodAuthor__contains=keyword)
+    ISBN_key = watch_buy_models.Goods.objects.filter(
+        GoodISBN__contains=keyword)
 
     class Good:
         def __init__(self, good, pic, price):
@@ -378,5 +386,6 @@ def search(request):
     for ISBN in ISBN_key:
         rtn_set.add(ISBN)
     for rtn_good in rtn_set:
-        rtn_list.append(Good(rtn_good, watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=rtn_good.GoodISBN)[0], rtn_good.GoodPrice*rtn_good.GoodDiscount))
+        rtn_list.append(Good(rtn_good, watch_buy_models.GoodsPic.objects.filter(
+            GoodISBN_id=rtn_good.GoodISBN)[0], rtn_good.GoodPrice*rtn_good.GoodDiscount))
     return render(request, "watch_buy/search.html", locals())

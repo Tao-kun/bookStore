@@ -67,7 +67,7 @@ def confirm_receive(request):
     id = request.GET.get('order_id')
     response = JsonResponse({"info": "成功收货"})
     order_obj = watch_buy_models.Order.objects.get(orderid=id)
-    if order_obj.IsShipped == 1 and order_obj.IsCancled == 0:       #   已发货但是没有被取消
+    if order_obj.IsShipped == 1 and order_obj.IsCancled == 0:  # 已发货但是没有被取消
         order_obj.IsCompleted = 1
         order_obj.save()
     else:
@@ -122,4 +122,3 @@ def cancel_return(request):
     else:
         response = JsonResponse({"info": "取消失败"})
     return response
-

@@ -62,4 +62,6 @@ urlpatterns = [
     url(r'^change_pwd/', login_manage_views.change_pwd),
     url(r'^check_new_password/', login_manage_views.check_new_password),
     url(r'^save_new_password/', login_manage_views.save_new_password),
+    url(r'^captcha_refresh/', login_manage_views.captcha_refresh,
+        name='captcha-refresh'),
 ]
