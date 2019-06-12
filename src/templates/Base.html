@@ -1,5 +1,5 @@
 {% load staticfiles %}
-<html lang="en" xmlns:margin-bottom="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:margin-bottom="http://www.w3.org/1999/xhtml" xmlns: xmlns:>
 <!-- Added by HTTrack -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8"/><!-- /Added by HTTrack -->
 <head>
@@ -9,8 +9,6 @@
     <meta name="keywords" content="">
 
     <title>Home</title>
-    <link href="{% static 'css/style.css' %}" media="screen" rel="stylesheet" type="text/css">
-    <link href="{% static 'css/grid.css' %}" media="screen" rel="stylesheet" type="text/css">
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script src="{% static 'js/jquery-1.7.2.min.js' %} "></script>
     <script src="{% static 'js/html5.js' %}"></script>
@@ -28,11 +26,11 @@
     <!-- RS5.0 Layers and Navigation Styles -->
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/layers.css">
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/navigation.css">
-    <link href="../static/css/style.css" media="screen" rel="stylesheet" type="text/css">
-    <link href="../static/css/grid.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="../static/css/style.css?ranparam=random()" media="screen" rel="stylesheet" type="text/css">
+    <link href="../static/css/grid.css?ranparam=random()" media="screen" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="../static/css/jquery.jqzoom.css" type="text/css">
     <!-- Library - Bootstrap v3.3.5 -->
-    <link rel="stylesheet" type="text/css" href="../static/libraries/lib.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
 
     <!-- Custom - Common CSS -->
     <link rel="stylesheet" type="text/css" href="../static/css/plugins.css">
@@ -40,36 +38,19 @@
     <link rel="stylesheet" type="text/css" href="../static/css/shortcode.css">
     <link rel="stylesheet" type="text/css" href="../static/css/style1.css">
     <script>
-        function logout() {
-            layer.msg('已退出');
-            $.ajax({
-                    url: "/logout/",
-                    type: 'GET',
-                    success: function (arg) {
-                        var textarea = document.getElementById("welcome1");
-                        textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
-                            "                href=\"/login/\">注册</a>.";
-                        var location = window.location.pathname;
-                        if(location !== "/index")
-                            window.location.href = "/index/";
-                    }
-                }
-            )
-        }
-    </script>
-    <script>
         $(document).ready(function () {
             $("#myController").jFlow({
                 controller: ".control", // must be class, use . sign
                 slideWrapper: "#jFlowSlider", // must be id, use # sign
                 slides: "#slider",  // the div where all your sliding divs are nested in
                 selectedWrapper: "jFlowSelected",  // just pure text, no sign
-                width: "984px",  // this is the width for the content-slider
-                height: "480px",  // this is the height for the content-slider
+                //width: "984px",  // this is the width for the content-slider
+                //height: "480px",  // this is the height for the content-slider
                 duration: 400,  // time in miliseconds to transition one slide
                 prev: ".slidprev", // must be class, use . sign
                 next: ".slidnext", // must be class, use . sign
                 auto: true
+
             });
         });
     </script>
@@ -100,7 +81,7 @@
 <body>
 <div class="container_12">
     <div id="top">
-        <div class="grid_3">
+        <div class="grid_1">
             <div class="phone_top">
                 Call CN +86 18210714886
             </div><!-- .phone_top -->
@@ -133,8 +114,17 @@
                 <input type="text" name="search" class="entry_form" value="" placeholder="在商店内搜索"/>
             </form>
         </div><!-- .grid_3 -->
-        <div style="padding-left: 73%">
-            <div>
+        <div style="padding-left: 60%">
+            <div style="float: left;margin-left: 4%">
+                <ul id="cart_nav" style="padding-left: 85%;">
+                    <li>
+                        <a class="cart_ac" href="/user_info/">Account</a>
+                    </li>
+                </ul>
+
+                </ul>
+            </div>
+            <div style="float: left;margin-left: 4%">
                 <ul id="cart_nav">
                     <li>
                         <a class="cart_li" href="/shopping_cart/">Cart</a>
@@ -151,22 +141,35 @@
         <div class="grid_12">
             <nav class="primary">
                 <ul>
-                    <li class="curent"><a href="/login_manage/templates/login_manage/index.html">Home</a></li>
-                    <li><a href="/catalog_grid/?type=novel">小说</a></li>
-                    <li><a href="/catalog_grid/?type=prose">散文集</a></li>
-                    <li>
-                        <a href="/catalog_grid/?type=poem">诗歌</a>
-                    </li>
-                    <li><a href="/catalog_grid/?type=professional">专业著作</a></li>
-                    <li><a href="/catalog_grid/">全部书籍</a></li>
-                    <li>
-                        <a href="#">账户</a>
-                        <ul class="sub">
-                            <li><a href="/user_info/">个人信息</a></li>
-                            <li><a href="/see_order/">我的订单</a></li>
-                            <li><a href="/change_pwd/">修改密码</a></li>
-                        </ul>
-                    </li>
+                    <div class="grid_13">
+                        <li class="curent"><a href="/login_manage/templates/login_manage/index.html">Home</a></li>
+                    </div><!-- .grid_13 -->
+                    <div class="grid_13">
+                        <li><a href="/catalog_grid/?type=novel">小说</a></li>
+                    </div><!-- .grid_13 -->
+                    <div class="grid_13">
+                        <li><a href="/catalog_grid/?type=prose">散文集</a></li>
+                    </div><!-- .grid_13 -->
+                    <div class="grid_13">
+                        <li>
+                            <a href="/catalog_grid/?type=poem">诗歌</a>
+                        </li>
+                    </div><!-- .grid_13 -->
+                    <div class="grid_13">
+                        <li><a href="/catalog_grid/?type=professional">专业著作</a></li>
+                    </div><!-- .grid_13 -->
+                    <div class="grid_13">
+                        <li><a href="/catalog_grid/">全部书籍</a></li>
+                    </div><!-- .grid_13 -->
+                    <div class="grid_13">
+                        <li>
+                            <a href="#">更多</a>
+                            <ul class="sub">
+                                <li><a href="/user_info/">个人信息</a></li>
+                                <li><a href="/see_order/">我的订单</a></li>
+                            </ul>
+                        </li>
+                    </div><!-- .grid_13 -->
                 </ul>
             </nav><!-- .primary -->
         </div><!-- .grid_12 -->

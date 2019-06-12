@@ -64,19 +64,18 @@
     <section id="main" class="home">
         <div class="container_12">
             <div id="top_button">
-                <div class="grid_4">
+                <div class="grid_15">
                     <a href="#" class="button_block best_price">
                         <img src="../../../static/images/banner1.png" alt="Banner 1"/>
                     </a><!-- .best_price -->
                 </div><!-- .grid_4 -->
-
-                <div class="grid_4">
+                <div class="grid_15">
                     <a href="#" class="button_block new_smells">
                         <img src="../../../static/images/banner2.png" alt="Banner 2"/>
                     </a><!-- .new smells -->
                 </div><!-- .grid_4 -->
 
-                <div class="grid_4">
+                <div class="grid_15">
                     <a href="#" class="button_block only_natural">
                         <img src="../../../static/images/banner3.png" alt="Banner 3"/>
                     </a><!-- .only_natural -->
@@ -95,45 +94,61 @@
                 </div><!-- .c_header -->
 
 
-                    <div id="content" class="grid_9" >
-                        <div></div>
-                        <div class="grid_product">
-                            {% for x,y in rtn_dic.items %}
-                                <div class="grid_3 product" id="product">
-                                    {% if y.IsNew == 1 %}
-                                        <img class="sale" src="../../../static/images/new.png" alt="New"/>
-                                    {% elif y.IsForSale == 1 %}
-                                        <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                    {% else %}
-                                        <div></div>
-                                    {% endif %}
-                                    <div class="prev">
-                                        <a href="/product_page/?ISBN={{ y.GoodISBN }}">
-                                            <img id="Good" src="/static/media/{{ x.GoodPic }}" alt="" title=""/>
-                                        </a>
-                                    </div><!-- .prev -->
-                                    <h3 class="title" id="good_name">{{ y.GoodName }}</h3>
-                                    <div class="cart">
-                                        <div class="price">
-                                            <div class="vert">
-                                                <div class="price_new" id="price">{{ y.GoodPrice }}</div>
+                <div id="content" class="grid_9">
+                    <br/>
+                    <br/>
+                    <div class="grid_product">
+                        {% for x,y in rtn_dic.items %}
+                            <div class="grid_3 product" id="product">
+                                {% if y.IsNew == 1 %}
+                                    <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                                {% elif y.IsForSale == 1 %}
+                                    <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                {% else %}
+                                    <div></div>
+                                {% endif %}
+                                <div class="prev">
+                                    <a href="/product_page/?ISBN={{ y.GoodISBN }}">
+                                        <img id="Good" src="/static/media/{{ x.GoodPic }}" alt="" title=""/>
+                                    </a>
+                                </div><!-- .prev -->
+                                <h3 class="title" id="good_name">{{ y.GoodName }}</h3>
+                                <div class="cart">
+                                    <div class="price">
+                                        <div class="vert">
+                                            <div class="price_new" id="price">{{ y.GoodPrice }}</div>
 
-                                            </div>
                                         </div>
-                                        <a class="obn"></a>
-                                        <a class="like" id="checkout" name="checkout"></a>
-                                        <a class="bay" id="add_to_cart" name="add_to_cart"></a>
-                                    </div><!-- .cart -->
-                                </div><!-- .grid_3 -->
+                                    </div>
+                                    <a class="obn"></a>
+                                    <a class="like" id="checkout" name="checkout"></a>
+                                    <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                </div><!-- .cart -->
+                            </div><!-- .grid_3 -->
 
-                            {% endfor %}
-                        </div>
+                        {% endfor %}
                     </div>
+                </div>
 
 
-<div class="clear"></div>
+                <div class="clear"></div>
 
     </section>
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script src="{% static 'js/jump.js' %}"></script>
+    <script>
+        function logout() {
+            layer.msg('已退出');
+            $.ajax({
+                    url: "/logout/",
+                    type: 'GET',
+                    success: function (arg) {
+                        var textarea = document.getElementById("welcome1");
+                        textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
+                            "                href=\"/login/\">注册</a>.";
+                    }
+                }
+            )
+        }
+    </script>
 {% endblock %}
