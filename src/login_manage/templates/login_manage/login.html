@@ -50,6 +50,17 @@
     </section><!-- #main -->
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script>
+    //ajax刷新
+    $('.captcha').click(function(){
+        $.getJSON("/captcha_refresh/",
+        function(result){
+            $('.captcha').attr('src', result['image_url']);
+            $('#id_captcha_0').val(result['key'])
+      });
+ });
+ 
+    </script>
+    <script>
         {% if message == "密码错误！" %}
             layer.msg("密码错误，请重新输入");
         {% elif message == "学号错误！" %}
