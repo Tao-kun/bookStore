@@ -116,16 +116,16 @@
                             <div class="block_cart">
 
                                 <div class="cart">
-                                    {% if Good.GoodRemain != 0 %}
+                                    {% if Good.GoodRemain != 0 and is_login %}
                                         <a class="bay" id="add_to_cart" onclick="add_to_cart()">加入购物车</a>
                                         <input id="qty" type="text" name="" class="number" value="1"/>
                                         <span>Quantity:</span>
                                     {% endif %}
                                 </div>
                                 <div class="cart" style="padding-top: 2%">
-                                    {% if Good.GoodRemain != 0 %}
+                                    {% if Good.GoodRemain != 0 and is_login %}
                                         <a class="bay" id="add_to_cart" onclick="checkout()">结账</a>
-                                    {% else %}
+                                    {% elif is_login %}
                                         <a class="bay" id="add_to_cart">此商品已经卖完辣</a>
                                     {% endif %}
                                 </div>
@@ -186,8 +186,7 @@
                                 </ul><!-- .comments -->
 
 
-                                {% if already_comment %}
-                                {% else %}
+                                {% if is_login and already_comment %}
 
                                     <form class="add_comments" id="add_comments">
                                         <h4>写下对此书的评价</h4>
@@ -211,14 +210,12 @@
 
 
                                         <div class="clear"></div>
-
-                                        <div class="text_review">
-                                            <strong>评论：</strong><br/>
-                                            <textarea id="comment_content" name="text"></textarea>
-                                        </div><!-- .text_review -->
-
-                                        <input id="btn_submit_comment" value="发表评论" type="button"
-                                               class="btn btn-primary"/>
+                                            <div class="text_review">
+                                                <strong>评论：</strong><br/>
+                                                <textarea id="comment_content" name="text"></textarea>
+                                            </div><!-- .text_review -->
+                                            <input id="btn_submit_comment" value="发表评论" type="button"
+                                                   class="btn btn-primary"/>
                                     </form><!-- .add_comments -->
                                 {% endif %}
 
@@ -269,14 +266,16 @@
                                             {% endif %}
                                             <div class="prev">
                                                 <a href="/product_page/?ISBN={{ Good_rec.good.GoodISBN }}">
-                                                    <img id="Good" src="/static/media/{{ Good_rec.pic.GoodPic }}" alt="" title=""/>
+                                                    <img id="Good" src="/static/media/{{ Good_rec.pic.GoodPic }}" alt=""
+                                                         title=""/>
                                                 </a>
                                             </div><!-- .prev -->
                                             <h3 class="title" id="good_name">{{ Good_rec.good.GoodName }}</h3>
                                             <div class="cart">
                                                 <div class="price">
                                                     <div class="vert">
-                                                        <div class="price_new" id="price">{{ Good_rec.good.GoodPrice }}</div>
+                                                        <div class="price_new"
+                                                             id="price">{{ Good_rec.good.GoodPrice }}</div>
 
                                                     </div>
                                                 </div>

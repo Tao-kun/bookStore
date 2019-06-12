@@ -43,9 +43,14 @@
 
                                     </div>
                                 </div>
-                                <a class="obn"></a>
-                                <a class="like" id="checkout" name="checkout"></a>
-                                <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                <a></a>
+                                {% if is_login %}
+                                    <a class="like" id="checkout" name="checkout"></a>
+                                    <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                {% else %}
+                                    <a class="like"></a>
+                                    <a class="bay"></a>
+                                {% endif %}
                             </div><!-- .cart -->
                         </div><!-- .grid_3 -->
 

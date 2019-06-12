@@ -19,9 +19,6 @@ def catalog_grid(request):
     is_login = request.session.get('is_login', None)
     if is_login:
         user = User.objects.get(pk=request.session.get('studentID'))
-    if not request.session.get('studentID'):
-        request.session.flush()
-        return redirect('/login/')
     type = request.GET.get('type')
     if type is None:
         rtn_list = watch_buy_models.Goods.objects.all()
