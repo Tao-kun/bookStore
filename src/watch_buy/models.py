@@ -10,7 +10,7 @@ class Goods(models.Model):
     商品信息
     其中Intro_pic为这个商品详细页面的那个长的解释图
     """
-    GoodISBN = models.CharField(max_length=50, primary_key=True, verbose_name='ISBN')
+    GoodISBN = models.CharField(max_length=50, primary_key=True, editable=False, verbose_name='ISBN')
     GoodName = models.CharField(max_length=255, null=False, verbose_name='书籍名称')
     GoodPrice = models.FloatField(verbose_name='单价')
     GoodAuthor = models.CharField(max_length=255, null=True, blank=True, verbose_name='作者')

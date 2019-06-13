@@ -36,7 +36,7 @@ class CartAdmin(admin.ModelAdmin):
 
 class GoodsAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('基本信息', {'fields': ['FormattedISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro',
+        ('基本信息', {'fields': ['GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro',
                              'Publisher', 'Pages', 'PublishDate', 'PrintDate', 'Size', 'Edition']}),
         ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount']}),
         ('其他', {'fields': ['Intro_pic']})
