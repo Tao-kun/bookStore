@@ -133,5 +133,3 @@ dmypy.json
 src/bookstore.log
 src/static/admin
 src/static/admin/
-src/static/media/
-src/static/images/
