@@ -1,5 +1,17 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+{% block islogin %}
+    {% if is_login %}
+        <div class="welcome" id="welcome1">
+            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+        </div><!-- .welcome -->
+    {% else %}
+        <div class="welcome" id="welcome1">
+            欢迎您，游客 <a href="/login/">登录</a> or <a
+                href="/login/">注册</a> or <a href="/admin/">我是管理员</a>.
+        </div><!-- .welcome -->
+    {% endif %}
+{% endblock %}
 {% block content %}
     <div class="clear"></div>
     <!-- Billing -->
@@ -88,11 +100,11 @@
                                 <div><h3><strong>付款方式</strong></h3></div>
                                 <ul>
                                     <li>
-                                        <input value="wechat" checked="" type="radio">
+                                        <input value="wechat" type="radio" id="wechat">
                                         <label>货到付款</label>
                                     </li>
                                     <li>
-                                        <input value="AliPay" type="radio">
+                                        <input value="AliPay" type="radio" id="AliPay">
                                         <label>明哥钱包<img src="../../../static/images/paypal.jpg" alt="Paypal"></label>
                                     </li>
                                 </ul>
@@ -113,6 +125,28 @@
         </div><!-- Container /- -->
     </div><!-- Checkout /- -->
     <script src="{% static 'js/layer/layer.js' %}"></script>
+    <script src="{% static "js/jquery-1.7.2.min.js" %}"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('input:radio').click(function(){
+                //alert(this.checked);
+                //
+                var domName = $(this).attr('name');
+
+                var $radio = $(this);
+                // if this was previously checked
+                if ($radio.data('waschecked') === true){
+                    $radio.prop('checked', false);
+                    $("input:radio[name='" + domName + "']").data('waschecked',false);
+                    $radio.data('waschecked', false);
+                } else {
+                    $radio.prop('checked', true);
+                    $("input:radio[name='" + domName + "']").data('waschecked',false);
+                    $radio.data('waschecked', true);
+                }
+            });
+        });
+    </script>
     <script>
         /*
             通过url获取相关字段的值
@@ -146,6 +180,14 @@
         }
     </script>
     <script>
+        function Isnull(str) {
+            if(str === "" || str === "None")
+                return true;
+            else
+                return false;
+        }
+    </script>
+    <script>
         /*
             检查信息合法性，合法的话才跳转传参
             如果只有单个商品，直接传商品名
@@ -161,15 +203,17 @@
             layer.confirm('您确定要支付嘛？', {
                 btn: ['确定', '再看看'] //按钮
             }, function () {
-                if (name === "")
+                if (Isnull(name) === true)
                     layer.msg("收货人姓名不能为空");
-                else if (address === "")
+                else if(!document.getElementById('wechat').checked && !document.getElementById('AliPay').checked)
+                    layer.msg("请选择一种付款方式");
+                else if (Isnull(address) === true)
                     layer.msg("地址不能为空");
-                else if (zipcode === "")
+                else if (Isnull(zipcode) === true)
                     layer.msg("邮编不能为空");
-                else if (telephone === "")
+                else if (Isnull(telephone) === true)
                     layer.msg("电话号码不能为空");
-                else if (qq === "")
+                else if (Isnull(qq) === true)
                     layer.msg("qq不能为空");
                 else if (good_name != null) {
                     $.ajax({
@@ -180,9 +224,9 @@
                             }
                         }
                     );
-                } else {
+                } else if(good_name == null) {
                     $.ajax({
-                            url: "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&goods=" + getQueryString('jsonData') + "&IsSured=1",
+                            url: "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&goods=" + getQueryString('goods') + "&IsSured=1",
                             type: 'GET',
                             success: function (arg) {
                                 layer.msg('付款成功', {icon: 1});
@@ -191,15 +235,17 @@
                     );
                 }
             }, function () {
-                if (name === "")
+                if (Isnull(name) === true)
                     layer.msg("收货人姓名不能为空");
-                else if (address === "")
+                 else if(!document.getElementById('wechat').checked && !document.getElementById('AliPay').checked)
+                    layer.msg("请选择一种付款方式");
+                else if (Isnull(address) === true)
                     layer.msg("地址不能为空");
-                else if (zipcode === "")
+                else if (Isnull(zipcode) === true)
                     layer.msg("邮编不能为空");
-                else if (telephone === "")
+                else if (Isnull(telephone) === true)
                     layer.msg("电话号码不能为空");
-                else if (qq === "")
+                else if (Isnull(qq) === true)
                     layer.msg("qq不能为空");
                 else if (good_name != null) {
                     $.ajax({
@@ -210,9 +256,9 @@
                             }
                         }
                     );
-                } else {
+                } else if(good_name == null) {
                     $.ajax({
-                            url: "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&goods=" + getQueryString('jsonData') + "&IsSured=0",
+                            url: "/add_order/?name=" + name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq + "&goods=" + getQueryString('goods') + "&IsSured=0",
                             type: 'GET',
                             success: function (arg) {
                                 layer.msg('相信我们还会再见的呢~', {icon: 2});

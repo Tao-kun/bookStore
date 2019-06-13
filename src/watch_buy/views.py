@@ -16,9 +16,9 @@ from after_sold.models import *
 # 显示商品列表
 # 返回此商品的一张图以及商品的相关信息
 def catalog_grid(request):
-    if not request.session.get('studentID'):
-        request.session.flush()
-        return redirect('/login/')
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
     type = request.GET.get('type')
     if type is None:
         rtn_list = watch_buy_models.Goods.objects.all()
@@ -27,28 +27,32 @@ def catalog_grid(request):
     for rtn in rtn_list:
         rtn.GoodPrice = rtn.GoodPrice * rtn.GoodDiscount
     rtn_pic = []
-
+    rtn_listt = []
     page_str = request.GET.get('page')
     if page_str is None:
         page = 1
     else:
         page = int(page_str)
-    for i in range((page - 1) * 10, min(len(rtn_list), (page - 1) * 10 + 10)):
+    for i in range((page - 1) * 9, min(len(rtn_list), (page - 1) * 9 + 9)):
         GoodID = rtn_list[i].GoodISBN
         pic_tmp = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=GoodID)
         rtn_pic.append(pic_tmp[0])
-    rtn_dic = dict(map(lambda x, y: [x, y], rtn_pic, rtn_list))
+        rtn_listt.append(rtn_list[i])
+    rtn_dic = dict(map(lambda x, y: [x, y], rtn_pic, rtn_listt))
     return render(request, "watch_buy/catalog_grid.html", locals())
 
 
 # 结账
 def checkout(request):
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
     good_name = request.GET.get("good_name")
     good_price = request.GET.get("good_price")
-    good_json = request.GET.get("jsonData")  # 如果说是从购物车里边选择了多个商品,返回一个json对象
+    good_json = request.GET.get("goods")  # 如果说是从购物车里边选择了多个商品,返回一个json对象
     studentID = request.session.get('studentID')
     default_info = login_manage_models.User.objects.get(studentID=studentID)
 
@@ -70,18 +74,20 @@ def checkout(request):
             sum_price += float(good_dic["book_price" + str(count)]) * \
                          float(good_dic["book_qty" + str(count)])
             count += 1
+        cart_all = watch_buy_models.Cart.objects.filter(studentID_id=studentID)
+        for cart_obj in cart_all:
+            cart_obj.delete()
     else:
         good_list.append(Good(good_name, good_price, 1))
         sum_price = good_price
-    cart_all = watch_buy_models.Cart.objects.filter(studentID_id=studentID)
-    for cart_obj in cart_all:
-        cart_obj.delete()
-    print(sum_price)
     return render(request, "watch_buy/checkout.html", locals())
 
 
 # 查看购物车
 def shopping_cart(request):
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
@@ -189,7 +195,11 @@ def comments_sort_rule(comment: Comment):  # 从数据库获取的评论列表�
 
 # 查看商品详细信息
 def good_detail(request):
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
     Good_ISBN = request.GET.get('ISBN')
+
     class Recommend:
         def __init__(self, good, pic):
             self.good = good
@@ -200,15 +210,19 @@ def good_detail(request):
         ISBN_set.add(gr.good.GoodISBN)
     Good_recommend_rtn = []
     for isbn in ISBN_set:
-            ojb = watch_buy_models.Goods.objects.get(GoodISBN=isbn)
-            pic = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=isbn)[0]
-            Good_recommend_rtn.append(Recommend(ojb, pic))
+        ojb = watch_buy_models.Goods.objects.get(GoodISBN=isbn)
+        pic = watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=isbn)[0]
+        Good_recommend_rtn.append(Recommend(ojb, pic))
     Good = watch_buy_models.Goods.objects.get(GoodISBN=Good_ISBN)
     Good.GoodPrice *= Good.GoodDiscount
     Good_pic_list = watch_buy_models.GoodsPic.objects.filter(
         GoodISBN_id=Good_ISBN)
-    studentID = request.session['studentID']
-    user = User.objects.get(studentID=studentID)
+    user = None
+    try:
+        studentID = request.session['studentID']
+        user = User.objects.get(studentID=studentID)
+    except:
+        studentID = 0
     request.session['isbn'] = Good.GoodISBN
     comments = list(Comment.objects.filter(good=Good))
     comments.sort(key=comments_sort_rule, reverse=True)
@@ -229,32 +243,37 @@ def good_detail(request):
             comment, quality_starts_lists_simple(comment.quality))
         page_comments.append(page_comment)
 
-    tmp_order = watch_buy_models.Order.objects.filter(user = user, IsCompleted=1)
+    tmp_order = watch_buy_models.Order.objects.filter(user=user, IsCompleted=1)
     user_buy = False
     if tmp_order.exists():
         for each_order in tmp_order:
-            tmp = watch_buy_models.OrderGood.objects.filter(order_id=each_order.orderid,good=Good)
+            tmp = watch_buy_models.OrderGood.objects.filter(
+                order_id=each_order.orderid, good=Good)
             if tmp.exists():
                 user_buy = True
-    
 
-    tmp_comment = Comment.objects.filter(user = user,good=Good)
+    tmp_comment = Comment.objects.filter(user=user, good=Good)
     if tmp_comment.exists():
         already_comment = True
-    else :
+    else:
         already_comment = False
     return render(request, "watch_buy/product_page.html", locals())
 
 
-def show_comments(request):
+def add_and_show_comments(request):
     isbn = request.session['isbn']
     Good = watch_buy_models.Goods.objects.get(GoodISBN=isbn)
     new_content = request.GET.get('content')
     new_quality = request.GET.get('quality')
     studentID = request.session['studentID']
     user = User.objects.get(studentID=studentID)
-    new_comment = Comment(content=new_content, user=user, good=Good, quality=new_quality)
+    new_comment = Comment(content=new_content, user=user,
+                          good=Good, quality=new_quality)
     new_comment.save()
+    return show_comments(request, Good, user)
+
+
+def show_comments(request, Good, user):
     comments = list(Comment.objects.filter(good=Good))
     comments.sort(key=comments_sort_rule, reverse=True)
     page_comments = []
@@ -265,9 +284,20 @@ def show_comments(request):
         page_comments.append(page_comment)
 
     people_cannot_post_comment = False
-    main_data = str(render(request, "watch_buy/show_comments.html", locals()).content, encoding="utf-8")
+    main_data = str(render(request, "watch_buy/show_comments.html",
+                           locals()).content, encoding="utf-8")
     ret = {'main_data': main_data}
     return HttpResponse(json.dumps(ret), content_type='application/json')
+
+
+def delete_add_show_comments(request):
+    isbn = request.session['isbn']
+    Good = watch_buy_models.Goods.objects.get(GoodISBN=isbn)
+    studentID = request.session['studentID']
+    user = User.objects.get(studentID=studentID)
+    comment = Comment.objects.get(user=user, good=Good)
+    comment.delete()
+    return show_comments(request, Good, user)
 
 
 # 添加订单
@@ -293,6 +323,11 @@ def add_order(request):
     order.IsHandled = IsSured
     order.save()
     jsonObj = request.GET.get('goods')
+    print(IsSured)
+    if IsSured == 1:
+        cart_all = watch_buy_models.Cart.objects.filter(studentID_id=stu_id)
+        for cart_obj in cart_all:
+            cart_obj.delete()
     if jsonObj is not None:
         good_dic = json.loads(jsonObj)
         count = 0
@@ -313,10 +348,22 @@ def add_order(request):
 
 
 def delete_item(request):
+    studentID = request.session.get('studentID')
     id = request.GET.get('id')
+    Total_sum = 0
     cart_obj = watch_buy_models.Cart.objects.get(id=id)
     cart_obj.delete()
-    return render(request, "watch_buy/delete_item.html", locals())
+    good_num_list = watch_buy_models.Cart.objects.filter(
+        studentID_id=studentID)
+    for i in range(len(good_num_list)):
+        GoodID = good_num_list[i].GoodID_id
+        info_tmp = watch_buy_models.Goods.objects.get(GoodISBN=GoodID)
+        info_tmp.GoodPrice = info_tmp.GoodPrice * info_tmp.GoodDiscount
+        Qty_tmp = watch_buy_models.Cart.objects.get(
+            GoodID_id=GoodID, studentID_id=studentID)
+        sum = Qty_tmp.Qty * info_tmp.GoodPrice
+        Total_sum += sum
+    return HttpResponse(json.dumps({"sum": Total_sum}))
 
 
 def changeqty(request):
@@ -333,7 +380,11 @@ def delete_all(request):
     cart_obj.delete()
     return render(request, "watch_buy/delete_all.html", locals())
 
+
 def search(request):
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
     keyword = request.GET.get('search')
     rtn_set = set()
     rtn_list = []

@@ -1,99 +1,21 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+{% block islogin %}
+    {% if is_login %}
+        <div class="welcome" id="welcome1">
+            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+        </div><!-- .welcome -->
+    {% else %}
+        <div class="welcome" id="welcome1">
+            欢迎您，游客 <a href="/login/">登录</a> or <a
+                href="/login/">注册</a> or <a href="/admin/">我是管理员</a>.
+        </div><!-- .welcome -->
+    {% endif %}
+{% endblock %}
 {% block content %}
     <section id="main">
         <div class="container_12">
-            <div id="sidebar" class="grid_3">
-                <aside id="categories_nav">
-                    <h3>Categories</h3>
-
-                    <nav class="left_menu">
-                        <ul>
-                            <li><a href="#">Solids <span>(21)</span></a></li>
-                            <li><a href="#">Liquids <span> (27)</span></a></li>
-                            <li><a href="#">Spray <span>(33)</span></a></li>
-                            <li><a href="#">Electric <span>(17)</span></a></li>
-                            <li><a href="#">For Cars <span>(23)</span></a></li>
-                            <li><a href="#">For Room <span>(7)</span></a></li>
-                            <li class="last"><a href="#">Other <span>(135)</span></a></li>
-                        </ul>
-                    </nav><!-- .left_menu -->
-                </aside><!-- #categories_nav -->
-
-                <aside id="shop_by">
-                    <h3>Shop By</h3>
-
-                    <div class="currently_shopping">
-                        <p>Currently Shopping by:</p>
-                        <ul>
-                            <li><a title="close" class="close" href="#"></a>Price: <span>$0.00 - $999.99</span></li>
-                            <li><a title="close" class="close" href="#"></a>Manufacturer: <span>Apple</span></li>
-                        </ul>
-
-                        <a class="clear_all" href="#">Clear All</a>
-
-                        <div class="clear"></div>
-                    </div><!-- .currently_shopping -->
-
-                    <h4>Category</h4>
-
-                    <form action="#" class="check_opt">
-                        <p><input class="niceCheck" type="checkbox">For Home (23)</p>
-                        <p><input class="niceCheck" type="checkbox" name="" value="">For Car (27)</p>
-                        <p><input class="niceCheck" type="checkbox" name="" value="">For Office (9)</p>
-                    </form>
-
-                    <h4>Price</h4>
-
-                    <form action="#" class="check_opt">
-                        <p><input class="niceCheck" type="checkbox" name="" value="">0.00 - $49.99 (21)</p>
-                        <p><input class="niceCheck" type="checkbox" name="" value="">$50.00 - $99.99 (7)</p>
-                        <p><input class="niceCheck" type="checkbox" name="" value="">0$100.00 and above (15)</p>
-                    </form>
-                </aside><!-- #shop_by -->
-
-                <aside id="specials" class="specials">
-                    <h3>Specials</h3>
-
-                    <ul>
-                        <li>
-                            <div class="prev">
-                                <a href="product_page.html"><img src="images/special1.png" alt="" title=""/></a>
-                            </div>
-
-                            <div class="cont">
-                                <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
-                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="prev">
-                                <a href="product_page.html"><img src="images/special2.png" alt="" title=""/></a>
-                            </div>
-
-                            <div class="cont">
-                                <a href="product_page.html">Honeysuckle Flameless Luminary Refill</a>
-                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                            </div>
-                        </li>
-                    </ul>
-                </aside><!-- #specials -->
-
-                <aside id="newsletter_signup">
-                    <h3>Newsletter Signup</h3>
-                    <p>Phasellus vel ultricies felis. Duis
-                        rhoncus risus eu urna pretium.</p>
-
-                    <form class="newsletter">
-                        <input type="email" name="newsletter" class="your_email" value=""
-                               placeholder="Enter your email address..."/>
-                        <input type="submit" id="submit" value="Subscribe"/>
-                    </form>
-                </aside><!-- #newsletter_signup -->
-            </div><!-- .sidebar -->
-
-            <div id="content" class="grid_9">
+            <div id="content" style="padding-left: 15%">
 
                 <div class="listing_product">
                     {% for good in rtn_list %}
@@ -123,7 +45,7 @@
                                         <a href="#"></a>
                                         <span>1 REVIEW(S)</span>
                                     </div>
-                                    <p>{{ good.good.GoodIntro }}</p>
+                                    <p style="overflow:hidden;text-overflow: ellipsis;white-space:nowrap">{{ good.good.GoodIntro }}</p>
                                 </div><!-- .entry_content -->
                             </div><!-- .grid_4 -->
 
@@ -132,8 +54,13 @@
                                     <div class="price">
                                         <div class="price_new">${{ good.price }}</div>
                                     </div>
+                                    {% if is_login %}
                                     <a href="#" class="bay" name="add_to_cart">Add to Cart</a>
                                     <a href="#" class="bay" name="checkout">Buy it now</a>
+                                    {% else %}
+                                    <a href="#" class="bay">Add to Cart</a>
+                                    <a href="#" class="bay">Buy it now</a>
+                                    {% endif %}
                                 </div><!-- .cart -->
                             </div><!-- .grid_2 -->
                             <div class="clear"></div>

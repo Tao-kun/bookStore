@@ -11,7 +11,7 @@
     {% else %}
         <div class="welcome" id="welcome1">
             欢迎您，游客 <a href="/login/">登录</a> or <a
-                href="/login/">注册</a>.
+                href="/login/">注册</a> or <a href="/admin/">我是管理员</a>.
         </div><!-- .welcome -->
     {% endif %}
 {% endblock %}
@@ -22,31 +22,20 @@
             <div class="slidnext"><span>Next</span></div>
             <div id="slider">
                 <div id="slide1">
-                    <img src="../../../static/images/content/slide1.jpg" alt="" title=""/>
-                    <div class="slid_text">
-                        <h3 class="slid_title"><span>Breeze Theme</span></h3>
-                        <p><span>Breeze is the 14 stylish HTML templates,</span></p>
-                        <p><span>which will helps you boost sales</span></p>
-                        <p><span>and receive good feedback from your clients.</span></p>
-                    </div>
+                    <img src="../../../static/images/content/slide5.jpg" alt="" title="" style="height: 500px"/>
                 </div>
 
                 <div id="slide2">
                     <img src="../../../static/images/content/slide2.jpg" alt="" title=""/>
                     <div class="slid_text">
-                        <h3 class="slid_title"><span>Flexibility</span></h3>
-                        <p><span>Every product, which you are selling,</span></p>
-                        <p><span>will look great with Breeze theme.</span></p>
+                        <h3 class="slid_title"><span>方便</span></h3>
+                        <p><span>足不出户</span></p>
+                        <p><span>享受网上购物</span></p>
                     </div>
                 </div>
 
                 <div id="slide3">
-                    <img src="../../../static/images/content/slide3.jpg" alt="" title=""/>
-                    <div class="slid_text">
-                        <h3 class="slid_title"><span>Accuracy and Easiness</span></h3>
-                        <p><span>Breeze design is mere and accurate,</span></p>
-                        <p><span>so it will satisfy everybody.</span></p>
-                    </div>
+                    <img src="../../../static/images/content/slide1.png" alt="" title="" style="height:500px"/>
                 </div>
             </div><!-- .slider -->
             <div id="myController">
@@ -58,29 +47,11 @@
 
         </div><!-- .grid_12 -->
     </div><!-- .container_12 -->
-    <div class="copyrights">Collect from <a href="http://www.moobnn.com/" title="网站模板">网站模板</a></div>
     <div class="clear"></div>
 
     <section id="main" class="home">
         <div class="container_12">
             <div id="top_button">
-                <div class="grid_15">
-                    <a href="#" class="button_block best_price">
-                        <img src="../../../static/images/banner1.png" alt="Banner 1"/>
-                    </a><!-- .best_price -->
-                </div><!-- .grid_4 -->
-                <div class="grid_15">
-                    <a href="#" class="button_block new_smells">
-                        <img src="../../../static/images/banner2.png" alt="Banner 2"/>
-                    </a><!-- .new smells -->
-                </div><!-- .grid_4 -->
-
-                <div class="grid_15">
-                    <a href="#" class="button_block only_natural">
-                        <img src="../../../static/images/banner3.png" alt="Banner 3"/>
-                    </a><!-- .only_natural -->
-                </div><!-- .grid_4 -->
-
                 <div class="clear"></div>
             </div><!-- #top_button -->
 
@@ -119,14 +90,14 @@
                                             <div class="price_new" id="price">{{ y.GoodPrice }}</div>
 
                                         </div>
-                                    </div>
-                                    <a class="obn"></a>
-                                    <a class="like" id="checkout" name="checkout"></a>
-                                    <a class="bay" id="add_to_cart" name="add_to_cart"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
+                                        <a></a>
+                                        <a class="like" id="checkout" name="checkout"></a>
+                                        <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                    </div><!-- .cart -->
+                                </div><!-- .grid_3 -->
 
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
 
@@ -136,19 +107,4 @@
     </section>
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script src="{% static 'js/jump.js' %}"></script>
-    <script>
-        function logout() {
-            layer.msg('已退出');
-            $.ajax({
-                    url: "/logout/",
-                    type: 'GET',
-                    success: function (arg) {
-                        var textarea = document.getElementById("welcome1");
-                        textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
-                            "                href=\"/login/\">注册</a>.";
-                    }
-                }
-            )
-        }
-    </script>
 {% endblock %}

@@ -2,12 +2,14 @@ from random import choice
 import string
 import re
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from login_manage import models
 from login_manage.forms import LoginForm
 from login_manage.models import User
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
 import watch_buy.models as watch_buy_model
 
 
@@ -37,7 +39,6 @@ def login(request):
         message = ""
         if login_form.is_valid():
             studentID = login_form.cleaned_data['studentID']
-            print(studentID)
             password = login_form.cleaned_data['password']
             try:
                 user = User.objects.get(studentID=studentID)
@@ -162,6 +163,9 @@ def sendemail(request):
 
 # 显示用户信息
 def user_info(request):
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
@@ -188,3 +192,48 @@ def update_user(request):
     stu.city_num = citynum
     stu.save()
     return render(request, "login_manage/update_user.html")
+
+
+def change_pwd(request):
+    if not request.session.get('studentID'):
+        request.session.flush()
+        return redirect('/login/')
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
+    return render(request, "login_manage/change_pwd.html", locals())
+
+
+def check_new_password(request):
+    originpwd = User.objects.get(pk=request.session.get('studentID')).password
+    oldpwd = request.GET.get('oldpassword')
+    newpwd1 = request.GET.get('newpassword1')
+    newpwd2 = request.GET.get('newpassword2')
+    message = "no"
+    if originpwd == oldpwd and newpwd1 == newpwd2 and oldpwd and newpwd1 and newpwd2:
+        message = "yes"
+    return HttpResponse(json.dumps({"message": message}))
+
+
+def save_new_password(request):
+    newpwd = request.GET.get('newpassword')
+    user = User.objects.get(pk=request.session.get('studentID'))
+    user.password = newpwd
+    user.save()
+    request.session.flush()
+    return redirect('/index/')
+
+
+def captcha_refresh(request):
+    """
+    Return json with new captcha for ajax refresh request
+    """
+    if not request.is_ajax():  # 只接受ajax提交
+        raise Http404
+    new_key = CaptchaStore.generate_key()
+    to_json_response = {
+        'key': new_key,
+        'image_url': captcha_image_url(new_key),
+    }
+    return HttpResponse(json.dumps(to_json_response), content_type='application/json')
+

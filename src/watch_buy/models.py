@@ -80,7 +80,7 @@ class Order(models.Model):
     qq = models.CharField(max_length=15, null=True, blank=True, verbose_name='收货人QQ')
     IsCompleted = models.IntegerField(default=0, verbose_name='订单是否完成')
     Comment = models.CharField(max_length=500, null=True, blank=True, verbose_name='用户评论')
-    IsReturn = models.IntegerField(default=0, verbose_name='是否退回')
+    IsReturn = models.IntegerField(default=0, verbose_name='是否要求退款')
 
     def __str__(self):
         return '{}-{}({})'.format(self.orderid, self.user.name, self.orderdate)
