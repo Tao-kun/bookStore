@@ -77,7 +77,6 @@ body {
 
 @media (min-width: 400px) {
     .container_12 .grid_4 {
-        margin-left: 65%;
         width: 35%;
     }
 
