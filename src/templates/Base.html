@@ -1,5 +1,5 @@
 {% load staticfiles %}
-<html lang="en" xmlns:margin-bottom="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:margin-bottom="http://www.w3.org/1999/xhtml" xmlns: xmlns:>
 <!-- Added by HTTrack -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8"/><!-- /Added by HTTrack -->
 <head>
@@ -9,8 +9,6 @@
     <meta name="keywords" content="">
 
     <title>Home</title>
-    <link href="{% static 'css/style.css' %}" media="screen" rel="stylesheet" type="text/css">
-    <link href="{% static 'css/grid.css' %}" media="screen" rel="stylesheet" type="text/css">
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script src="{% static 'js/jquery-1.7.2.min.js' %} "></script>
     <script src="{% static 'js/html5.js' %}"></script>
@@ -28,11 +26,11 @@
     <!-- RS5.0 Layers and Navigation Styles -->
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/layers.css">
     <link rel="stylesheet" type="text/css" href="../static/revolution/css/navigation.css">
-    <link href="../static/css/style.css" media="screen" rel="stylesheet" type="text/css">
-    <link href="../static/css/grid.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="../static/css/style.css?ranparam=random()" media="screen" rel="stylesheet" type="text/css">
+    <link href="../static/css/grid.css?ranparam=random()" media="screen" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="../static/css/jquery.jqzoom.css" type="text/css">
     <!-- Library - Bootstrap v3.3.5 -->
-    <link rel="stylesheet" type="text/css" href="../static/libraries/lib.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
 
     <!-- Custom - Common CSS -->
     <link rel="stylesheet" type="text/css" href="../static/css/plugins.css">
@@ -64,12 +62,13 @@
                 slideWrapper: "#jFlowSlider", // must be id, use # sign
                 slides: "#slider",  // the div where all your sliding divs are nested in
                 selectedWrapper: "jFlowSelected",  // just pure text, no sign
-                width: "984px",  // this is the width for the content-slider
-                height: "480px",  // this is the height for the content-slider
+                //width: "984px",  // this is the width for the content-slider
+                //height: "480px",  // this is the height for the content-slider
                 duration: 400,  // time in miliseconds to transition one slide
                 prev: ".slidprev", // must be class, use . sign
                 next: ".slidnext", // must be class, use . sign
                 auto: true
+
             });
         });
     </script>
@@ -100,7 +99,7 @@
 <body>
 <div class="container_12">
     <div id="top">
-        <div class="grid_3">
+        <div class="grid_1">
             <div class="phone_top">
                 Call CN +86 18210714886
             </div><!-- .phone_top -->

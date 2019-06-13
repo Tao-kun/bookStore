@@ -52,8 +52,6 @@
     <section id="main" class="home">
         <div class="container_12">
             <div id="top_button">
-
-
                 <div class="clear"></div>
             </div><!-- #top_button -->
 
@@ -67,30 +65,30 @@
                 </div><!-- .c_header -->
 
 
-                    <div id="content" class="grid_9" >
-                        <div></div>
-                        <div class="grid_product">
-                            {% for x,y in rtn_dic.items %}
-                                <div class="grid_3 product" id="product">
-                                    {% if y.IsNew == 1 %}
-                                        <img class="sale" src="../../../static/images/new.png" alt="New"/>
-                                    {% elif y.IsForSale == 1 %}
-                                        <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                    {% else %}
-                                        <div></div>
-                                    {% endif %}
-                                    <div class="prev">
-                                        <a href="/product_page/?ISBN={{ y.GoodISBN }}">
-                                            <img id="Good" src="/static/media/{{ x.GoodPic }}" alt="" title=""/>
-                                        </a>
-                                    </div><!-- .prev -->
-                                    <h3 class="title" id="good_name">{{ y.GoodName }}</h3>
-                                    <div class="cart">
-                                        <div class="price">
-                                            <div class="vert">
-                                                <div class="price_new" id="price">{{ y.GoodPrice }}</div>
+                <div id="content" class="grid_9">
+                    <br/>
+                    <br/>
+                    <div class="grid_product">
+                        {% for x,y in rtn_dic.items %}
+                            <div class="grid_3 product" id="product">
+                                {% if y.IsNew == 1 %}
+                                    <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                                {% elif y.IsForSale == 1 %}
+                                    <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                {% else %}
+                                    <div></div>
+                                {% endif %}
+                                <div class="prev">
+                                    <a href="/product_page/?ISBN={{ y.GoodISBN }}">
+                                        <img id="Good" src="/static/media/{{ x.GoodPic }}" alt="" title=""/>
+                                    </a>
+                                </div><!-- .prev -->
+                                <h3 class="title" id="good_name">{{ y.GoodName }}</h3>
+                                <div class="cart">
+                                    <div class="price">
+                                        <div class="vert">
+                                            <div class="price_new" id="price">{{ y.GoodPrice }}</div>
 
-                                            </div>
                                         </div>
                                         <a></a>
                                         <a class="like" id="checkout" name="checkout"></a>
@@ -101,9 +99,10 @@
                             {% endfor %}
                         </div>
                     </div>
+                </div>
 
 
-<div class="clear"></div>
+                <div class="clear"></div>
 
     </section>
     <script src="{% static 'js/layer/layer.js' %}"></script>
