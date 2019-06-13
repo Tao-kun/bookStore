@@ -1,154 +1,137 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
 {% block title %}
-    首页
+首页
 {% endblock %}
 {% block islogin %}
-    {% if is_login %}
-        <div class="welcome" id="welcome1">
-            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
-        </div><!-- .welcome -->
-    {% else %}
-        <div class="welcome" id="welcome1">
-            欢迎您，游客 <a href="/login/">登录</a> or <a
-                href="/login/">注册</a>.
-        </div><!-- .welcome -->
-    {% endif %}
+{% if is_login %}
+<div class="welcome" id="welcome1">
+    欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+</div><!-- .welcome -->
+{% else %}
+<div class="welcome" id="welcome1">
+    欢迎您，游客 <a href="/login/">登录</a> or <a href="/login/">注册</a>.
+</div><!-- .welcome -->
+{% endif %}
 {% endblock %}
 {% block content %}
+<div class="container_12">
+    <div class="grid_12">
+        <div class="slidprev"><span>Prev</span></div>
+        <div class="slidnext"><span>Next</span></div>
+        <div id="slider">
+            <div id="slide1">
+                <img src="../../../static/images/content/slide1.jpg" alt="" title="" />
+                <div class="slid_text">
+                    <h3 class="slid_title"><span>Breeze Theme</span></h3>
+                    <p><span>Breeze is the 14 stylish HTML templates,</span></p>
+                    <p><span>which will helps you boost sales</span></p>
+                    <p><span>and receive good feedback from your clients.</span></p>
+                </div>
+            </div>
+
+            <div id="slide2">
+                <img src="../../../static/images/content/slide2.jpg" alt="" title="" />
+                <div class="slid_text">
+                    <h3 class="slid_title"><span>Flexibility</span></h3>
+                    <p><span>Every product, which you are selling,</span></p>
+                    <p><span>will look great with Breeze theme.</span></p>
+                </div>
+            </div>
+
+            <div id="slide3">
+                <img src="../../../static/images/content/slide3.jpg" alt="" title="" />
+                <div class="slid_text">
+                    <h3 class="slid_title"><span>Accuracy and Easiness</span></h3>
+                    <p><span>Breeze design is mere and accurate,</span></p>
+                    <p><span>so it will satisfy everybody.</span></p>
+                </div>
+            </div>
+        </div><!-- .slider -->
+        <div id="myController">
+            <div class="control"><span>1</span></div>
+            <div class="control"><span>2</span></div>
+            <div class="control"><span>3</span></div>
+        </div>
+
+
+    </div><!-- .grid_12 -->
+</div><!-- .container_12 -->
+<div class="clear"></div>
+
+<section id="main" class="home">
     <div class="container_12">
-        <div class="grid_12">
-            <div class="slidprev"><span>Prev</span></div>
-            <div class="slidnext"><span>Next</span></div>
-            <div id="slider">
-                <div id="slide1">
-                    <img src="../../../static/images/content/slide1.jpg" alt="" title=""/>
-                    <div class="slid_text">
-                        <h3 class="slid_title"><span>Breeze Theme</span></h3>
-                        <p><span>Breeze is the 14 stylish HTML templates,</span></p>
-                        <p><span>which will helps you boost sales</span></p>
-                        <p><span>and receive good feedback from your clients.</span></p>
-                    </div>
-                </div>
+        <div id="top_button">
+            <div class="grid_4">
+                <a href="#" class="button_block best_price">
+                    <img src="../../../static/images/banner1.png" alt="Banner 1" />
+                </a><!-- .best_price -->
+            </div><!-- .grid_4 -->
 
-                <div id="slide2">
-                    <img src="../../../static/images/content/slide2.jpg" alt="" title=""/>
-                    <div class="slid_text">
-                        <h3 class="slid_title"><span>Flexibility</span></h3>
-                        <p><span>Every product, which you are selling,</span></p>
-                        <p><span>will look great with Breeze theme.</span></p>
-                    </div>
-                </div>
+            <div class="grid_4">
+                <a href="#" class="button_block new_smells">
+                    <img src="../../../static/images/banner2.png" alt="Banner 2" />
+                </a><!-- .new smells -->
+            </div><!-- .grid_4 -->
 
-                <div id="slide3">
-                    <img src="../../../static/images/content/slide3.jpg" alt="" title=""/>
-                    <div class="slid_text">
-                        <h3 class="slid_title"><span>Accuracy and Easiness</span></h3>
-                        <p><span>Breeze design is mere and accurate,</span></p>
-                        <p><span>so it will satisfy everybody.</span></p>
-                    </div>
+            <div class="grid_4">
+                <a href="#" class="button_block only_natural">
+                    <img src="../../../static/images/banner3.png" alt="Banner 3" />
+                </a><!-- .only_natural -->
+            </div><!-- .grid_4 -->
+
+            <div class="clear"></div>
+        </div><!-- #top_button -->
+
+        <div class="clear"></div>
+
+        <div class="carousel">
+            <div class="c_header">
+                <div class="grid_10">
+                    <h2>促销商品</h2>
+                </div><!-- .grid_10 -->
+            </div><!-- .c_header -->
+
+
+            <div id="content" class="grid_9">
+                <div></div>
+                <div class="grid_product">
+                    {% for x,y in rtn_dic.items %}
+                    <div class="grid_3 product" id="product">
+                        {% if y.IsNew == 1 %}
+                        <img class="sale" src="../../../static/images/new.png" alt="New" />
+                        {% elif y.IsForSale == 1 %}
+                        <img class="sale" src="../../../static/images/sale.png" alt="Sale" />
+                        {% else %}
+                        <div></div>
+                        {% endif %}
+                        <div class="prev">
+                            <a href="/product_page/?ISBN={{ y.GoodISBN }}">
+                                <img id="Good" src="/static/media/{{ x.GoodPic }}" alt="" title="" />
+                            </a>
+                        </div><!-- .prev -->
+                        <h3 class="title" id="good_name">{{ y.GoodName }}</h3>
+                        <div class="cart">
+                            <div class="price">
+                                <div class="vert">
+                                    <div class="price_new" id="price">{{ y.GoodPrice }}</div>
+
+                                </div>
+                            </div>
+                            <a class="obn"></a>
+                            <a class="like" id="checkout" name="checkout"></a>
+                            <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                        </div><!-- .cart -->
+                    </div><!-- .grid_3 -->
+
+                    {% endfor %}
                 </div>
-            </div><!-- .slider -->
-            <div id="myController">
-                <div class="control"><span>1</span></div>
-                <div class="control"><span>2</span></div>
-                <div class="control"><span>3</span></div>
             </div>
 
 
-        </div><!-- .grid_12 -->
-    </div><!-- .container_12 -->
-    <div class="copyrights">Collect from <a href="http://www.moobnn.com/" title="网站模板">网站模板</a></div>
-    <div class="clear"></div>
-
-    <section id="main" class="home">
-        <div class="container_12">
-            <div id="top_button">
-                <div class="grid_15">
-                    <a href="#" class="button_block best_price">
-                        <img src="../../../static/images/banner1.png" alt="Banner 1"/>
-                    </a><!-- .best_price -->
-                </div><!-- .grid_4 -->
-                <div class="grid_15">
-                    <a href="#" class="button_block new_smells">
-                        <img src="../../../static/images/banner2.png" alt="Banner 2"/>
-                    </a><!-- .new smells -->
-                </div><!-- .grid_4 -->
-
-                <div class="grid_15">
-                    <a href="#" class="button_block only_natural">
-                        <img src="../../../static/images/banner3.png" alt="Banner 3"/>
-                    </a><!-- .only_natural -->
-                </div><!-- .grid_4 -->
-
-                <div class="clear"></div>
-            </div><!-- #top_button -->
-
             <div class="clear"></div>
 
-            <div class="carousel">
-                <div class="c_header">
-                    <div class="grid_10">
-                        <h2>促销商品</h2>
-                    </div><!-- .grid_10 -->
-                </div><!-- .c_header -->
-
-
-                <div id="content" class="grid_9">
-                    <br/>
-                    <br/>
-                    <div class="grid_product">
-                        {% for x,y in rtn_dic.items %}
-                            <div class="grid_3 product" id="product">
-                                {% if y.IsNew == 1 %}
-                                    <img class="sale" src="../../../static/images/new.png" alt="New"/>
-                                {% elif y.IsForSale == 1 %}
-                                    <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
-                                {% else %}
-                                    <div></div>
-                                {% endif %}
-                                <div class="prev">
-                                    <a href="/product_page/?ISBN={{ y.GoodISBN }}">
-                                        <img id="Good" src="/static/media/{{ x.GoodPic }}" alt="" title=""/>
-                                    </a>
-                                </div><!-- .prev -->
-                                <h3 class="title" id="good_name">{{ y.GoodName }}</h3>
-                                <div class="cart">
-                                    <div class="price">
-                                        <div class="vert">
-                                            <div class="price_new" id="price">{{ y.GoodPrice }}</div>
-
-                                        </div>
-                                    </div>
-                                    <a class="obn"></a>
-                                    <a class="like" id="checkout" name="checkout"></a>
-                                    <a class="bay" id="add_to_cart" name="add_to_cart"></a>
-                                </div><!-- .cart -->
-                            </div><!-- .grid_3 -->
-
-                        {% endfor %}
-                    </div>
-                </div>
-
-
-                <div class="clear"></div>
-
-    </section>
-    <script src="{% static 'js/layer/layer.js' %}"></script>
-    <script src="{% static 'js/jump.js' %}"></script>
-    <script>
-        function logout() {
-            layer.msg('已退出');
-            $.ajax({
-                    url: "/logout/",
-                    type: 'GET',
-                    success: function (arg) {
-                        var textarea = document.getElementById("welcome1");
-                        textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
-                            "                href=\"/login/\">注册</a>.";
-                    }
-                }
-            )
-        }
-    </script>
+</section>
+<script src="{% static 'js/layer/layer.js' %}"></script>
+<script src="{% static 'js/jump.js' %}"></script>
 {% endblock %}

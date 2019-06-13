@@ -2,12 +2,15 @@ from random import choice
 import string
 import re
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from login_manage import models
 from login_manage.forms import LoginForm
 from login_manage.models import User
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
+
 import watch_buy.models as watch_buy_model
 
 
@@ -101,8 +104,8 @@ def is_valid(request):
         same_pwd = "false"      # 两次输入密码是否一致
     str = r'^([\w]+\.*)([\w]+)\@[\w]+\.\w{3}(\.\w{2}|)$'   # email正则
     if re.match(str, email) and not str.isspace():
-         ok_email = "true"
-         # print(email)
+        ok_email = "true"
+        # print(email)
     else:
         ok_email = "false"
     if len(studentid) == 8 and studentid:
@@ -112,7 +115,8 @@ def is_valid(request):
     ok_return = "false"
     if ok_email == "true" and ok_stuid == "true" and null_name == "false" and same_name == "false" and same_email == "false" and same_stu == "false" and same_pwd == "true":
         ok_return = "true"
-    ret = {'same_pwd': same_pwd, 'ok_email': ok_email, 'ok_stuid': ok_stuid, 'ok_return': ok_return, 'same_stu': same_stu, 'same_email': same_email, 'same_name': same_name, 'null_name': null_name}
+    ret = {'same_pwd': same_pwd, 'ok_email': ok_email, 'ok_stuid': ok_stuid, 'ok_return': ok_return,
+           'same_stu': same_stu, 'same_email': same_email, 'same_name': same_name, 'null_name': null_name}
     return HttpResponse(json.dumps(ret), content_type='application/json')
 
 
@@ -144,7 +148,8 @@ def GenPassword(length=8, chars=string.ascii_letters + string.digits):
 def sendemail(request):
     studentID_target = request.GET.get("studentID")
     email_target = request.GET.get("email")
-    find = models.User.objects.filter(studentID=studentID_target, email=email_target)
+    find = models.User.objects.filter(
+        studentID=studentID_target, email=email_target)
     if not find:
         message = "notequal"
         return HttpResponse(json.dumps({"message": message}))
@@ -162,6 +167,9 @@ def sendemail(request):
 
 # 显示用户信息
 def user_info(request):
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
@@ -188,3 +196,47 @@ def update_user(request):
     stu.city_num = citynum
     stu.save()
     return render(request, "login_manage/update_user.html")
+
+
+def change_pwd(request):
+    if not request.session.get('studentID'):
+        request.session.flush()
+        return redirect('/login/')
+    is_login = request.session.get('is_login', None)
+    if is_login:
+        user = User.objects.get(pk=request.session.get('studentID'))
+    return render(request, "login_manage/change_pwd.html", locals())
+
+
+def check_new_password(request):
+    originpwd = User.objects.get(pk=request.session.get('studentID')).password
+    oldpwd = request.GET.get('oldpassword')
+    newpwd1 = request.GET.get('newpassword1')
+    newpwd2 = request.GET.get('newpassword2')
+    message = "no"
+    if originpwd == oldpwd and newpwd1 == newpwd2 and oldpwd and newpwd1 and newpwd2:
+        message = "yes"
+    return HttpResponse(json.dumps({"message": message}))
+
+
+def save_new_password(request):
+    newpwd = request.GET.get('newpassword')
+    user = User.objects.get(pk=request.session.get('studentID'))
+    user.password = newpwd
+    user.save()
+    request.session.flush()
+    return redirect('/index/')
+
+
+def captcha_refresh(request):
+    """  
+    Return json with new captcha for ajax refresh request 
+    """
+    if not request.is_ajax():  # 只接受ajax提交
+        raise Http404
+    new_key = CaptchaStore.generate_key()
+    to_json_response = {
+        'key': new_key,
+        'image_url': captcha_image_url(new_key),
+    }
+    return HttpResponse(json.dumps(to_json_response), content_type='application/json')

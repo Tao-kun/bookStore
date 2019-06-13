@@ -1,9 +1,18 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+{% block islogin %}
+    {% if is_login %}
+        <div class="welcome" id="welcome1">
+            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
+        </div><!-- .welcome -->
+    {% else %}
+        <div class="welcome" id="welcome1">
+            欢迎您，游客 <a href="/login/">登录</a> or <a
+                href="/login/">注册</a>.
+        </div><!-- .welcome -->
+    {% endif %}
+{% endblock %}
 {% block content %}
-
-
-
     <div class="container_12">
         <div class="grid_12">
             <div class="breadcrumbs">
@@ -17,124 +26,6 @@
     <section id="main">
         <div class="container_12">
             <div id="sidebar" class="grid_3">
-                <aside id="categories_nav">
-                    <h3>Categories</h3>
-
-                    <nav class="left_menu">
-                        <ul>
-                            <li><a href="#">Solids <span>(21)</span></a></li>
-                            <li><a href="#">Liquids <span> (27)</span></a></li>
-                            <li><a href="#">Spray <span>(33)</span></a></li>
-                            <li><a href="#">Electric <span>(17)</span></a></li>
-                            <li><a href="#">For Cars <span>(23)</span></a></li>
-                            <li><a href="#">For Room <span>(7)</span></a></li>
-                            <li class="last"><a href="#">Other <span>(135)</span></a></li>
-                        </ul>
-                    </nav><!-- .left_menu -->
-                </aside><!-- #categories_nav -->
-
-                <aside id="specials" class="specials">
-                    <h3>Specials</h3>
-
-                    <ul>
-                        <li>
-                            <div class="prev">
-                                <a href="#"><img src="../../../static/images/special1.png" alt="" title=""/></a>
-                            </div>
-
-                            <div class="cont">
-                                <a href="#">Honeysuckle Flameless Luminary Refill</a>
-                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="prev">
-                                <a href="#"><img src="../../../static/images/special2.png" alt="" title=""/></a>
-                            </div>
-
-                            <div class="cont">
-                                <a href="#">Honeysuckle Flameless Luminary Refill</a>
-                                <div class="prise"><span class="old">$177.00</span>$75.00</div>
-                            </div>
-                        </li>
-                    </ul>
-                </aside><!-- #specials -->
-
-                <aside id="newsletter_signup">
-                    <h3>Newsletter Signup</h3>
-                    <p>Phasellus vel ultricies felis. Duis
-                        rhoncus risus eu urna pretium.</p>
-
-                    <form class="newsletter">
-                        <input type="email" name="newsletter" class="your_email" value=""
-                               placeholder="Enter your email address..."/>
-                        <input type="submit" id="submit" value="Subscribe"/>
-                    </form>
-                </aside><!-- #newsletter_signup -->
-
-                <aside id="banners">
-                    <a id="ban_next" class="next arows" href="#"><span>Next</span></a>
-                    <a id="ban_prev" class="prev arows" href="#"><span>Prev</span></a>
-
-                    <h3>Banners</h3>
-
-                    <div class="list_carousel">
-                        <ul id="list_banners">
-                            <li class="banner"><a href="#">
-                                <div class="prev">
-                                    <img src="../../../static/images/banner.png" alt="" title=""/>
-                                </div><!-- .prev -->
-
-                                <h2>New smells</h2>
-
-                                <p>in the next series</p>
-                            </a></li>
-
-                            <li class="banner"><a href="#">
-                                <div class="prev">
-                                    <img src="../../../static/images/banner.png" alt="" title=""/>
-                                </div><!-- .prev -->
-
-                                <h2>New smells</h2>
-
-                                <p>in the next series</p>
-                            </a></li>
-
-                            <li class="banner"><a href="#">
-                                <div class="prev">
-                                    <img src="../../../static/images/banner.png" alt="" title=""/>
-                                </div><!-- .prev -->
-
-                                <h2>New smells</h2>
-
-                                <p>in the next series</p>
-                            </a></li>
-
-                        </ul>
-                    </div><!-- .list_carousel -->
-                </aside><!-- #banners -->
-
-                <aside id="tags">
-                    <h3>Tags</h3>
-                    <a class="t1" href="#">california</a>
-                    <a class="t2" href="#">canada</a>
-                    <a class="t3" href="#">canon</a>
-                    <a class="t4" href="#">cat</a>
-                    <a class="t5" href="#">chicago</a>
-                    <a class="t6" href="#">christmas</a>
-                    <a class="t7" href="#">mars</a>
-                    <a class="t8" href="#">church</a>
-                    <a class="t9" href="#">city</a>
-                    <a class="t10" href="#">clouds</a>
-                    <a class="t11" href="#">color</a>
-                    <a class="t12" href="#">concert</a>
-                    <a class="t13" href="#">dance</a>
-                    <a class="t14" href="#">day</a>
-                    <a class="t15" href="#">dog</a>
-                    <a class="t16" href="#">england</a>
-                    <a class="t17" href="#">europe</a>
-                </aside><!-- #community_poll -->
             </div><!-- .sidebar -->
 
             <div id="content" class="grid_9">
@@ -225,17 +116,17 @@
                             <div class="block_cart">
 
                                 <div class="cart">
-                                    {% if Good.GoodRemain != 0 %}
-                                         <a class="bay" id="add_to_cart" onclick="add_to_cart()">加入购物车</a>
-                                    <input id="qty" type="text" name="" class="number" value="1"/>
-                                    <span>Quantity:</span>
+                                    {% if Good.GoodRemain != 0 and is_login %}
+                                        <a class="bay" id="add_to_cart" onclick="add_to_cart()">加入购物车</a>
+                                        <input id="qty" type="text" name="" class="number" value="1"/>
+                                        <span>Quantity:</span>
                                     {% endif %}
                                 </div>
                                 <div class="cart" style="padding-top: 2%">
-                                    {% if Good.GoodRemain != 0 %}
-                                    <a class="bay" id="add_to_cart" onclick="checkout()">结账</a>
-                                    {% else %}
-                                    <a class="bay" id="add_to_cart">此商品已经卖完辣</a>
+                                    {% if Good.GoodRemain != 0 and is_login %}
+                                        <a class="bay" id="add_to_cart" onclick="checkout()">结账</a>
+                                    {% elif is_login %}
+                                        <a class="bay" id="add_to_cart">此商品已经卖完辣</a>
                                     {% endif %}
                                 </div>
                                 <div class="clear"></div>
@@ -287,6 +178,10 @@
                                             </div><!-- .evaluation -->
 
                                             <p>{{ each_page_comment.comment.content }}</p>
+
+                                            {% ifequal each_page_comment.comment.user.name user.name %}
+                                                <br> <p><a id="delete_comment">删除书评</a></p>
+                                            {% endifequal %}
                                         </li>
 
                                     {% endfor %}
@@ -295,8 +190,22 @@
                                 </ul><!-- .comments -->
 
 
-                                {% if already_comment %}
-                                {% else %}
+                            <!-- 删除书评的代码 -->
+    <script>
+    $('#delete_comment').click(function () {
+        var data = {
+            "id": ""
+        };
+        $.getJSON("/delete_and_show_comments", data, function (data) {
+            $("#comments").html(data.main_data)
+        });
+        $('#add_comments').css('display', '');
+        layer.msg("删除书评成功！");
+    });
+    </script>
+
+                            <div id="add_comments">
+
 
                                     <form class="add_comments" id="add_comments">
                                         <h4>写下对此书的评价</h4>
@@ -320,15 +229,15 @@
 
 
                                         <div class="clear"></div>
-
-                                        <div class="text_review">
-                                            <strong>评论：</strong><br/>
-                                            <textarea id="comment_content" name="text"></textarea>
-                                        </div><!-- .text_review -->
-
-                                        <input id="btn_submit_comment" value="发表评论" type="button" class="btn btn-primary"/>
+                                            <div class="text_review">
+                                                <strong>评论：</strong><br/>
+                                                <textarea id="comment_content" name="text"></textarea>
+                                            </div><!-- .text_review -->
+                                            <input id="btn_submit_comment" value="发表评论" type="button"
+                                                   class="btn btn-primary"/>
                                     </form><!-- .add_comments -->
-                                {% endif %}
+
+                            </div>
 
                                 <div class="clear"></div>
                             </div><!-- .tab2 .tab_body -->
@@ -336,12 +245,16 @@
                             <div class="tab3 tab_body">
                                 <h4>书籍详细信息</h4>
                                 <ul>
-                                    <li><strong>出版社:</strong><span style="padding-left: 5%">{{ Good.Publisher }}</span></li>
+                                    <li><strong>出版社:</strong><span style="padding-left: 5%">{{ Good.Publisher }}</span>
+                                    </li>
                                     <li><strong>页数:</strong><span style="padding-left: 7%">{{ Good.Pages }}</span></li>
-                                    <li><strong>出版日期:</strong><span style="padding-left: 3%">{{ Good.PublishDate }}</span></li>
-                                    <li><strong>印刷日期:</strong><span style="padding-left: 3%">{{ Good.PrintDate }}</span></li>
+                                    <li><strong>出版日期:</strong><span
+                                            style="padding-left: 3%">{{ Good.PublishDate }}</span></li>
+                                    <li><strong>印刷日期:</strong><span style="padding-left: 3%">{{ Good.PrintDate }}</span>
+                                    </li>
                                     <li><strong>开本:</strong><span style="padding-left: 7%">{{ Good.Size }}</span></li>
-                                    <li><strong>版次:</strong><span style="padding-left: 7%">第{{ Good.Edition }}版</span></li>
+                                    <li><strong>版次:</strong><span style="padding-left: 7%">第{{ Good.Edition }}版</span>
+                                    </li>
                                 </ul>
                                 <div class="clear"></div>
                             </div><!-- .tab1 .tab_body -->
@@ -355,26 +268,41 @@
 
                     <div class="related">
                         <div class="c_header">
-                            <div class="grid_7">
-                                <h2>店主推荐</h2>
-                            </div><!-- .grid_7 -->
                         </div><!-- .c_header -->
 
                         <div class="list_carousel">
-
+                            <h3>畅销书籍</h3>
                             <ul id="list_product" class="list_product">
                                 {% for Good_rec in Good_recommend_rtn %}
                                     {% if forloop.counter <= 3 %}
-                                    <li class="">
-                                        <div style="padding-left: 10%">
-                                            <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                        <div class="grid_3 product" id="product">
+                                            {% if Good_rec.good.IsNew == 1 %}
+                                                <img class="sale" src="../../../static/images/new.png" alt="New"/>
+                                            {% elif Good_rec.good.IsForSale == 1 %}
+                                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                            {% else %}
+                                                <div></div>
+                                            {% endif %}
                                             <div class="prev">
-                                                <a><img
-                                                        src="/static/media/{{ Good_rec.pic.GoodPic }}"
-                                                        alt="" title="" width="200px" height="200px"/></a>
+                                                <a href="/product_page/?ISBN={{ Good_rec.good.GoodISBN }}">
+                                                    <img id="Good" src="/static/media/{{ Good_rec.pic.GoodPic }}" alt=""
+                                                         title=""/>
+                                                </a>
                                             </div><!-- .prev -->
+                                            <h3 class="title" id="good_name">{{ Good_rec.good.GoodName }}</h3>
+                                            <div class="cart">
+                                                <div class="price">
+                                                    <div class="vert">
+                                                        <div class="price_new"
+                                                             id="price">{{ Good_rec.good.GoodPrice }}</div>
+
+                                                    </div>
+                                                </div>
+                                                <a class="obn"></a>
+                                                <a class="like" id="checkout" name="checkout"></a>
+                                                <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                            </div><!-- .cart -->
                                         </div><!-- .grid_3 -->
-                                    </li>
                                     {% endif %}
                                 {% endfor %}
 
@@ -401,6 +329,13 @@
     <script src="{% static "js/selectBox.js" %}"></script>
     <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
     <script src="{% static "js/layer/layer.js" %}"></script>
+    <script src="{% static "js/jump.js" %}"></script>
+    {% if is_login and not already_comment %}
+    {% else %}
+        <script>
+        $("#add_comments").css("display", "none");
+        </script>
+    {% endif %}
     <script>
         function checkout() {
             var good_price = document.getElementById('price').innerHTML.replace("$", "");
@@ -515,7 +450,7 @@
                                 "quality": quality,
                                 "content": content,
                             };
-                            $.getJSON('/show_comments/', data, function (data) {
+                            $.getJSON('/add_and_show_comments/', data, function (data) {
                                 $("#comments").html(data.main_data)
                             });
                             layer.msg("书评发表成功！");
@@ -537,7 +472,10 @@
             })
         </script>
 
+
     {% endif %}
+
+
 
 
 
