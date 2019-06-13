@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 
 from login_manage.models import User
@@ -9,7 +11,7 @@ class Goods(models.Model):
     其中Intro_pic为这个商品详细页面的那个长的解释图
     """
     GoodISBN = models.CharField(max_length=50, primary_key=True, verbose_name='ISBN')
-    GoodName = models.CharField(max_length=255, unique=True, verbose_name='书籍名称')
+    GoodName = models.CharField(max_length=255, null=False, verbose_name='书籍名称')
     GoodPrice = models.FloatField(verbose_name='单价')
     GoodAuthor = models.CharField(max_length=255, null=True, blank=True, verbose_name='作者')
     GoodIntro = models.TextField(null=True, blank=True, verbose_name='商品介绍')
@@ -19,15 +21,20 @@ class Goods(models.Model):
     IsNew = models.IntegerField(default=0, verbose_name='是否新品')
     Intro_pic = models.ImageField(null=True, blank=True, verbose_name='介绍图片')
     Category = models.CharField(null=True, blank=True, max_length=20, verbose_name='分类')
-    Publisher = models.CharField(null=True, max_length=100, verbose_name='出版社')
-    Pages = models.IntegerField(null=True, verbose_name='页数')
-    PublishDate = models.DateField(null=True, verbose_name='出版日期')
-    PrintDate = models.DateField(null=True, verbose_name='印刷日期')
-    Size = models.CharField(null=True, max_length=20, verbose_name='开本')
-    Edition = models.IntegerField(null=True, verbose_name='版本')
+    Publisher = models.CharField(null=True, blank=True, max_length=100, verbose_name='出版社')
+    Pages = models.IntegerField(null=True, blank=True, verbose_name='页数')
+    PublishDate = models.DateField(null=True, blank=True, verbose_name='出版日期')
+    PrintDate = models.DateField(null=True, blank=True, verbose_name='印刷日期')
+    Size = models.CharField(null=True, blank=True, max_length=20, verbose_name='开本')
+    Edition = models.IntegerField(null=True, blank=True, verbose_name='版本')
+
+    def FormattedISBN(self):
+        return int("".join(re.findall(r'\d+', self.GoodISBN)))
+
+    FormattedISBN.short_description = 'ISBN'
 
     def __str__(self):
-        return '{}({})'.format(self.GoodName, self.GoodISBN)
+        return '{}({})'.format(self.GoodName, self.FormattedISBN())
 
     class Meta:
         verbose_name = "商品信息"

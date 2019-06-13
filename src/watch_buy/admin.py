@@ -1,6 +1,5 @@
-from django.utils import timezone
-
 from django.contrib import admin
+from django.utils import timezone
 
 from watch_buy.models import Cart, Goods, GoodsPic, Order, OrderGood
 
@@ -37,13 +36,12 @@ class CartAdmin(admin.ModelAdmin):
 
 class GoodsAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('基本信息', {
-            'fields': ['GoodISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro', 'Publisher', 'Pages',
-                       'PublishDate', 'PrintDate', 'Size', 'Edition']}),
+        ('基本信息', {'fields': ['FormattedISBN', 'GoodName', 'Category', 'GoodPrice', 'GoodAuthor', 'GoodIntro',
+                             'Publisher', 'Pages', 'PublishDate', 'PrintDate', 'Size', 'Edition']}),
         ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount']}),
         ('其他', {'fields': ['Intro_pic']})
     ]
-    list_display = ['GoodName', 'GoodISBN', 'Category', 'GoodRemain', 'show_discount', 'show_new']
+    list_display = ['GoodName', 'FormattedISBN', 'Category', 'GoodRemain', 'show_discount', 'show_new']
     inlines = [GoodsPicInline]
     actions = ['set_discount', 'unset_discount', 'set_new_item', 'unset_new_item']
     list_filter = [
@@ -51,6 +49,7 @@ class GoodsAdmin(admin.ModelAdmin):
         ('IsNew', admin.BooleanFieldListFilter)
     ]
     search_fields = ['GoodName', 'GoodISBN', 'Category']
+
     def set_discount(self, request, queryset):
         rows_updated = queryset.update(IsForSale=1)
         self.message_user(request, "成功打折{}个商品".format(rows_updated))
@@ -115,6 +114,7 @@ class OrderAdmin(admin.ModelAdmin):
         ('IsReturn', admin.BooleanFieldListFilter)
     ]
     search_fields = ['GoodName', 'GoodISBN', 'GoodAuthor']
+
     def show_cancel(self, obj):
         if obj.IsCancle == 0:
             return '否'
