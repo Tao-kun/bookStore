@@ -37,6 +37,7 @@ def login(request):
         message = ""
         if login_form.is_valid():
             studentID = login_form.cleaned_data['studentID']
+            print(studentID)
             password = login_form.cleaned_data['password']
             try:
                 user = User.objects.get(studentID=studentID)
@@ -161,9 +162,6 @@ def sendemail(request):
 
 # 显示用户信息
 def user_info(request):
-    is_login = request.session.get('is_login', None)
-    if is_login:
-        user = User.objects.get(pk=request.session.get('studentID'))
     if not request.session.get('studentID'):
         request.session.flush()
         return redirect('/login/')
@@ -190,33 +188,3 @@ def update_user(request):
     stu.city_num = citynum
     stu.save()
     return render(request, "login_manage/update_user.html")
-
-
-def change_pwd(request):
-    if not request.session.get('studentID'):
-        request.session.flush()
-        return redirect('/login/')
-    is_login = request.session.get('is_login', None)
-    if is_login:
-        user = User.objects.get(pk=request.session.get('studentID'))
-    return render(request, "login_manage/change_pwd.html", locals())
-
-
-def check_new_password(request):
-    originpwd = User.objects.get(pk=request.session.get('studentID')).password
-    oldpwd = request.GET.get('oldpassword')
-    newpwd1 = request.GET.get('newpassword1')
-    newpwd2 = request.GET.get('newpassword2')
-    message = "no"
-    if originpwd == oldpwd and newpwd1 == newpwd2 and oldpwd and newpwd1 and newpwd2:
-        message = "yes"
-    return HttpResponse(json.dumps({"message": message}))
-
-
-def save_new_password(request):
-    newpwd = request.GET.get('newpassword')
-    user = User.objects.get(pk=request.session.get('studentID'))
-    user.password = newpwd
-    user.save()
-    request.session.flush()
-    return redirect('/index/')

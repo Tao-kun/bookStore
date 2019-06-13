@@ -1,17 +1,6 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
-{% block islogin %}
-    {% if is_login %}
-        <div class="welcome" id="welcome1">
-            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
-        </div><!-- .welcome -->
-    {% else %}
-        <div class="welcome" id="welcome1">
-            欢迎您，游客 <a href="/login/">登录</a> or <a
-                href="/login/">注册</a>.
-        </div><!-- .welcome -->
-    {% endif %}
-{% endblock %}
+
 {% block content %}
     <section id="main" class="entire_width">
         <div class="container_12">
@@ -46,19 +35,21 @@
                         <td colspan="7" class="cart_but">
                             <button class="continue" onclick="
                               window.location.href = '/catalog_grid/';
-                            "><span>icon</span>重新购物</button>
+                            "><span>icon</span>重新购物
+                            </button>
                             <button class="update" onclick="delete_all()"><span>icon</span>清空购物车</button>
                         </td>
+
                     </tr>
+                    <br/>
+                    <br/>
                 </table>
+                <br/>
+                <br/>
             </div><!-- .grid_12 -->
 
             <div id="content_bottom">
-                <div class="grid_4" style="width: 20%">
-                </div>
-                <div class="grid_4" style="width: 20%">
-                </div>
-                <div class="grid_4" style="margin-left: 65%">
+                <div class="grid_4" style="margin-right: 5%">
                     <div class="bottom_block total">
                         <table class="subtotal">
                             <tr class="grand_total">
@@ -72,9 +63,138 @@
 
                 <div class="clear"></div>
             </div><!-- #content_bottom -->
+            <div class="clear"></div>
 
+            <div class="clear"></div>
 
-        </div>
+            <div class="carousel" id="following">
+                <div class="c_header">
+                    <div class="grid_10">
+                        <h5>Based on your selection, you may be interested in the following item:</h5>
+                    </div><!-- .grid_10 -->
+
+                    <div class="grid_2">
+                        <a id="next_c1" class="next arows" href="#"><span>Next</span></a>
+                        <a id="prev_c1" class="prev arows" href="#"><span>Prev</span></a>
+                    </div><!-- .grid_2 -->
+
+                </div><!-- .c_header -->
+                <div>
+                    <br/>
+                    <br/>
+                </div>
+                <div class="list_carousel">
+                    <ul id="list_product" class="list_product">
+                        <li class="">
+                            <div class="grid_3 product">
+                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                <div class="prev">
+                                    <a href="product_page.html"><img src="../../../static/images/product_1.png" alt=""
+                                                                     title=""/></a>
+                                </div><!-- .prev -->
+                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
+                                <div class="cart">
+                                    <div class="price">
+                                        <div class="vert">
+                                            <div class="price_new">$550.00</div>
+                                            <div class="price_old">$725.00</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="obn"></a>
+                                    <a href="#" class="like"></a>
+                                    <a href="#" class="bay"></a>
+                                </div><!-- .cart -->
+                            </div><!-- .grid_3 -->
+                        </li>
+
+                        <li class="">
+                            <div class="grid_3 product">
+                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                <div class="prev">
+                                    <a href="product_page.html"><img src="../../../static/images/product_2.png" alt=""
+                                                                     title=""/></a>
+                                </div><!-- .prev -->
+                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
+                                <div class="cart">
+                                    <div class="price">
+                                        <div class="vert">
+                                            <div class="price_new">$550.00</div>
+                                            <div class="price_old">$725.00</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="obn"></a>
+                                    <a href="#" class="like"></a>
+                                    <a href="#" class="bay"></a>
+                                </div><!-- .cart -->
+                            </div><!-- .grid_3 -->
+                        </li>
+
+                        <li class="">
+                            <div class="grid_3 product">
+                                <div class="prev">
+                                    <a href="product_page.html"><img src="../../../static/images/product_3.png" alt=""
+                                                                     title=""/></a>
+                                </div><!-- .prev -->
+                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
+                                <div class="cart">
+                                    <div class="price">
+                                        <div class="vert">
+                                            <div class="price_new">$550.00</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="obn"></a>
+                                    <a href="#" class="like"></a>
+                                    <a href="#" class="bay"></a>
+                                </div><!-- .cart -->
+                            </div><!-- .grid_3 -->
+                        </li>
+
+                        <li class="">
+                            <div class="grid_3 product">
+                                <img class="sale" src="../../../static/images/sale.png" alt="Sale"/>
+                                <div class="prev">
+                                    <a href="product_page.html"><img src="../../../static/images/product_4.png" alt=""
+                                                                     title=""/></a>
+                                </div><!-- .prev -->
+                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
+                                <div class="cart">
+                                    <div class="price">
+                                        <div class="vert">
+                                            <div class="price_new">$550.00</div>
+                                            <div class="price_old">$725.00</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="obn"></a>
+                                    <a href="#" class="like"></a>
+                                    <a href="#" class="bay"></a>
+                                </div><!-- .cart -->
+                            </div><!-- .grid_3 -->
+                        </li>
+
+                        <li class="">
+                            <div class="grid_3 product">
+                                <div class="prev">
+                                    <a href="product_page.html"><img src="../../../static/images/product_5.png" alt=""
+                                                                     title=""/></a>
+                                </div><!-- .prev -->
+                                <h3 class="title">Febreze Air Effects New Zealand Springs</h3>
+                                <div class="cart">
+                                    <div class="price">
+                                        <div class="vert">
+                                            <div class="price_new">$550.00</div>
+                                            <div class="price_old">$725.00</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="obn"></a>
+                                    <a href="#" class="like"></a>
+                                    <a href="#" class="bay"></a>
+                                </div><!-- .cart -->
+                            </div><!-- .grid_3 -->
+                        </li>
+                    </ul><!-- #list_product -->
+                </div><!-- .list_carousel -->
+            </div><!-- .carousel -->
+        </div><!-- .container_12 -->
     </section><!-- #main -->
     <script>
         var jsonObj = {};
@@ -138,7 +258,7 @@
                     type: 'GET',
                     success: function (arg) {
                         var tb = document.getElementById('cart_tb');
-                        for(i = 1; i < tb.rows.length; i++){
+                        for (i = 1; i < tb.rows.length; i++) {
                             tb.deleteRow(i);
                             rowNum = rowNum - 1;
                         }

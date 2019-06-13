@@ -1,8 +1,7 @@
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 import json
 from watch_buy import models as watch_buy_models
-from login_manage.models import User
 import datetime
 import time
 # Create your views here.
@@ -10,17 +9,13 @@ import time
 
 def post_comments(request):
     content = request.GET.get('content')
+    print(content)
     isbn = request.GET.get('isbn')
+    print(isbn)
     return render("/index/")
 
 
 def see_order(request):
-    if not request.session.get('studentID'):
-        request.session.flush()
-        return redirect('/login/')
-    is_login = request.session.get('is_login', None)
-    if is_login:
-        user = User.objects.get(pk=request.session.get('studentID'))
     stu_id = request.session.get('studentID')
     all_order = watch_buy_models.Order.objects.filter(user_id=stu_id)
     for order in all_order:
