@@ -48,7 +48,6 @@ class GoodsAdmin(admin.ModelAdmin):
         ('IsForSale', admin.BooleanFieldListFilter),
         ('IsNew', admin.BooleanFieldListFilter)
     ]
-    search_fields = ['GoodName', 'GoodISBN', 'GoodAuthor']
 
     def set_discount(self, request, queryset):
         rows_updated = queryset.update(IsForSale=1)
@@ -111,7 +110,6 @@ class OrderAdmin(admin.ModelAdmin):
         ('IsCancled', admin.BooleanFieldListFilter),
         ('IsReturn', admin.BooleanFieldListFilter)
     ]
-    search_fields = ['username', 'address', ]
 
     def show_cancel(self, obj):
         if obj.IsCancle == 0:
