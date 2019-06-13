@@ -24,6 +24,24 @@
                                         </div><!-- .evaluation -->
 
                                         <p>{{ each_page_comment.comment.content }}</p>
+
+                                    {% ifequal each_page_comment.comment.user.name user.name %}
+                                                <br> <p><a id="delete_comment">删除书评</a></p>
+                                            {% endifequal %}
                                     </li>
+
                                 
                                 {% endfor %}
+
+<script>
+    $('#delete_comment').click(function () {
+        var data = {
+            "id": ""
+        };
+        $.getJSON("/delete_and_show_comments", data, function (data) {
+            $("#comments").html(data.main_data)
+        });
+        $('#add_comments').css('display', '');
+        layer.msg("删除书评成功！");
+    });
+    </script>

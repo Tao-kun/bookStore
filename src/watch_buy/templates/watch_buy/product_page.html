@@ -178,6 +178,10 @@
                                             </div><!-- .evaluation -->
 
                                             <p>{{ each_page_comment.comment.content }}</p>
+
+                                            {% ifequal each_page_comment.comment.user.name user.name %}
+                                                <br> <p><a id="delete_comment">删除书评</a></p>
+                                            {% endifequal %}
                                         </li>
 
                                     {% endfor %}
@@ -186,7 +190,22 @@
                                 </ul><!-- .comments -->
 
 
-                                {% if is_login and already_comment %}
+                            <!-- 删除书评的代码 -->
+    <script>
+    $('#delete_comment').click(function () {
+        var data = {
+            "id": ""
+        };
+        $.getJSON("/delete_and_show_comments", data, function (data) {
+            $("#comments").html(data.main_data)
+        });
+        $('#add_comments').css('display', '');
+        layer.msg("删除书评成功！");
+    });
+    </script>
+
+                            <div id="add_comments">
+
 
                                     <form class="add_comments" id="add_comments">
                                         <h4>写下对此书的评价</h4>
@@ -217,7 +236,8 @@
                                             <input id="btn_submit_comment" value="发表评论" type="button"
                                                    class="btn btn-primary"/>
                                     </form><!-- .add_comments -->
-                                {% endif %}
+
+                            </div>
 
                                 <div class="clear"></div>
                             </div><!-- .tab2 .tab_body -->
@@ -310,6 +330,12 @@
     <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
     <script src="{% static "js/layer/layer.js" %}"></script>
     <script src="{% static "js/jump.js" %}"></script>
+    {% if is_login and not already_comment %}
+    {% else %}
+        <script>
+        $("#add_comments").css("display", "none");
+        </script>
+    {% endif %}
     <script>
         function checkout() {
             var good_price = document.getElementById('price').innerHTML.replace("$", "");
@@ -424,7 +450,7 @@
                                 "quality": quality,
                                 "content": content,
                             };
-                            $.getJSON('/show_comments/', data, function (data) {
+                            $.getJSON('/add_and_show_comments/', data, function (data) {
                                 $("#comments").html(data.main_data)
                             });
                             layer.msg("书评发表成功！");
@@ -446,7 +472,10 @@
             })
         </script>
 
+
     {% endif %}
+
+
 
 
 

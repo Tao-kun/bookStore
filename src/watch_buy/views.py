@@ -260,7 +260,7 @@ def good_detail(request):
     return render(request, "watch_buy/product_page.html", locals())
 
 
-def show_comments(request):
+def add_and_show_comments(request):
     isbn = request.session['isbn']
     Good = watch_buy_models.Goods.objects.get(GoodISBN=isbn)
     new_content = request.GET.get('content')
@@ -270,6 +270,10 @@ def show_comments(request):
     new_comment = Comment(content=new_content, user=user,
                           good=Good, quality=new_quality)
     new_comment.save()
+    return show_comments(request, Good, user)
+
+
+def show_comments(request, Good, user):
     comments = list(Comment.objects.filter(good=Good))
     comments.sort(key=comments_sort_rule, reverse=True)
     page_comments = []
@@ -286,9 +290,20 @@ def show_comments(request):
     return HttpResponse(json.dumps(ret), content_type='application/json')
 
 
+def delete_add_show_comments(request):
+    isbn = request.session['isbn']
+    Good = watch_buy_models.Goods.objects.get(GoodISBN=isbn)
+    studentID = request.session['studentID']
+    user = User.objects.get(studentID=studentID)
+    comment = Comment.objects.get(user=user, good=Good)
+    comment.delete()
+    return show_comments(request, Good, user)
+
 # 添加订单
 # name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq);
 # 如果说订单订了多本书,那么将get到的这个json类型解析后得到订的所有书的相关信息之后插入数据库
+
+
 def add_order(request):
     stu_id = request.session.get('studentID')
     name = request.GET.get('name')
