@@ -138,20 +138,3 @@ EMAIL_HOST_USER = "18210714886@163.com"  # 账号
 EMAIL_HOST_PASSWORD = "liuziming"  # 密码
 EMAIL_USE_TLS = False  # 一般都为False
 EMAIL_FROM = "18210714886@163.com"  # 邮箱来自
-
-
-# django_simple_captcha 验证码配置
-# 格式
-CAPTCHA_OUTPUT_FORMAT = u' %(hidden_field)s %(image)s %(text_field)s'
-# 噪点样式
-CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_null',  # 没有样式
-                           # 'captcha.helpers.noise_arcs', # 线
-                           'captcha.helpers.noise_dots',  # 点
-                           )
-# 图片大小
-CAPTCHA_IMAGE_SIZE = (100, 40)
-CAPTCHA_BACKGROUND_COLOR = '#fdffdd'  # 验证码背景色#
-CAPTCHA_FOREGROUND_COLOR = '#000'  # 验证码字体颜色#
-CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
-
-CAPTCHA_LENGTH = 4  # 字符个数

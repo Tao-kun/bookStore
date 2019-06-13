@@ -8,21 +8,17 @@ class Goods(models.Model):
     商品信息
     其中Intro_pic为这个商品详细页面的那个长的解释图
     """
-    GoodISBN = models.CharField(
-        max_length=50, primary_key=True, verbose_name='ISBN')
-    GoodName = models.CharField(
-        max_length=255, unique=True, verbose_name='书籍名称')
+    GoodISBN = models.CharField(max_length=50, primary_key=True, verbose_name='ISBN')
+    GoodName = models.CharField(max_length=255, unique=True, verbose_name='书籍名称')
     GoodPrice = models.FloatField(verbose_name='单价')
-    GoodAuthor = models.CharField(
-        max_length=255, null=True, blank=True, verbose_name='作者')
+    GoodAuthor = models.CharField(max_length=255, null=True, blank=True, verbose_name='作者')
     GoodIntro = models.TextField(null=True, blank=True, verbose_name='商品介绍')
     GoodRemain = models.IntegerField(default=0, verbose_name='库存')
     GoodDiscount = models.FloatField(default=1.0, verbose_name='折扣')
     IsForSale = models.IntegerField(default=0, verbose_name='是否打折')
     IsNew = models.IntegerField(default=0, verbose_name='是否新品')
     Intro_pic = models.ImageField(null=True, blank=True, verbose_name='介绍图片')
-    Category = models.CharField(
-        null=True, blank=True, max_length=20, verbose_name='分类')
+    Category = models.CharField(null=True, blank=True, max_length=20, verbose_name='分类')
     Publisher = models.CharField(null=True, max_length=100, verbose_name='出版社')
     Pages = models.IntegerField(null=True, verbose_name='页数')
     PublishDate = models.DateField(null=True, verbose_name='出版日期')
@@ -42,8 +38,7 @@ class Goods(models.Model):
 class GoodsPic(models.Model):
     """商品所有的描述图片"""
     PicId = models.AutoField(primary_key=True, verbose_name='图片ID')
-    GoodISBN = models.ForeignKey(
-        Goods, to_field='GoodISBN', verbose_name='图书信息')
+    GoodISBN = models.ForeignKey(Goods, to_field='GoodISBN', verbose_name='图书信息')
     GoodPic = models.ImageField(verbose_name='文件名')
 
     def __str__(self):
@@ -56,8 +51,7 @@ class GoodsPic(models.Model):
 
 class Cart(models.Model):
     """购物车记录"""
-    studentID = models.ForeignKey(
-        User, to_field='studentID', verbose_name='学号')
+    studentID = models.ForeignKey(User, to_field='studentID', verbose_name='学号')
     GoodID = models.ForeignKey(Goods, to_field='GoodISBN', verbose_name='商品信息')
     Qty = models.IntegerField(default=1, verbose_name='数量')
 
@@ -83,12 +77,10 @@ class Order(models.Model):
     username = models.CharField(max_length=20, verbose_name='收货人姓名')
     telephone = models.CharField(max_length=25, verbose_name='收货人电话')
     zipcode = models.CharField(max_length=25, verbose_name='收货人邮编')
-    qq = models.CharField(max_length=15, null=True,
-                          blank=True, verbose_name='收货人QQ')
+    qq = models.CharField(max_length=15, null=True, blank=True, verbose_name='收货人QQ')
     IsCompleted = models.IntegerField(default=0, verbose_name='订单是否完成')
-    Comment = models.CharField(
-        max_length=500, null=True, blank=True, verbose_name='用户评论')
-    IsReturn = models.IntegerField(default=0, verbose_name='是否要求退款')
+    Comment = models.CharField(max_length=500, null=True, blank=True, verbose_name='用户评论')
+    IsReturn = models.IntegerField(default=0, verbose_name='是否退回')
 
     def __str__(self):
         return '{}-{}({})'.format(self.orderid, self.user.name, self.orderdate)

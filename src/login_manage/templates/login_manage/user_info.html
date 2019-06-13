@@ -1,17 +1,5 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
-{% block islogin %}
-    {% if is_login %}
-        <div class="welcome" id="welcome1">
-            欢迎您，{{ user.name }} <a onclick="logout();">注销</a>
-        </div><!-- .welcome -->
-    {% else %}
-        <div class="welcome" id="welcome1">
-            欢迎您，游客 <a href="/login/">登录</a> or <a
-                href="/login/">注册</a>.
-        </div><!-- .welcome -->
-    {% endif %}
-{% endblock %}
 {% block content %}
 
     <div class="clear"></div>
@@ -23,7 +11,7 @@
             <!-- Login -->
             <!-- Billing -->
             <div class="checkout-form col-lg-40 col-lg-40 col-lg-40 login-block"
-                 style="padding-top: 4%;padding-left: 22%">
+                 style="padding-top: 4%">
                 <form>
                     <div class="col-md-6 col-lg-8 col-lg-8">
                         <h3>个人信息</h3>
