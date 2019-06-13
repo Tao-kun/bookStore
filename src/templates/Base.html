@@ -48,7 +48,7 @@
                     success: function (arg) {
                         var textarea = document.getElementById("welcome1");
                         textarea.innerHTML = "欢迎您，游客 <a href=\"/login/\">登录</a> or <a\n" +
-                            "                href=\"/login/\">注册</a>.";
+                            "                href=\"/login/\">注册</a>. or <a href=\"/admin/\">我是管理员</a>";
                         var location = window.location.pathname;
                         if(location !== "/index")
                             window.location.href = "/index/";
@@ -128,7 +128,7 @@
             </hgroup>
         </div><!-- .grid_3 -->
 
-        <div class="grid_3">
+        <div class="grid_3" style="padding-top: 2%;padding-left: 9%">
             <form action="/search/">
                 <input type="text" name="search" class="entry_form" value="" placeholder="在商店内搜索"/>
             </form>
@@ -186,9 +186,9 @@
             <div class="grid_3">
                 <h3>Contact Us</h3>
                 <ul class="f_contact">
-                    <li>49 Archdale, 2B Charlestone</li>
-                    <li>+777 (100) 1234</li>
-                    <li>mail@example.com</li>
+                    <li>BUAA(shahe) apartment 1 South 606</li>
+                    <li>+86 18210714886</li>
+                    <li>liuziming@buaa.edu.cn</li>
                 </ul><!-- .f_contact -->
             </div><!-- .grid_3 -->
 
@@ -208,7 +208,7 @@
                 <h3>Costumer Servise</h3>
                 <nav class="f_menu">
                     <ul>
-                        <li><a href="/after_sold/templates/after_sold/contact_us.html">Contact As</a></li>
+                        <li><a href="#">Contact As</a></li>
                         <li><a href="#">Return</a></li>
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">Site Map</a></li>

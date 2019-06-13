@@ -8,7 +8,7 @@
     {% else %}
         <div class="welcome" id="welcome1">
             欢迎您，游客 <a href="/login/">登录</a> or <a
-                href="/login/">注册</a>.
+                href="/login/">注册</a> or <a href="/admin/">我是管理员</a>.
         </div><!-- .welcome -->
     {% endif %}
 {% endblock %}
@@ -45,7 +45,7 @@
                                         <a href="#"></a>
                                         <span>1 REVIEW(S)</span>
                                     </div>
-                                    <p>{{ good.good.GoodIntro }}</p>
+                                    <p style="overflow:hidden;text-overflow: ellipsis;white-space:nowrap">{{ good.good.GoodIntro }}</p>
                                 </div><!-- .entry_content -->
                             </div><!-- .grid_4 -->
 

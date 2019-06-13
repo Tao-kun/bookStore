@@ -50,15 +50,15 @@
     </section><!-- #main -->
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script>
-    //ajax刷新
-    $('.captcha').click(function(){
-        $.getJSON("/captcha_refresh/",
-        function(result){
-            $('.captcha').attr('src', result['image_url']);
-            $('#id_captcha_0').val(result['key'])
-      });
- });
- 
+        //ajax刷新
+        $('.captcha').click(function () {
+            $.getJSON("/captcha_refresh/",
+                function (result) {
+                    $('.captcha').attr('src', result['image_url']);
+                    $('#id_captcha_0').val(result['key'])
+                });
+        });
+
     </script>
     <script>
         {% if message == "密码错误！" %}
@@ -72,9 +72,9 @@
     <script>
         $(function () {
             $('#forget_password').on('click', function () {
-                layer.prompt({title: '请说明您的账号', formType: 0}, function (studentID, index) {
+                layer.prompt({title: '请说明您的学号', formType: 0}, function (studentID, index) {
                     layer.close(index);
-                    layer.prompt({title: '请输入该账号绑定的邮箱', formType: 0}, function (email, index) {
+                    layer.prompt({title: '请输入该学号绑定的邮箱', formType: 0}, function (email, index) {
                         layer.close(index);
                         $.ajax({
                                 url: "/forget_password/?email=" + email + "&studentID=" + studentID,

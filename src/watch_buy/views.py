@@ -72,7 +72,7 @@ def checkout(request):
             good_list.append(Good(good_dic[("book_name" + str(count))].replace("%", "\\").encode('utf-8').decode(
                 'unicode_escape'), good_dic["book_price" + str(count)], good_dic["book_qty" + str(count)]))
             sum_price += float(good_dic["book_price" + str(count)]) * \
-                float(good_dic["book_qty" + str(count)])
+                         float(good_dic["book_qty" + str(count)])
             count += 1
         cart_all = watch_buy_models.Cart.objects.filter(studentID_id=studentID)
         for cart_obj in cart_all:
@@ -299,11 +299,10 @@ def delete_add_show_comments(request):
     comment.delete()
     return show_comments(request, Good, user)
 
+
 # 添加订单
 # name + "&address=" + address + "&zipcode=" + zipcode + "&telephone=" + telephone + "&qq=" + qq);
 # 如果说订单订了多本书,那么将get到的这个json类型解析后得到订的所有书的相关信息之后插入数据库
-
-
 def add_order(request):
     stu_id = request.session.get('studentID')
     name = request.GET.get('name')
@@ -324,12 +323,12 @@ def add_order(request):
     order.IsHandled = IsSured
     order.save()
     jsonObj = request.GET.get('goods')
+    print(IsSured)
     if IsSured == 1:
         cart_all = watch_buy_models.Cart.objects.filter(studentID_id=stu_id)
         for cart_obj in cart_all:
             cart_obj.delete()
     if jsonObj is not None:
-        print(jsonObj)
         good_dic = json.loads(jsonObj)
         count = 0
         while count < (len(good_dic) / 3):
@@ -349,10 +348,22 @@ def add_order(request):
 
 
 def delete_item(request):
+    studentID = request.session.get('studentID')
     id = request.GET.get('id')
+    Total_sum = 0
     cart_obj = watch_buy_models.Cart.objects.get(id=id)
     cart_obj.delete()
-    return render(request, "watch_buy/delete_item.html", locals())
+    good_num_list = watch_buy_models.Cart.objects.filter(
+        studentID_id=studentID)
+    for i in range(len(good_num_list)):
+        GoodID = good_num_list[i].GoodID_id
+        info_tmp = watch_buy_models.Goods.objects.get(GoodISBN=GoodID)
+        info_tmp.GoodPrice = info_tmp.GoodPrice * info_tmp.GoodDiscount
+        Qty_tmp = watch_buy_models.Cart.objects.get(
+            GoodID_id=GoodID, studentID_id=studentID)
+        sum = Qty_tmp.Qty * info_tmp.GoodPrice
+        Total_sum += sum
+    return HttpResponse(json.dumps({"sum": Total_sum}))
 
 
 def changeqty(request):
@@ -377,14 +388,10 @@ def search(request):
     keyword = request.GET.get('search')
     rtn_set = set()
     rtn_list = []
-    name_key = watch_buy_models.Goods.objects.filter(
-        GoodName__contains=keyword)
-    content_key = watch_buy_models.Goods.objects.filter(
-        GoodIntro__contains=keyword)
-    author_key = watch_buy_models.Goods.objects.filter(
-        GoodAuthor__contains=keyword)
-    ISBN_key = watch_buy_models.Goods.objects.filter(
-        GoodISBN__contains=keyword)
+    name_key = watch_buy_models.Goods.objects.filter(GoodName__contains=keyword)
+    content_key = watch_buy_models.Goods.objects.filter(GoodIntro__contains=keyword)
+    author_key = watch_buy_models.Goods.objects.filter(GoodAuthor__contains=keyword)
+    ISBN_key = watch_buy_models.Goods.objects.filter(GoodISBN__contains=keyword)
 
     class Good:
         def __init__(self, good, pic, price):
@@ -401,6 +408,5 @@ def search(request):
     for ISBN in ISBN_key:
         rtn_set.add(ISBN)
     for rtn_good in rtn_set:
-        rtn_list.append(Good(rtn_good, watch_buy_models.GoodsPic.objects.filter(
-            GoodISBN_id=rtn_good.GoodISBN)[0], rtn_good.GoodPrice*rtn_good.GoodDiscount))
+        rtn_list.append(Good(rtn_good, watch_buy_models.GoodsPic.objects.filter(GoodISBN_id=rtn_good.GoodISBN)[0], rtn_good.GoodPrice*rtn_good.GoodDiscount))
     return render(request, "watch_buy/search.html", locals())

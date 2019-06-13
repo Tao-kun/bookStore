@@ -43,16 +43,14 @@ class GoodsAdmin(admin.ModelAdmin):
         ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount']}),
         ('其他', {'fields': ['Intro_pic']})
     ]
-    list_display = ['GoodName', 'GoodISBN', 'Category',
-                    'GoodRemain', 'show_discount', 'show_new']
+    list_display = ['GoodName', 'GoodISBN', 'Category', 'GoodRemain', 'show_discount', 'show_new']
     inlines = [GoodsPicInline]
-    actions = ['set_discount', 'unset_discount',
-               'set_new_item', 'unset_new_item']
+    actions = ['set_discount', 'unset_discount', 'set_new_item', 'unset_new_item']
     list_filter = [
         ('IsForSale', admin.BooleanFieldListFilter),
         ('IsNew', admin.BooleanFieldListFilter)
     ]
-
+    search_fields = ['GoodName', 'GoodISBN', 'Category']
     def set_discount(self, request, queryset):
         rows_updated = queryset.update(IsForSale=1)
         self.message_user(request, "成功打折{}个商品".format(rows_updated))
@@ -60,8 +58,7 @@ class GoodsAdmin(admin.ModelAdmin):
     def unset_discount(self, request, queryset):
         rows_updated1 = queryset.update(IsForSale=0)
         rows_updated2 = queryset.update(GoodDiscount=1)
-        self.message_user(request, "{}个商品成功恢复原价".format(
-            rows_updated1, rows_updated2))
+        self.message_user(request, "{}个商品成功恢复原价".format(rows_updated1, rows_updated2))
 
     def set_new_item(self, request, queryset):
         rows_updated = queryset.update(IsNew=1)
@@ -92,10 +89,10 @@ class GoodsAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     fieldsets = [
         ('订单信息', {'fields': ['orderdate', 'shipdate', 'user', 'Comment']}),
-        ('收货人信息', {'fields': ['username',
-                              'telephone', 'address', 'zipcode', 'qq']})
+        ('收货人信息', {'fields': ['username', 'telephone', 'address', 'zipcode', 'qq']})
     ]
-    list_display = ['username',
+    list_display = ['orderid',
+                    'username',
                     'address',
                     'orderdate',
                     'show_canceled',
@@ -117,7 +114,7 @@ class OrderAdmin(admin.ModelAdmin):
         ('IsCancled', admin.BooleanFieldListFilter),
         ('IsReturn', admin.BooleanFieldListFilter)
     ]
-
+    search_fields = ['GoodName', 'GoodISBN', 'GoodAuthor']
     def show_cancel(self, obj):
         if obj.IsCancle == 0:
             return '否'
@@ -167,8 +164,7 @@ class OrderAdmin(admin.ModelAdmin):
     def set_ship(self, request, queryset):
         rows_updated1 = queryset.update(IsShipped=1)
         rows_updated2 = queryset.update(shipdate=timezone.now())
-        self.message_user(request, "成功设置{}个订单已发货".format(
-            rows_updated1, rows_updated2))
+        self.message_user(request, "成功设置{}个订单已发货".format(rows_updated1, rows_updated2))
 
     def unset_ship(self, request, queryset):
         rows_updated = queryset.update(IsShipped=0)

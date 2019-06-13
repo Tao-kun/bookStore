@@ -24,64 +24,59 @@
 </head>
 
 <div class="container" style="margin-left: 20%">
-<h3 style="padding-top: 10%"><strong>订单详细信息</strong></h3>
-<table class="table table-hover" style="width: 50%">
-    <tr>
-        <th class="images"></th>
-        <th class="qty">书名</th>
-        <th class="qty">单价</th>
-        <th class="qty">数量</th>
-    </tr>
-    {% for rtn in goodrtnlist %}
-        <tr id="good_list">
-
-            <td><img src="/static/media/{{ rtn.goodpic.GoodPic }}"
-                    alt="Product 6" width="70px" height="70px"></td>
-            <td>{{ rtn.good.GoodName }}</td>
-            <td>{{ rtn.good.GoodPrice }}</td>
-            <td>{{ rtn.qty }}</td>
+    <h3 style="padding-top: 10%"><strong>订单详细信息</strong></h3>
+    <table class="table table-hover" style="width: 50%">
+        <tr>
+            <th class="images"></th>
+            <th class="qty">书名</th>
+            <th class="qty">单价</th>
+            <th class="qty">数量</th>
         </tr>
-    {% endfor %}
+        {% for rtn in goodrtnlist %}
+            <tr id="good_list">
+                <td><img src="/static/media/{{ rtn.goodpic.GoodPic }}"
+                         alt="Product 6" width="70px" height="70px"></td>
+                <td>{{ rtn.good.GoodName }}</td>
+                <td>{{ rtn.good.GoodPrice }}</td>
+                <td>{{ rtn.qty }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <table class="table table-hover" style="width: 50%;">
+        <tr>
+            <th>收货人姓名</th>
+            <th>收货人手机号</th>
+            <th>收货详细地址</th>
+        </tr>
 
-
-</table>
-
-
-<table class="table table-hover" style="width: 50%;">
-    <tr>
-        <th>收货人姓名</th>
-        <th>收货人手机号</th>
-        <th>收货详细地址</th>
-    </tr>
-
-    <tr>
-        <td>{{ order_info.username }}</td>
-        <td>{{ order_info.telephone }}</td>
-        <td>{{ order_info.address }}</td>
-    </tr>
-</table>
-<div>
-    {% if order_info.IsCancle == 0 %}
-{% if order_info.IsShipped == 0 %}
-    <button style="float: left" class="btn btn-lg" onclick="cancel_order()">取消订单</button>
-{% endif %}
-{% if order_info.IsShipped == 1 and order_info.IsCompleted == 0 and order_info.IsHandled == 1 and order_info.IsCancled == 0 and order_info.IsReturn == 0 %}
-    <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="apply_return()">申请退货</button>
-    <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="confirm_receive()">确认收货</button>
-{% endif %}
-{% if order_info.IsReturn == 1 and order_info.IsCancled == 0 and order_info.IsCompleted == 0 %}
-    <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="cancel_return()">取消申请退货</button>
-    {% endif %}
-{% if order_info.IsHandled == 0 %}
-    <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="confirm_order()">确认订单</button>
-{% endif %}
-{% if order_info.IsCompleted == 1 %}
-    <h3>评论订单</h3>
-    <textarea class="form-control" type="text" style="width: 40%;height: 25%" id="comment"></textarea>
-    <button onclick="comment_order()" style="width: 10%">评价</button>
-{% endif %}
-{% endif %}
-</div>
+        <tr>
+            <td>{{ order_info.username }}</td>
+            <td>{{ order_info.telephone }}</td>
+            <td>{{ order_info.address }}</td>
+        </tr>
+    </table>
+    <div>
+        {% if order_info.IsCancle == 0 %}
+            {% if order_info.IsShipped == 0 %}
+                <button style="float: left" class="btn btn-lg" onclick="cancel_order()">取消订单</button>
+            {% endif %}
+            {% if order_info.IsShipped == 1 and order_info.IsCompleted == 0 and order_info.IsHandled == 1 and order_info.IsCancled == 0 and order_info.IsReturn == 0 %}
+                <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="apply_return()">申请退货</button>
+                <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="confirm_receive()">确认收货</button>
+            {% endif %}
+            {% if order_info.IsReturn == 1 and order_info.IsCancled == 0 and order_info.IsCompleted == 0 %}
+                <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="cancel_return()">取消申请退货</button>
+            {% endif %}
+            {% if order_info.IsHandled == 0 %}
+                <button style="float: left;margin-left: 3%" class="btn btn-lg" onclick="confirm_order()">确认订单</button>
+            {% endif %}
+            {% if order_info.IsCompleted == 1 %}
+                <h3><strong>评论订单</strong></h3>
+                <textarea class="form-control" type="text" style="width: 40%;height: 25%" id="comment"></textarea>
+                <button onclick="comment_order()" style="width: 10%">评价</button>
+            {% endif %}
+        {% endif %}
+    </div>
 </div>
 <script>
     function getQueryString(name) {

@@ -60,14 +60,18 @@ def confirm_order(request):
     order_obj = watch_buy_models.Order.objects.get(orderid=id)
     order_obj.IsHandled = 1
     order_obj.save()
-    return render(request, "after_sold/confirm_order.html", locals())
+    if order_obj.IsHandled == 1:
+        response = JsonResponse({"info": "确认订单成功"})
+    else:
+        response = JsonResponse({"info": "确认订单失败"})
+    return response
 
 
 def confirm_receive(request):
     id = request.GET.get('order_id')
     response = JsonResponse({"info": "成功收货"})
     order_obj = watch_buy_models.Order.objects.get(orderid=id)
-    if order_obj.IsShipped == 1 and order_obj.IsCancled == 0:  # 已发货但是没有被取消
+    if order_obj.IsShipped == 1 and order_obj.IsCancled == 0:       #   已发货但是没有被取消
         order_obj.IsCompleted = 1
         order_obj.save()
     else:
@@ -117,8 +121,9 @@ def cancel_return(request):
     response = JsonResponse({"info": "取消成功"})
     order_obj = watch_buy_models.Order.objects.get(orderid=id)
     if order_obj.IsReturn == 1 and order_obj.IsCancled == 0:
-        order_obj.IsCompleted = 1
+        order_obj.IsReturn = 0
         order_obj.save()
     else:
         response = JsonResponse({"info": "取消失败"})
     return response
+

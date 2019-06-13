@@ -8,7 +8,7 @@
     {% else %}
         <div class="welcome" id="welcome1">
             欢迎您，游客 <a href="/login/">登录</a> or <a
-                href="/login/">注册</a>.
+                href="/login/">注册</a> or <a href="/admin/">我是管理员</a>.
         </div><!-- .welcome -->
     {% endif %}
 {% endblock %}
@@ -42,7 +42,7 @@
                         {% endif %}
                         <div class="preview slides_container">
                             <div class="prev_bg">
-                                <a id="fdzoom" href="http://127.0.0.1:8000/static/media/{{ Good_pic_list.0.GoodPic }}"
+                                <a id="fdzoom" href="/static/media/{{ Good_pic_list.0.GoodPic }}"
                                    class="jqzoom" rel='gal1' title="">
                                     <img id="mainzoom" src="/static/media/{{ Good_pic_list.0.GoodPic }}" title=""
                                          alt="" height="440px" width="440px"/>
@@ -137,7 +137,7 @@
 
                     <div class="clear"></div>
 
-                    <div class="grid_9">
+                   <div class="grid_9">
                         <div id="wrapper_tab" class="tab1">
                             <a href="#" class="tab1 tab_link">介绍</a>
                             <a href="#" class="tab2 tab_link">书评</a>
@@ -180,7 +180,7 @@
                                             <p>{{ each_page_comment.comment.content }}</p>
 
                                             {% ifequal each_page_comment.comment.user.name user.name %}
-                                                <br> <p><a id="delete_comment">删除书评</a></p>
+                                                 <p><a id="delete_comment">删除书评</a></p>
                                             {% endifequal %}
                                         </li>
 
@@ -245,6 +245,9 @@
                             <div class="tab3 tab_body">
                                 <h4>书籍详细信息</h4>
                                 <ul>
+                                    <li><strong>ISBN号:</strong><span style="padding-left: 4%">{{ Good.GoodISBN }}</span></li>
+                                    <li><strong>书名:</strong><span style="padding-left: 6%">{{ Good.GoodName }}</span></li>
+                                    <li><strong>作者</strong><span style="padding-left: 7%">{{ Good.GoodAuthor }}</span></li>
                                     <li><strong>出版社:</strong><span style="padding-left: 5%">{{ Good.Publisher }}</span>
                                     </li>
                                     <li><strong>页数:</strong><span style="padding-left: 7%">{{ Good.Pages }}</span></li>
@@ -264,17 +267,19 @@
                         <div class="clear"></div>
                     </div><!-- .grid_9 -->
 
+
                     <div class="clear"></div>
 
                     <div class="related">
                         <div class="c_header">
+
                         </div><!-- .c_header -->
 
                         <div class="list_carousel">
                             <h3>畅销书籍</h3>
                             <ul id="list_product" class="list_product">
                                 {% for Good_rec in Good_recommend_rtn %}
-                                    {% if forloop.counter <= 3 %}
+                                    {% if forloop.counter <= 4 %}
                                         <div class="grid_3 product" id="product">
                                             {% if Good_rec.good.IsNew == 1 %}
                                                 <img class="sale" src="../../../static/images/new.png" alt="New"/>
@@ -298,9 +303,14 @@
 
                                                     </div>
                                                 </div>
-                                                <a class="obn"></a>
-                                                <a class="like" id="checkout" name="checkout"></a>
-                                                <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                                {% if is_login %}
+                                                    <a></a>
+                                                    <a class="like" id="checkout" name="checkout"></a>
+                                                    <a class="bay" id="add_to_cart" name="add_to_cart"></a>
+                                                {% else %}
+                                                    <a class="like"></a>
+                                                    <a class="bay"></a>
+                                                {% endif %}
                                             </div><!-- .cart -->
                                         </div><!-- .grid_3 -->
                                     {% endif %}
@@ -330,12 +340,6 @@
     <script src="{% static "js/jquery.jqzoom-core.js" %}"></script>
     <script src="{% static "js/layer/layer.js" %}"></script>
     <script src="{% static "js/jump.js" %}"></script>
-    {% if is_login and not already_comment %}
-    {% else %}
-        <script>
-        $("#add_comments").css("display", "none");
-        </script>
-    {% endif %}
     <script>
         function checkout() {
             var good_price = document.getElementById('price').innerHTML.replace("$", "");
@@ -472,10 +476,7 @@
             })
         </script>
 
-
     {% endif %}
-
-
 
 
 

@@ -8,7 +8,7 @@
     {% else %}
         <div class="welcome" id="welcome1">
             欢迎您，游客 <a href="/login/">登录</a> or <a
-                href="/login/">注册</a>.
+                href="/login/">注册</a> or <a href="/admin/">我是管理员</a>.
         </div><!-- .welcome -->
     {% endif %}
 {% endblock %}
@@ -46,7 +46,8 @@
                         <td colspan="7" class="cart_but">
                             <button class="continue" onclick="
                               window.location.href = '/catalog_grid/';
-                            "><span>icon</span>重新购物</button>
+                            "><span>icon</span>重新购物
+                            </button>
                             <button class="update" onclick="delete_all()"><span>icon</span>清空购物车</button>
                         </td>
                     </tr>
@@ -63,7 +64,7 @@
                         <table class="subtotal">
                             <tr class="grand_total">
                                 <td>总价</td>
-                                <td class="price">${{ Total_sum }}</td>
+                                <td class="price" id="total_sum">${{ Total_sum }}</td>
                             </tr>
                         </table>
                         <button class="checkout" onclick="check_out()">去结账</button>
@@ -76,11 +77,7 @@
 
         </div>
     </section><!-- #main -->
-    <script>
-        function deleteitem() {
 
-        }
-    </script>
     <script>
         var jsonObj = {};
         var count = 0;
@@ -128,8 +125,11 @@
                 $.ajax({
                         url: "/delete_item/?id=" + id,
                         type: 'GET',
+                        dataType: 'JSON',
                         success: function (arg) {
                             currentEle.parent().parent().remove();
+                            var total = document.getElementById('total_sum');
+                            total.innerText = arg['sum'];
                         }
                     }
                 );
@@ -142,11 +142,7 @@
                     url: "/delete_all/",
                     type: 'GET',
                     success: function (arg) {
-                        var tb = document.getElementById('cart_tb');
-                        for(i = 1; i < tb.rows.length; i++){
-                            tb.deleteRow(i);
-                            rowNum = rowNum - 1;
-                        }
+                      window.location.reload();
                     }
                 }
             );

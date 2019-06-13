@@ -8,12 +8,19 @@
     {% else %}
         <div class="welcome" id="welcome1">
             欢迎您，游客 <a href="/login/">登录</a> or <a
-                href="/login/">注册</a>.
+                href="/login/">注册</a> or <a href="/admin/">我是管理员</a>.
         </div><!-- .welcome -->
     {% endif %}
 {% endblock %}
 {% block content %}
-
+    <div class="container_12">
+        <div class="grid_12">
+            <div class="breadcrumbs">
+                <a href="../../../login_manage/templates/login_manage/index.html">Home</a><span>&#8250;</span><a
+                    href="#">Category</a><span>&#8250;</span><span class="current">This page</span>
+            </div><!-- .breadcrumbs -->
+        </div><!-- .grid_12 -->
+    </div><!-- .container_12 -->
     <div class="clear"></div>
 
     <section id="main">

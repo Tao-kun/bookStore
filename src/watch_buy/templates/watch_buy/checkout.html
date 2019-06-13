@@ -8,7 +8,7 @@
     {% else %}
         <div class="welcome" id="welcome1">
             欢迎您，游客 <a href="/login/">登录</a> or <a
-                href="/login/">注册</a>.
+                href="/login/">注册</a> or <a href="/admin/">我是管理员</a>.
         </div><!-- .welcome -->
     {% endif %}
 {% endblock %}
@@ -205,6 +205,8 @@
             }, function () {
                 if (Isnull(name) === true)
                     layer.msg("收货人姓名不能为空");
+                else if(!document.getElementById('wechat').checked && !document.getElementById('AliPay').checked)
+                    layer.msg("请选择一种付款方式");
                 else if (Isnull(address) === true)
                     layer.msg("地址不能为空");
                 else if (Isnull(zipcode) === true)
@@ -235,6 +237,8 @@
             }, function () {
                 if (Isnull(name) === true)
                     layer.msg("收货人姓名不能为空");
+                 else if(!document.getElementById('wechat').checked && !document.getElementById('AliPay').checked)
+                    layer.msg("请选择一种付款方式");
                 else if (Isnull(address) === true)
                     layer.msg("地址不能为空");
                 else if (Isnull(zipcode) === true)

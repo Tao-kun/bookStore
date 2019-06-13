@@ -43,7 +43,6 @@ urlpatterns = [
     url(r'^update_user/', login_manage_views.update_user),
     url(r'^product_page/', watch_buy_views.good_detail),
     url(r'^add_order/', watch_buy_views.add_order),
-    url(r'^past_comment/', post_comments),
     url(r'^add_and_show_comments/', watch_buy_views.add_and_show_comments),
     url(r'^delete_and_show_comments', watch_buy_views.delete_add_show_comments),
     url(r'^see_order/', after_sold_views.see_order),
