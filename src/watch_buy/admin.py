@@ -113,7 +113,6 @@ class OrderAdmin(admin.ModelAdmin):
         ('IsCancled', admin.BooleanFieldListFilter),
         ('IsReturn', admin.BooleanFieldListFilter)
     ]
-    search_fields = ['GoodName', 'GoodISBN', 'GoodAuthor']
 
     def show_cancel(self, obj):
         if obj.IsCancle == 0:
