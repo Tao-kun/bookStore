@@ -4,11 +4,12 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8"/><!-- /Added by HTTrack -->
 <head>
     <meta charset="UTF-8">
-
     <meta name="description" content="">
     <meta name="keywords" content="">
 
-    <title>Home</title>
+     {% block title %}
+
+     {% endblock %}
     <script src="{% static 'js/layer/layer.js' %}"></script>
     <script src="{% static 'js/jquery-1.7.2.min.js' %} "></script>
     <script src="{% static 'js/html5.js' %}"></script>
@@ -99,13 +100,13 @@
 <body>
 <div class="container_12">
     <div id="top">
-        <div class="grid_1">
+        <div class="grid_3">
             <div class="phone_top">
                 Call CN +86 18210714886
             </div><!-- .phone_top -->
         </div><!-- .grid_3 -->
 
-        <div class="grid_6">
+        <div class="grid_3">
             {% block islogin %}
 
             {% endblock %}

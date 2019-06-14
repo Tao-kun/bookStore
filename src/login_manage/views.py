@@ -1,16 +1,18 @@
-from random import choice
-import string
-import re
 import json
-from django.http import HttpResponse, JsonResponse, Http404
-from django.shortcuts import render, redirect
+import re
+import string
+from random import choice
+
+from captcha.helpers import captcha_image_url
+from captcha.models import CaptchaStore
 from django.core.mail import send_mail
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, redirect
+
+import watch_buy.models as watch_buy_model
 from login_manage import models
 from login_manage.forms import LoginForm
 from login_manage.models import User
-from captcha.models import CaptchaStore
-from captcha.helpers import captcha_image_url
-import watch_buy.models as watch_buy_model
 
 
 # 主页，返回登录信息到主页以判断是登录注册还是注销
@@ -81,39 +83,39 @@ def is_valid(request):
     exists_email = models.User.objects.filter(email=email)
     exists_name = models.User.objects.filter(name=name)
     if name:
-        null_name = "false"     # 名字为空
+        null_name = "false"  # 名字为空
     else:
         null_name = "true"
     if exists_name:
-        same_name = "true"      # 已被注册
+        same_name = "true"  # 已被注册
     else:
         same_name = "false"
     if exists_email:
-        same_email = "true"     # email已有
+        same_email = "true"  # email已有
     else:
         same_email = "false"
     if exists_stu:
         same_stu = "true"
     else:
-        same_stu = "false"      # id已有
+        same_stu = "false"  # id已有
     if password1 == password2:
         same_pwd = "true"
     else:
-        same_pwd = "false"      # 两次输入密码是否一致
-    str = r'^([\w]+\.*)([\w]+)\@[\w]+\.\w{3}(\.\w{2}|)$'   # email正则
-    if re.match(str, email) and not str.isspace():
-         ok_email = "true"
-         # print(email)
+        same_pwd = "false"  # 两次输入密码是否一致
+    email_reg = r'^([\w]+\.*)([\w]+)\@[\w]+\.\w{3}(\.\w{2}|)$'
+    if re.match(email_reg, email) and not email_reg.isspace():
+        ok_email = "true"
     else:
         ok_email = "false"
-    if len(studentid) == 8 and studentid:
+    if len(studentid) == 8 and studentid and studentid.isdigit():
         ok_stuid = "true"
     else:
         ok_stuid = "false"
     ok_return = "false"
     if ok_email == "true" and ok_stuid == "true" and null_name == "false" and same_name == "false" and same_email == "false" and same_stu == "false" and same_pwd == "true":
         ok_return = "true"
-    ret = {'same_pwd': same_pwd, 'ok_email': ok_email, 'ok_stuid': ok_stuid, 'ok_return': ok_return, 'same_stu': same_stu, 'same_email': same_email, 'same_name': same_name, 'null_name': null_name}
+    ret = {'same_pwd': same_pwd, 'ok_email': ok_email, 'ok_stuid': ok_stuid, 'ok_return': ok_return,
+           'same_stu': same_stu, 'same_email': same_email, 'same_name': same_name, 'null_name': null_name}
     return HttpResponse(json.dumps(ret), content_type='application/json')
 
 
@@ -236,4 +238,3 @@ def captcha_refresh(request):
         'image_url': captcha_image_url(new_key),
     }
     return HttpResponse(json.dumps(to_json_response), content_type='application/json')
-

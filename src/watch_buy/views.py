@@ -94,7 +94,7 @@ def shopping_cart(request):
     studentID = request.session.get('studentID')
     good_num_list = watch_buy_models.Cart.objects.filter(
         studentID_id=studentID)
-
+    cart_obj_num = len(good_num_list)
     class rtn:
         def __init__(self, pic, info, qty, id, sum):
             self.pic = pic

@@ -1,5 +1,8 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+{% block title %}
+    <title>商品检索</title>
+{% endblock %}
 {% block islogin %}
     {% if is_login %}
         <div class="welcome" id="welcome1">
@@ -54,12 +57,12 @@
                                     <div class="price">
                                         <div class="price_new">${{ good.price }}</div>
                                     </div>
-                                    {% if is_login %}
+                                    {% if is_login and good.good.GoodRemain != 0 %}
                                     <a href="#" class="bay" name="add_to_cart">Add to Cart</a>
                                     <a href="#" class="bay" name="checkout">Buy it now</a>
                                     {% else %}
-                                    <a href="#" class="bay">Add to Cart</a>
-                                    <a href="#" class="bay">Buy it now</a>
+                                    <a href="#" class="bay" onclick=layer.msg('没货辣');>Add to Cart</a>
+                                    <a href="#" class="bay" onclick=layer.msg('没货辣');>Buy it now</a>
                                     {% endif %}
                                 </div><!-- .cart -->
                             </div><!-- .grid_2 -->
