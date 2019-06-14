@@ -46,7 +46,7 @@ class GoodsAdmin(admin.ModelAdmin):
         ('销售信息', {'fields': ['GoodRemain', 'GoodDiscount']}),
         ('其他', {'fields': ['Intro_pic']})
     ]
-    list_display = ['GoodName', 'FormattedISBN', 'Category', 'GoodRemain', 'show_discount', 'show_new']
+    list_display = ['GoodName', 'GoodAuthor', 'FormattedISBN', 'Category', 'GoodRemain', 'show_discount', 'show_new']
     inlines = [GoodsPicInline]
     actions = ['set_discount', 'unset_discount', 'set_new_item', 'unset_new_item']
     list_filter = [
@@ -118,7 +118,7 @@ class OrderAdmin(admin.ModelAdmin):
         ('IsCancled', admin.BooleanFieldListFilter),
         ('IsReturn', admin.BooleanFieldListFilter)
     ]
-    search_fields = ['user__studentID', 'user__name', 'orderid', 'username', 'address', 'telephone']
+    search_fields = ['user__studentID', 'user__name', 'orderid', 'username', 'address', 'telephone', 'Comment']
 
     def show_cancel(self, obj):
         if obj.IsCancle == 0:
