@@ -1,5 +1,10 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+
+{% block title %}
+    <title>用户信息</title>
+{% endblock %}
+
 {% block islogin %}
     {% if is_login %}
         <div class="welcome" id="welcome1">
@@ -23,7 +28,7 @@
             <!-- Login -->
             <!-- Billing -->
             <div class="checkout-form col-lg-40 col-lg-40 col-lg-40 login-block"
-                 style="padding-top: 4%">
+                 style="padding-top: 4%;padding-left: 25%">
                 <form>
                     <div class="col-md-6 col-lg-8 col-lg-8">
                         <h3>个人信息</h3>

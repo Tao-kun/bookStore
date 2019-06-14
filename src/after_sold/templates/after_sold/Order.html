@@ -1,5 +1,10 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+
+{% block title %}
+    <title>订单列表</title>
+{% endblock %}
+
 {% block islogin %}
     {% if is_login %}
         <div class="welcome" id="welcome1">

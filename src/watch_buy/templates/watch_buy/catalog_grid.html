@@ -1,5 +1,10 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+
+{% block title %}
+    <title>商品列表</title>
+{% endblock %}
+
 {% block islogin %}
     {% if is_login %}
         <div class="welcome" id="welcome1">
@@ -51,12 +56,12 @@
                                     </div>
                                 </div>
                                 <a></a>
-                                {% if is_login %}
+                                {% if is_login and y.GoodRemain != 0 %}
                                     <a class="like" id="checkout" name="checkout"></a>
                                     <a class="bay" id="add_to_cart" name="add_to_cart"></a>
                                 {% else %}
-                                    <a class="like"></a>
-                                    <a class="bay"></a>
+                                    <a class="like" onclick=layer.msg('没货辣');></a>
+                                    <a class="bay" onclick=layer.msg('没货辣');></a>
                                 {% endif %}
                             </div><!-- .cart -->
                         </div><!-- .grid_3 -->

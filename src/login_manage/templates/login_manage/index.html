@@ -1,7 +1,7 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
 {% block title %}
-    首页
+    <title>首页</title>
 {% endblock %}
 {% block islogin %}
     {% if is_login %}
@@ -66,8 +66,7 @@
 
 
                 <div id="content" class="grid_9">
-                    <br/>
-                    <br/>
+                    <div></div>
                     <div class="grid_product">
                         {% for x,y in rtn_dic.items %}
                             <div class="grid_3 product" id="product">
@@ -88,16 +87,24 @@
                                     <div class="price">
                                         <div class="vert">
                                             <div class="price_new" id="price">{{ y.GoodPrice }}</div>
-
                                         </div>
+                                    </div>
+                                    {% if is_login and y.GoodRemain != 0 %}
                                         <a></a>
                                         <a class="like" id="checkout" name="checkout"></a>
                                         <a class="bay" id="add_to_cart" name="add_to_cart"></a>
-                                    </div><!-- .cart -->
-                                </div><!-- .grid_3 -->
-
-                            {% endfor %}
-                        </div>
+                                    {% else %}
+                                        <a></a>
+                                        <a class="like" onclick="
+                                          layer.msg('没货辣');
+                                        "></a>
+                                        <a class="bay" onclick="
+                                            layer.msg('没货辣');
+                                        "></a>
+                                    {% endif %}
+                                </div><!-- .cart -->
+                            </div><!-- .grid_3 -->
+                        {% endfor %}
                     </div>
                 </div>
 

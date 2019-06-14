@@ -1,5 +1,10 @@
 {% extends 'Base.html' %}
 {% load staticfiles %}
+
+{% block title %}
+    <title>购物车</title>
+{% endblock %}
+
 {% block islogin %}
     {% if is_login %}
         <div class="welcome" id="welcome1">
@@ -68,7 +73,11 @@
                                 <td class="price" id="total_sum">${{ Total_sum }}</td>
                             </tr>
                         </table>
+                        {% if cart_obj_num != 0 %}
                         <button class="checkout" onclick="check_out()">去结账</button>
+                        {% else %}
+                        <button class="checkout" disabled="disabled">去结账</button>
+                        {% endif %}
                     </div><!-- .total -->
                 </div><!-- .grid_4 -->
 
