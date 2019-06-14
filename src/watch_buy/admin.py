@@ -13,12 +13,17 @@ class OrderGoodInline(admin.TabularInline):
     model = OrderGood
     extra = 0
 
+    def get_queryset(self, request):
+        return
+
 
 class CartAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['studentID', 'GoodID', 'Qty']})
     ]
     list_display = ['studentID', 'user_name', 'good_isbn', 'good_name', 'Qty']
+    search_fields = ['studentID__studentID', 'studentID__name', 'GoodID__GoodName', 'GoodID__GoodAuthor',
+                     'GoodID__GoodISBN', 'GoodID__Category', 'GoodID__GoodIntro']
 
     def user_name(self, obj):
         return obj.studentID.name
@@ -48,7 +53,7 @@ class GoodsAdmin(admin.ModelAdmin):
         ('IsForSale', admin.BooleanFieldListFilter),
         ('IsNew', admin.BooleanFieldListFilter)
     ]
-    search_fields = ['GoodName', 'GoodISBN', 'Category']
+    search_fields = ['GoodName', 'GoodAuthor', 'GoodISBN', 'Category', 'GoodIntro']
 
     def set_discount(self, request, queryset):
         rows_updated = queryset.update(IsForSale=1)
@@ -113,6 +118,7 @@ class OrderAdmin(admin.ModelAdmin):
         ('IsCancled', admin.BooleanFieldListFilter),
         ('IsReturn', admin.BooleanFieldListFilter)
     ]
+    search_fields = ['user__studentID', 'user__name', 'orderid', 'username', 'address', 'telephone']
 
     def show_cancel(self, obj):
         if obj.IsCancle == 0:
