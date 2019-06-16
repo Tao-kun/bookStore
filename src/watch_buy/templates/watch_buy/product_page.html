@@ -142,7 +142,7 @@
 
                     <div class="clear"></div>
 
-                   <div class="grid_9">
+                    <div class="grid_9">
                         <div id="wrapper_tab" class="tab1">
                             <a href="#" class="tab1 tab_link">介绍</a>
                             <a href="#" class="tab2 tab_link">书评</a>
@@ -162,7 +162,8 @@
                                         <li>
                                             <div class="autor">{{ each_page_comment.comment.user.name }}</div>
                                             ,
-                                            <time datetime="2012-11-03">{{ each_page_comment.comment.c_time|date:"Y-m-d H:i:s" }}</time>
+                                            <time datetime="2012-11-03">
+                                                {{ each_page_comment.comment.c_time|date:"Y-m-d H:i:s" }}</time>
 
                                             <div class="evaluation">
                                                 <div class="quality">
@@ -185,7 +186,7 @@
                                             <p>{{ each_page_comment.comment.content }}</p>
 
                                             {% ifequal each_page_comment.comment.user.name user.name %}
-                                                 <p><a id="delete_comment">删除书评</a></p>
+                                                <p><a id="delete_comment">删除书评</a></p>
                                             {% endifequal %}
                                         </li>
 
@@ -195,21 +196,21 @@
                                 </ul><!-- .comments -->
 
 
-                            <!-- 删除书评的代码 -->
-    <script>
-    $('#delete_comment').click(function () {
-        var data = {
-            "id": ""
-        };
-        $.getJSON("/delete_and_show_comments", data, function (data) {
-            $("#comments").html(data.main_data)
-        });
-        $('#add_comments').css('display', '');
-        layer.msg("删除书评成功！");
-    });
-    </script>
+                                <!-- 删除书评的代码 -->
+                                <script>
+                                    $('#delete_comment').click(function () {
+                                        var data = {
+                                            "id": ""
+                                        };
+                                        $.getJSON("/delete_and_show_comments", data, function (data) {
+                                            $("#comments").html(data.main_data)
+                                        });
+                                        $('#add_comments').css('display', '');
+                                        layer.msg("删除书评成功！");
+                                    });
+                                </script>
 
-                            <div id="add_comments">
+                                <div id="add_comments">
 
 
                                     <form class="add_comments" id="add_comments">
@@ -234,15 +235,17 @@
 
 
                                         <div class="clear"></div>
+                                        {% if not already_comment %}
                                             <div class="text_review">
                                                 <strong>评论：</strong><br/>
                                                 <textarea id="comment_content" name="text"></textarea>
                                             </div><!-- .text_review -->
                                             <input id="btn_submit_comment" value="发表评论" type="button"
                                                    class="btn btn-primary"/>
+                                        {% endif %}
                                     </form><!-- .add_comments -->
 
-                            </div>
+                                </div>
 
                                 <div class="clear"></div>
                             </div><!-- .tab2 .tab_body -->
@@ -250,9 +253,12 @@
                             <div class="tab3 tab_body">
                                 <h4>书籍详细信息</h4>
                                 <ul>
-                                    <li><strong>ISBN号:</strong><span style="padding-left: 4%">{{ Good.GoodISBN }}</span></li>
-                                    <li><strong>书名:</strong><span style="padding-left: 6%">{{ Good.GoodName }}</span></li>
-                                    <li><strong>作者</strong><span style="padding-left: 7%">{{ Good.GoodAuthor }}</span></li>
+                                    <li><strong>ISBN号:</strong><span style="padding-left: 4%">{{ Good.GoodISBN }}</span>
+                                    </li>
+                                    <li><strong>书名:</strong><span style="padding-left: 6%">{{ Good.GoodName }}</span>
+                                    </li>
+                                    <li><strong>作者</strong><span style="padding-left: 7%">{{ Good.GoodAuthor }}</span>
+                                    </li>
                                     <li><strong>出版社:</strong><span style="padding-left: 5%">{{ Good.Publisher }}</span>
                                     </li>
                                     <li><strong>页数:</strong><span style="padding-left: 7%">{{ Good.Pages }}</span></li>
